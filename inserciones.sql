@@ -1,4 +1,4 @@
-
+--jeje
 --insercion articulos
 insert into articulos values('apple','iphone 10');
 insert into articulos values('apple','iphone 11');

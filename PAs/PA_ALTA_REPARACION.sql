@@ -25,10 +25,7 @@ GO
 
 ALTER PROCEDURE PA_ALTA_REPARACION
 
-	@ID_ESTADO		INTEGER,
 	@ID_ARTICULO		INTEGER,
-	@FECHA_INSERCION	DATE,
-	@FECHA_RECUPERACION	DATE,
 
 	@INVOKER		INTEGER,
 	
@@ -48,29 +45,21 @@ AS
 		-- --------------------------------------------------------------------
 		IF @NTRANS = 0 BEGIN TRANSACTION [TR_ALTA_REPARACION]		
 			
-			-- CUERPO DEL PA
-			--COMPROBAMOS QUE LA FECHA DE INSERCION NO SEA MAOR QUE LA FECHA DE RECUPERACION
-			
-			IF @FECHA_INSERCION > @FECHA_RECUPERACION
+			--COMPROBACIONES			
+			IF @ID_ARTICULO = (SELECT ID FROM ARTICULOS WHERE ID = @ID_ARTICULO)
 			BEGIN
-				PRINT 'La fecha de inserción debe ser menor que la fecha de recuperación'
+				PRINT 'existe el ID del articulo'
+			END
+			ELSE 
+			BEGIN	
+				set @MENSAJE = 'NO existe el ID del articulo'
+				SET @RETCODE = 1
 				RETURN
 			END
-			
-			IF @ID_ESTADO = (SELECT ID FROM ESTADOS WHERE ID = @ID_ESTADO)
-				
-				PRINT 'existe el ID del estado'
 
-			ELSE 
-				PRINT 'NO existe un estado con ese ID'
-				RETURN
-			
-			IF @ID_ARTICULO = (SELECT ID FROM ARTICULOS WHERE ID = @ID_ARTICULO)
+			--SI TODO OK INSERTAMOS REGISTRO
 
-				PRINT 'existe el ID del articulo'
-
-			ELSE 
-				PRINT 'NO existe el ID del articulo'
+			INSERT INTO REPARACIONES(ID_ESTADO,ID_ARTICULO,FECHA_INSERCION) VALUES(101,@ID_ARTICULO,GETDATE());
 
 		IF @NTRANS = 0 AND @@TRANCOUNT > 0 COMMIT TRANSACTION [TR_ALTA_REPARACION]
 

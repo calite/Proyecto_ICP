@@ -4,7 +4,7 @@ GO
 /*
 #######################################################################
 
-	NOMBRE DEL FUNCIÓN:			PA_ALTA_REPARACION
+	NOMBRE DEL FUNCIÓN:			PA_ALTA_ARTICULO
 	FECHA DE CREACIÓN: 			[FECHA]
 	AUTOR:					[AUTOR]
 	RUTA REPOSITORIO:			[RUTA]
@@ -23,9 +23,10 @@ GO
 
 
 
-ALTER PROCEDURE PA_ALTA_REPARACION
+ALTER PROCEDURE PA_ALTA_ARTICULO
 
-	@ID_ARTICULO		INTEGER,
+	@MARCA			VARCHAR(50),
+	@MODELO			VARCHAR(50),
 
 	@INVOKER		INTEGER,
 	
@@ -40,22 +41,16 @@ AS
 
 
 	BEGIN TRY
-	
+		
 		--COMPROBACIONES
-		IF ISNULL(@ID_ARTICULO,'') = ''
+		IF ISNULL(@MARCA,'') = ''
+		IF ISNULL(@MODELO,'') = ''
 		BEGIN
 			SET @RETCODE = 10
-			SET @MENSAJE = 'El ID recibido esta vacío'
+			SET @MENSAJE = 'Faltan datos'
 			RETURN
 		END
-			
-		IF NOT EXISTS(SELECT ID_ARTICULO FROM ARTICULOS WHERE ID_ARTICULO = @ID_ARTICULO)
-		BEGIN
-			set @MENSAJE = 'NO existe el ID del articulo'
-			SET @RETCODE = 20
-			RETURN
-		END
-
+		
 		-- --------------------------------------------------------------------
 		-- TRANSACCIÓN
 		-- --------------------------------------------------------------------
@@ -64,7 +59,8 @@ AS
 			
 			--SI TODO OK INSERTAMOS REGISTRO
 
-			INSERT INTO REPARACIONES(ID_ESTADO,ID_ARTICULO,FECHA_INSERCION) VALUES(101,@ID_ARTICULO,GETDATE());
+			INSERT INTO ARTICULOS(MARCA,MODELO,ACTIVO)
+				VALUES(@MARCA,@MODELO,1) --EMPIEZA ACTIVO
 
 
 		IF @NTRANS = 0 AND @@TRANCOUNT > 0 COMMIT TRANSACTION [TR_ALTA_REPARACION]

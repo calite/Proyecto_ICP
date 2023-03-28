@@ -4,7 +4,7 @@ GO
 /*
 #######################################################################
 
-	NOMBRE DEL FUNCIÓN:			PA_ALTA_REPARACION
+	NOMBRE DEL FUNCIÓN:			PA_ALTA_USUARIO
 	FECHA DE CREACIÓN: 			[FECHA]
 	AUTOR:					[AUTOR]
 	RUTA REPOSITORIO:			[RUTA]
@@ -23,9 +23,12 @@ GO
 
 
 
-ALTER PROCEDURE PA_ALTA_REPARACION
+ALTER PROCEDURE PA_ALTA_USUARIO
 
-	@ID_ARTICULO		INTEGER,
+	@USUARIO		VARCHAR(30),
+	@PASSWORD		VARCHAR(30),
+	@ID_PERFIL		INT,
+	@EMAIL			VARCHAR(50),
 
 	@INVOKER		INTEGER,
 	
@@ -42,19 +45,59 @@ AS
 	BEGIN TRY
 	
 		--COMPROBACIONES
-		IF ISNULL(@ID_ARTICULO,'') = ''
+		IF ISNULL(@USUARIO,'') = ''
 		BEGIN
 			SET @RETCODE = 10
-			SET @MENSAJE = 'El ID recibido esta vacío'
+			SET @MENSAJE = 'El USUARIO recibido esta vacío'
 			RETURN
 		END
-			
-		IF NOT EXISTS(SELECT ID_ARTICULO FROM ARTICULOS WHERE ID_ARTICULO = @ID_ARTICULO)
+		
+		IF ISNULL(@PASSWORD,'') = ''
 		BEGIN
-			set @MENSAJE = 'NO existe el ID del articulo'
 			SET @RETCODE = 20
+			SET @MENSAJE = 'La CONTRASEÑA recibida esta vacía'
 			RETURN
 		END
+
+		IF ISNULL(@ID_PERFIL,'') = ''
+		BEGIN
+			SET @RETCODE = 30
+			SET @MENSAJE = 'El PERFIL recibida esta vacío'
+			RETURN
+		END
+
+		IF ISNULL(@EMAIL,'') = ''
+		BEGIN
+			SET @RETCODE = 40
+			SET @MENSAJE = 'El EMAIL recibido esta vacío'
+			RETURN
+		END
+		
+		IF EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE usuario = @usuario)
+		BEGIN
+			set @MENSAJE = 'Ya existe un USUARIO con ese nombre'
+			SET @RETCODE = 50
+			RETURN
+		END
+
+		IF EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE email = @email)
+		BEGIN
+			set @MENSAJE = 'Ya existe un USUARIO con ese email'
+			SET @RETCODE = 60
+			RETURN
+		END
+
+		--COMPROBAMOS EL ID
+
+		IF @ID_PERFIL != 10
+		IF @ID_PERFIL != 20
+		IF @ID_PERFIL != 30
+			BEGIN
+				set @MENSAJE = 'Perfil Incorrecto'
+				SET @RETCODE = 70
+				RETURN
+			END
+
 
 		-- --------------------------------------------------------------------
 		-- TRANSACCIÓN
@@ -64,7 +107,7 @@ AS
 			
 			--SI TODO OK INSERTAMOS REGISTRO
 
-			INSERT INTO REPARACIONES(ID_ESTADO,ID_ARTICULO,FECHA_INSERCION) VALUES(101,@ID_ARTICULO,GETDATE());
+			INSERT INTO USUARIOS(USUARIO,PASSWORD,ID_PERFIL,EMAIL,ACTIVO) VALUES(@USUARIO,@PASSWORD,@ID_PERFIL,@EMAIL,1);
 
 
 		IF @NTRANS = 0 AND @@TRANCOUNT > 0 COMMIT TRANSACTION [TR_ALTA_REPARACION]

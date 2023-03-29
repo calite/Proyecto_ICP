@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using RespuestosAPI.Filtros;
 using System.Text.Json.Serialization;
+using WebAPIAutores.Filtros;
 
 namespace RespuestosAPI
 {
@@ -37,6 +37,10 @@ namespace RespuestosAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RepuestosAPI", Version = "v1" });
             });
+
+
+            services.AddAutoMapper(typeof(Startup)); //automapper
+
 
         }
 

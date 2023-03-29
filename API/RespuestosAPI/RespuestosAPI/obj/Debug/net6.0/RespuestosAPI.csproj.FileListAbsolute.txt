@@ -82,3 +82,4 @@ C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\Resp
 C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\RespuestosAPI\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\RespuestosAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\RespuestosAPI\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\RespuestosAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

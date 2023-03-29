@@ -8,7 +8,15 @@ namespace RespuestosAPI.Utilidades
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Usuario, UsuarioDTO>();
+            CreateMap<Usuario, UsuarioDTO>().ReverseMap();
+            CreateMap<UsuarioCreacionDTO, Usuario>().ReverseMap();
+
+            CreateMap<Perfil, PerfilDTO>().ReverseMap();
+
+            CreateMap<Repuesto, RepuestoDTO>().ReverseMap();
+            CreateMap<RepuestoCreacionDTO, Repuesto>().ReverseMap();
+
+            CreateMap<Stock, StockDTO>().ReverseMap();
         }
 
     }

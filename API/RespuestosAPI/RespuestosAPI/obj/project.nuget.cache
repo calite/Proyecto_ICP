@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "8mBHKW1PeStCe1BoAs1P1kz2XVU5rvtoAOtRs3sXDsLLugs14gFjki+YTrB1JPMNvvw3WnEqUPajbY+jvrgw5Q==",
+  "dgSpecHash": "u/DBULzN1xtwU/hnzRDEt50seNsUkV2I5clt2K7Tr8wMqcpHFT7uKklaYcY8ohziQDdye5SJhyMFmntiDRWlFw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Practicas.soporte\\Desktop\\git\\proyecto-final-icp\\API\\RespuestosAPI\\RespuestosAPI\\RespuestosAPI.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Practicas.soporte\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Practicas.soporte\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\Practicas.soporte\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

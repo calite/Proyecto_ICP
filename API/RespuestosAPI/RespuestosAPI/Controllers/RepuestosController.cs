@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using RespuestosAPI.BBDD;
 using RespuestosAPI.DTOs;
+using RespuestosAPI.Entidades;
 
 namespace RespuestosAPI.Controllers
 {
@@ -18,90 +21,255 @@ namespace RespuestosAPI.Controllers
             this.mapper = mapper;
         }
 
+        /*\
+         * =====================================================
+         *                         GET
+         * =====================================================
+        \*/
+
         [HttpGet("all")]
-        public async Task<List<RepuestoDTO>> GetTodosLosRepuestos()
+        public async Task<ActionResult<RepuestoDTO>> GetTodosLosRepuestos()
         {
-            var repuestos = await context.Repuestos.ToListAsync();
+            try
+            {
+                var repuestos = await context.REPUESTOS.ToListAsync();
 
-            return mapper.Map<List<RepuestoDTO>>(repuestos);
+                if (repuestos.Count == 0)
+                {
+                    return BadRequest($"No existen REPUESTOS");
+                }
+
+                return Ok(mapper.Map<List<RepuestoDTO>>(repuestos));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<List<RepuestoDTO>> GetRepuestoPorId(int id)
+        [HttpGet("{IdRepuesto:int}")]
+        public async Task<ActionResult<RepuestoDTO>> GetRepuestoPorId(int IdRepuesto)
         {
-            var repuestos = await context.Repuestos.Where(x => x.Id_Repuesto == id).ToListAsync();
+            try
+            {
+                var repuesto = await context.REPUESTOS.Where(x => x.Id_Repuesto == IdRepuesto).ToListAsync();
 
-            return mapper.Map<List<RepuestoDTO>>(repuestos);
+                if (repuesto.Count == 0)
+                {
+                    return BadRequest($"No existe un REPUESTO con ese ID: {IdRepuesto}");
+                }
+
+                return Ok(mapper.Map<List<RepuestoDTO>>(repuesto));
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
+        /*\
+         * =====================================================
+         *                         VISTA
+         * =====================================================
+        \*/
 
+        [HttpGet("stock")]
+        public async Task<ActionResult<IEnumerable<StockRepuesto>>> GetStockRepuestos()
+        {
+            try
+            {
+                var stock_repuestos = await context.V_STOCKS_REPUESTOS.ToListAsync();
 
+                if (stock_repuestos.Count == 0)
+                {
+                    return BadRequest($"No existen REPUESTOS");
+                }
 
-        //FALTARIA DEVOLVER LA VISTA -> V_STOCKS_REPUESTOS
+                return Ok(stock_repuestos);
+            }
+            catch (Exception e)
+            {
 
+                throw e;
+            }
+        }
 
-
+        /*\
+         * =====================================================
+         *                          POST
+         * =====================================================
+        \*/
 
         [HttpPost("alta_repuesto")]
-        public async Task<ActionResult> AltaRepuesto([FromBody] RepuestoCreacionDTO repuestoCreacionDTO)
-        {
+        public async Task<ActionResult> AltaRepuesto(RepuestoCreacionDTO r)
+        {//string descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen, int cantidad
+            try
+            {
+                SqlParameter[] parametros = new SqlParameter[11]
+                {
+                    new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Descripcion_Repuesto,
+                        Size = 50
+                    },
+                    new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Fabricante,
+                        Size = 50
+                    },
+                    new SqlParameter("@PESO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Peso
+                    },
+                    new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Alto
+                    },
+                    new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Largo
+                    },
+                    new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Ancho,
+                    },
+                    new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Imagen,
+                        Size = 200
+                    },
+                    new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Cantidad,
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                        Size = 8000
+                    }
+                };
 
-            string PA_ALTA_REPUESTO = "EXEC PA_ALTA_REPUESTO " +
-                        "@DESCRIPCION_REPUESTO = '" + repuestoCreacionDTO.Descripcion_Repuesto + "' ," +
-                        "@FABRICANTE = '" + repuestoCreacionDTO.Fabricante + "' ," +
-                        "@PESO = " + repuestoCreacionDTO.Peso + " ," +
-                        "@ALTO = " + repuestoCreacionDTO.Alto + " ," +
-                        "@LARGO = " + repuestoCreacionDTO.Largo + "," +
-                        "@ANCHO = " + repuestoCreacionDTO.Ancho + "," +
-                        "@IMAGEN = '" + repuestoCreacionDTO.Imagen + "' ," +
-                        "@CANTIDAD = " + repuestoCreacionDTO.Cantidad + "," +
-                        "@INVOKER = " + 0 + "," +
-                        "@RETCODE = " + 0 + "," +
-                        "@MENSAJE = ' ' ";
+                string PA_ALTA_REPUESTO = "EXEC PA_ALTA_REPUESTO @DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@CANTIDAD,@INVOKER,@RETCODE,@MENSAJE";
 
-            return Ok(context.Database.ExecuteSqlRaw(PA_ALTA_REPUESTO));
+                return Ok(await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPUESTO, parametros));
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
         }
 
         [HttpPost("baja_repuesto")]
-        public async Task<ActionResult> BajaRepuesto([FromBody] int id)
+        public async Task<ActionResult> BajaRepuesto(int idRepuesto)
         {
-            var existeRepuesto = await context.Repuestos.AnyAsync(x => x.Id_Repuesto == id);
-
-            if (!existeRepuesto)
+            try
             {
-                return BadRequest($"No existe un repuesto con el ID: {id}");
+                var existeRepuesto = await context.REPUESTOS.AnyAsync(x => x.Id_Repuesto == idRepuesto);
+
+                if (!existeRepuesto)
+                {
+                    return BadRequest($"No existe un repuesto con el ID: {idRepuesto}");
+                }
+
+                SqlParameter[] parametros = new SqlParameter[4]
+                {
+                    new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = idRepuesto
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                        Size = 2000
+                    }
+                };
+
+                string PA_BAJA_REPUESTO = "EXEC PA_BAJA_REPUESTO @ID_REPUESTO, @INVOKER, @RETCODE, @MENSAJE";
+
+                return Ok(context.Database.ExecuteSqlRaw(PA_BAJA_REPUESTO, parametros));
             }
-
-            string PA_BAJA_REPUESTO = "EXEC PA_BAJA_REPUESTO " +
-                        "@ID_REPUESTO = '" + id + "' ," +
-                        "@INVOKER = " + 0 + "," +
-                        "@RETCODE = " + 0 + "," +
-                        "@MENSAJE = ' ' ";
-
-            return Ok(context.Database.ExecuteSqlRaw(PA_BAJA_REPUESTO));
+            catch (Exception e)
+            {
+                throw e;
+            }
 
         }
 
         [HttpPost("cambiar_stocks")]
-        public async Task<ActionResult> CambiarStock(int id, int cantidad)
+        public async Task<ActionResult> CambiarStock(int idRepuesto, int cantidad)
         {
-            var existeRepuesto = await context.Stocks.AnyAsync(x => x.Id_Repuesto == id);
-
-            if (!existeRepuesto)
+            try
             {
-                return BadRequest($"No existe un repuesto con el ID: {id}");
+                var existeRepuesto = await context.STOCKS.AnyAsync(x => x.Id_Repuesto == idRepuesto);
+
+                if (!existeRepuesto)
+                {
+                    return BadRequest($"No existe un REPUESTO con el ID: {idRepuesto}");
+                }
+
+                SqlParameter[] parametros = new SqlParameter[5]
+                {
+                    new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = idRepuesto
+                    },
+                    new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = cantidad
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                        Size = 2000
+                    }
+                };
+
+                string PA_CAMBIAR_STOCK = "EXEC PA_CAMBIAR_STOCK @ID_REPUESTO, @CANTIDAD, @INVOKER, @RETCODE, @MENSAJE";
+
+                return Ok(context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK, parametros));
             }
-
-            string PA_CAMBIAR_STOCK = "EXEC PA_CAMBIAR_STOCK " +
-                        "@ID_REPUESTO = '" + id + "' ," +
-                        "@CANTIDAD = " + cantidad + "," + 
-                        "@INVOKER = " + 0 + "," +
-                        "@RETCODE = " + 0 + "," +
-                        "@MENSAJE = ' ' ";
-
-            return Ok(context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK));
-
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

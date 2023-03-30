@@ -13,10 +13,20 @@ namespace RespuestosAPI.Utilidades
 
             CreateMap<Perfil, PerfilDTO>().ReverseMap();
 
+            CreateMap<Articulo, ArticuloDTO>().ReverseMap();
+            CreateMap<ArticuloCreacionDTO, Articulo>().ReverseMap();
+
             CreateMap<Repuesto, RepuestoDTO>().ReverseMap();
             CreateMap<RepuestoCreacionDTO, Repuesto>().ReverseMap();
 
             CreateMap<Stock, StockDTO>().ReverseMap();
+
+            CreateMap<Reparacion, ReparacionDTO>().ReverseMap();
+            CreateMap<ReparacionCreacionDTO, Repuesto>().ReverseMap();
+
+            CreateMap<Estado, EstadoDTO>().ReverseMap();
+
+            CreateMap<Sintoma, SintomaDTO>().ReverseMap();
         }
 
     }

@@ -1,0 +1,38 @@
+<h4>Articulos</h4>
+<hr>
+
+<div *ngIf="!articulos ; else divArticulos" class="alert alert-info">
+    Espere por favor...
+</div>
+
+<ng-template #divArticulos>
+
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <button (click)="crearArticulo()" class="btn btn-primary">Crear Artículo</button>
+    </div>
+
+    <div>
+        <table class="table table-hover mt-5">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let articulo of articulos">
+                    <td>{{ articulo.id_Articulo }}</td>
+                    <td>{{ articulo.marca }}</td>
+                    <td>{{ articulo.modelo }}</td>
+                    <td>{{ articulo.activo }}</td>
+                    <td><button (click)="cambiarEstadoArticulo(articulo.id_Articulo)" class="btn btn-primary">desactivar</button></td>
+                    <td><button (click)="editarArticulo(articulo.id_Articulo)" class="btn btn-primary">editar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</ng-template>

@@ -18,7 +18,9 @@ namespace RespuestosAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
+            services.AddCors(); //cors
+
             services.AddControllers(opciones =>
             {
                 opciones.Filters.Add(typeof(FiltroDeExcepcion));
@@ -49,6 +51,8 @@ namespace RespuestosAPI
         {
 
             //app.UseLoguearRespuestaHTTP();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); //cors
 
             if (env.IsDevelopment())
             {

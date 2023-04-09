@@ -57,6 +57,12 @@ namespace RespuestosAPI
             modelBuilder.Entity<UsuarioPerfil>().ToView("V_USUARIOS_PERFILES")
                 .HasNoKey();
 
+            modelBuilder.Entity<Envio>().ToView("V_ENVIOS")
+                .HasNoKey();
+
+            modelBuilder.Entity<Recogida>().ToView("V_RECOGIDAS")
+                .HasNoKey();
+
         }
 
         public DbSet<Usuario> USUARIOS { get; set; }
@@ -71,5 +77,8 @@ namespace RespuestosAPI
         public DbSet<ReparacionEstado> V_REPARACIONES_ESTADO { get; set; }
         public DbSet<ReparacionSintomas> V_REPARACION_SINTOMAS { get; set; }
         public DbSet<UsuarioPerfil> V_USUARIOS_PERFILES { get; set; }
+        public DbSet<Envio> V_ENVIOS { get; set; }
+        public DbSet<Recogida> V_RECOGIDAS { get; set; }
+
     }
 }

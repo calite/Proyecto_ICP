@@ -1,0 +1,92 @@
+USE FCT_9
+GO
+
+/*
+#######################################################################
+
+	NOMBRE DEL FUNCIÓN:			PA_ALTA_REPARACION
+	FECHA DE CREACIÓN: 			[FECHA]
+	AUTOR:					[AUTOR]
+	RUTA REPOSITORIO:			[RUTA]
+	USADO POR:				WEB o APP
+	DESCRIPCION DE LA VISTA:		[EXPLICACIÓN BREVE]
+	
+
+#######################################################################
+
+	FECHA DE MODIFICACIÓN: 
+	AUTOR:
+	EXPLICACIÓN:		
+	
+#######################################################################
+*/
+
+
+
+ALTER PROCEDURE PA_CAMBIAR_ESTADO_REPARACION
+
+	@ID_REPARACION	INTEGER,
+	@ID_ESTADO		INTEGER,
+
+	@INVOKER		INTEGER,
+	
+	@RETCODE		INT		OUTPUT,
+	@MENSAJE		VARCHAR(8000)	OUTPUT
+AS
+	
+	DECLARE @NTRANS			INT = @@TRANCOUNT	
+
+	SET @MENSAJE = ''
+	SET @RETCODE = 0	
+
+
+	BEGIN TRY
+	
+		--COMPROBACIONES
+		IF ISNULL(@ID_REPARACION,'') = ''
+		BEGIN
+			SET @RETCODE = 10
+			SET @MENSAJE = 'El ID_REPARACION recibido esta vacío'
+			RETURN
+		END
+
+		IF ISNULL(@ID_ESTADO,'') = ''
+		BEGIN
+			SET @RETCODE = 10
+			SET @MENSAJE = 'El ID_ESTADO recibido esta vacío'
+			RETURN
+		END
+			
+		IF NOT EXISTS(SELECT ID_ESTADO FROM ESTADOS WHERE ID_ESTADO = @ID_ESTADO)
+		BEGIN
+			set @MENSAJE = 'NO existe el ID del estado'
+			SET @RETCODE = 30
+			RETURN
+		END
+
+		-- --------------------------------------------------------------------
+		-- TRANSACCIÓN
+		-- --------------------------------------------------------------------
+		IF @NTRANS = 0 BEGIN TRANSACTION [TR_CAMBIAR_ESTADO_REPARACION]		
+			
+			
+			--SI TODO OK INSERTAMOS REGISTRO
+
+			UPDATE REPARACIONES SET ID_ESTADO = @ID_ESTADO WHERE ID_REPARACION = @ID_REPARACION
+			--ojo que hace cosas rarunas
+			UPDATE REPARACIONES_ESTADO SET ID_ESTADO = @ID_ESTADO WHERE ID_REPARACION = @ID_REPARACION
+
+		IF @NTRANS = 0 AND @@TRANCOUNT > 0 COMMIT TRANSACTION [TR_CAMBIAR_ESTADO_REPARACION]
+
+		SET @RETCODE = 0
+		SET @MENSAJE = ''
+
+	END TRY
+	BEGIN CATCH
+		
+		SET @MENSAJE = ERROR_MESSAGE()
+		IF @NTRANS = 0 AND @@TRANCOUNT > 0 ROLLBACK TRANSACTION [TR_CAMBIAR_ESTADO_REPARACION]
+
+	END CATCH
+
+	RETURN @RETCODE

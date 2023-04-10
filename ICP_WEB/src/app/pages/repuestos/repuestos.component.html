@@ -1,4 +1,4 @@
-<h4>Repuestos</h4>
+<h4 class="mt-2">Repuestos</h4>
 <hr>
 
 <div *ngIf="!repuestos ; else divRepuestos" class="alert alert-info">
@@ -24,6 +24,8 @@
                     <th>Ancho</th>
                     <th>Imagen</th>
                     <th>Activo</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -37,11 +39,14 @@
                     <td>{{ repuesto.ancho }}</td>
                     <td>{{ repuesto.imagen }}</td>
                     <td>{{ repuesto.activo }}</td>     
-                    <td><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td> 
+                    <td *ngIf="repuesto.activo == 1"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="repuesto.activo == 0"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">activar</button></td>  
                     <td><button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button></td>   
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <app-stocks></app-stocks>
     
 </ng-template>

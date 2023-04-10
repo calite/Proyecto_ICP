@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.BBDD;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
+using RespuestosAPI.Requests;
 
 namespace RespuestosAPI.Controllers
 {
@@ -179,15 +180,15 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("baja_repuesto")]
-        public async Task<ActionResult> BajaRepuesto(int idRepuesto)
+        public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {
             try
             {
-                var existeRepuesto = await context.REPUESTOS.AnyAsync(x => x.Id_Repuesto == idRepuesto);
+                var existeRepuesto = await context.REPUESTOS.AnyAsync(x => x.Id_Repuesto == request.IdRepuesto);
 
                 if (!existeRepuesto)
                 {
-                    return BadRequest($"No existe un repuesto con el ID: {idRepuesto}");
+                    return BadRequest($"No existe un repuesto con el ID: {request.IdRepuesto}");
                 }
 
                 SqlParameter[] parametros = new SqlParameter[4]
@@ -195,7 +196,7 @@ namespace RespuestosAPI.Controllers
                     new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = idRepuesto
+                        Value = request.IdRepuesto
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
@@ -224,15 +225,15 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("cambiar_stocks")]
-        public async Task<ActionResult> CambiarStock(int idRepuesto, int cantidad)
+        public async Task<ActionResult> CambiarStock([FromBody] CambiarStockRequest request)
         {
             try
             {
-                var existeRepuesto = await context.STOCKS.AnyAsync(x => x.Id_Repuesto == idRepuesto);
+                var existeRepuesto = await context.STOCKS.AnyAsync(x => x.Id_Repuesto == request.IdRepuesto);
 
                 if (!existeRepuesto)
                 {
-                    return BadRequest($"No existe un REPUESTO con el ID: {idRepuesto}");
+                    return BadRequest($"No existe un REPUESTO con el ID: {request.IdRepuesto}");
                 }
 
                 SqlParameter[] parametros = new SqlParameter[5]
@@ -240,12 +241,12 @@ namespace RespuestosAPI.Controllers
                     new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = idRepuesto
+                        Value = request.IdRepuesto
                     },
                     new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = cantidad
+                        Value = request.Cantidad
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {

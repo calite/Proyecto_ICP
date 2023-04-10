@@ -1,0 +1,21 @@
+<div class="mx-auto dialog-container">
+
+    <h3 class="text-center">Cambiar Stock:</h3>
+
+    <form [formGroup]="formularioStock" (ngSubmit)="submitFormularioStock()" class="d-flex flex-column">
+
+        <pre>Sumara o restara la cantidad existente en la bbdd:</pre>
+
+        <pre>Cantidad Actual : {{ data.cantidad }}</pre>
+
+        <input type="number" id="stock" formControlName="stock">
+
+        <div *ngIf="formularioStock?.get('stock')?.invalid && formularioStock?.get('stock')?.touched"
+            class="text-center">
+            <div *ngIf="formularioStock?.get('stock')?.errors?.['required']">El stock es obligatorio</div>
+        </div>
+
+        <button type="submit" class="mx-auto mt-4 btn btn-primary">Cambiar Stock</button>
+
+    </form>
+</div>

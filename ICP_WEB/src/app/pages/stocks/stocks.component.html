@@ -1,4 +1,5 @@
-<h4>Repuestos</h4>
+<h4 class="mt-2">Stocks</h4>
+<button class="btn btn-primary" (click)="cargarStocks()">Recargar</button>
 <hr>
 
 <div *ngIf="!repuestosStock ; else divRepuestosStock" class="alert alert-info">
@@ -14,12 +15,8 @@
                     <th>ID</th>
                     <th>Descripción</th>
                     <th>Fabricante</th>
-                    <th>Peso</th>
-                    <th>Alto</th>
-                    <th>Largo</th>
-                    <th>Ancho</th>
-                    <th>Imagen</th>
                     <th>Stock</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -27,16 +24,12 @@
                     <td>{{ repuestoStock.id_Repuesto }}</td>
                     <td>{{ repuestoStock.descripcion_Repuesto }}</td>
                     <td>{{ repuestoStock.fabricante }}</td>
-                    <td>{{ repuestoStock.peso }}</td>
-                    <td>{{ repuestoStock.alto }}</td>
-                    <td>{{ repuestoStock.largo }}</td>
-                    <td>{{ repuestoStock.ancho }}</td>
-                    <td>{{ repuestoStock.imagen }}</td>
                     <td>{{ repuestoStock.stock }}</td>
-                    <td><button (click)="cambiarStock(repuestoStock.id_Repuesto)" class="btn btn-primary">Cambiar Stock</button></td>      
+                    <td><button (click)="cambiarStock(repuestoStock.id_Repuesto, repuestoStock.stock)"
+                            class="btn btn-primary">Cambiar Stock</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    
+
 </ng-template>

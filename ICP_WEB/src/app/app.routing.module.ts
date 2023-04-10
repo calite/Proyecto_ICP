@@ -42,10 +42,6 @@ const routes: Routes = [
     component: RepuestosComponent
   },
   {
-    path: 'stocks',
-    component: StocksComponent
-  },
-  {
     path: '**',
     redirectTo: ''
   }

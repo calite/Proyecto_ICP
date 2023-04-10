@@ -22,6 +22,15 @@ export class ApiService {
 
 
     constructor(private http: HttpClient) { }
+   
+    //USUARIOS
+
+    getUsuariosPerfiles() {
+        const url = `${this.apiUrl}usuarios/detalles`;
+        return this.http.get<UsuariosPerfiles[]>(url);
+    }
+
+    //REPARACIONES
 
     getReparaciones(): Observable<Reparaciones[]> {
         const url = `${this.apiUrl}reparaciones/detalles`;
@@ -37,26 +46,6 @@ export class ApiService {
         const url = `${this.apiUrl}reparaciones/sintomas/${id_Reparacion}`;
         return this.http.get<ReparacionSintomas[]>(url);
         
-    }
-
-    getRepuestos() {
-        const url = `${this.apiUrl}repuestos/all`;
-        return this.http.get<Repuestos[]>(url);
-    }
-
-    getRepuestosStock() {
-        const url = `${this.apiUrl}repuestos/stock`;
-        return this.http.get<RepuestosStock[]>(url);
-    }
-
-    getUsuariosPerfiles() {
-        const url = `${this.apiUrl}usuarios/detalles`;
-        return this.http.get<UsuariosPerfiles[]>(url);
-    }
-
-    getArticulos() {
-        const url = `${this.apiUrl}articulos/all`;
-        return this.http.get<Articulos[]>(url);
     }
 
     getEnvio(id_Reparacion: number) {
@@ -81,9 +70,67 @@ export class ApiService {
     postCambiarEstadoSintoma(IdReparacion: number,IdReparacionEstado: number, IdEstado: number) { //post, por lo tango los parametros se tienen que llamar igual
         const url = `${this.apiUrl}reparaciones/cambiar_estado_sintoma`;
         const body = {
-            IdReparacion,
+            IdReparacion : IdReparacion,
             IdReparacionEstado: IdReparacionEstado,
             IdEstado: IdEstado
+          };
+        return this.http.post(url, body);
+    }
+
+    //ARTICULOS
+
+    getArticulos() {
+        const url = `${this.apiUrl}articulos/all`;
+        return this.http.get<Articulos[]>(url);
+    }
+
+    //REPUESTOS
+
+    getRepuestos() {
+        const url = `${this.apiUrl}repuestos/all`;
+        return this.http.get<Repuestos[]>(url);
+    }
+
+
+    postCambiarEstadoRepuesto(IdRepuesto : number) {
+        const url = `${this.apiUrl}repuestos/baja_repuesto`;
+        const body = {
+            IdRepuesto: IdRepuesto
+          };
+        return this.http.post(url, body);
+    }
+
+    postEditarRepuesto() {
+
+    }
+
+    postAltaRepuesto(Descripcion_Repuesto : string, Fabricante : string, Peso : number, Alto : number, Largo : number, Ancho : number, Imagen : string, Cantidad : number) {
+        const url = `${this.apiUrl}repuestos/alta_repuesto`;
+        const body = {
+            Descripcion_Repuesto : Descripcion_Repuesto,
+            Fabricante : Fabricante,
+            Peso : Peso,
+            Alto : Alto,
+            Largo : Largo,
+            Ancho : Ancho,
+            Imagen : Imagen,
+            cantidad : Cantidad
+          };
+        return this.http.post(url, body);
+    }
+
+    //STOCKS
+
+    getRepuestosStock() {
+        const url = `${this.apiUrl}repuestos/stock`;
+        return this.http.get<RepuestosStock[]>(url);
+    }
+
+    postCambiarStockRepuesto(IdRepuesto: number, Cantidad: number) { //post, por lo tango los parametros se tienen que llamar igual
+        const url = `${this.apiUrl}repuestos/cambiar_stocks`;
+        const body = {
+            IdRepuesto: IdRepuesto,
+            Cantidad: Cantidad,
           };
         return this.http.post(url, body);
     }

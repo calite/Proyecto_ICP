@@ -82,7 +82,7 @@ export class VerReparacionComponent {
       data: { id_Reparacion: id_Reparacion }
     });
 
-    dialogRef.componentInstance.formClosed.subscribe(() => {
+    dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarDatosReparacion();
     });
   }
@@ -92,7 +92,7 @@ export class VerReparacionComponent {
       data: { id_Reparacion: id_Reparacion, id_Reparacion_Estado: id_Reparacion_Estado }
     });
 
-    dialogRef.componentInstance.formClosed.subscribe(() => {
+    dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarDatosReparacion();
     });
   }

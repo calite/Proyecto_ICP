@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
+using RespuestosAPI.Requests;
 
 namespace RespuestosAPI.Controllers
 {
@@ -283,12 +284,62 @@ namespace RespuestosAPI.Controllers
             }
         }
 
-        public class CambiarEstadoReparacionRequest
+        [HttpPost("cambiar_estado_sintoma")]
+        public async Task<ActionResult> CambiarEstadoSintoma([FromBody] CambiarEstadoSintomaRequest request)
         {
-            public int IdReparacion { get; set; }
-            public int IdEstado { get; set; }
-        }
+            try
+            {
 
+                var existeReparacion = await context.REPARACIONES.Where(x => x.Id_Reparacion == request.IdReparacion).AnyAsync();
+
+                if (!existeReparacion)
+                {
+                    return BadRequest($"No existe una Reparacion con ese ID de reparacion: {request.IdReparacion}");
+                }
+
+                SqlParameter[] parametros = new SqlParameter[6]
+                {
+                    new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.IdReparacion
+                    },
+                    new SqlParameter("@ID_REPARACION_ESTADO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.IdReparacionEstado
+                    },
+                    new SqlParameter("@ID_ESTADO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.IdEstado
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                        Size = 2000
+                    }
+                 };
+
+                string PA_CAMBIAR_ESTADO_SINTOMA = "EXEC PA_CAMBIAR_ESTADO_SINTOMA @ID_REPARACION,@ID_REPARACION_ESTADO,@ID_ESTADO,@INVOKER,@RETCODE,@MENSAJE";
+
+
+                return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_SINTOMA, parametros));
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
     }
 }

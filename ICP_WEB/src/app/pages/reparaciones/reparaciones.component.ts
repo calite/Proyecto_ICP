@@ -24,9 +24,6 @@ export class ReparacionesComponent{
     this.apiService.getReparaciones()
       .subscribe( reparaciones => {
         this.reparaciones = reparaciones;
-
-      }, (err) =>{ 
-        console.log(err)
       });
       
   }

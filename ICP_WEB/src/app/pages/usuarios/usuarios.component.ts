@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/api.service';
 import { UsuariosPerfiles } from 'src/app/core/interfaces/UsuariosPerfiles.interface';
-import { AltaUsuarioComponent } from '../dialogs/alta-usuario.component';
+import { AltaUsuarioComponent } from '../dialogs/alta-usuario/alta-usuario.component';
 
 
 @Component({

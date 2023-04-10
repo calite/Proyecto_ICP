@@ -34,6 +34,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Sintoma</th>
                     <th>Repuesto</th>
                     <th>Estado</th>
@@ -42,10 +43,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let sintoma of sintomas">
+                    <td>{{ sintoma.id_Reparacion }} - {{ sintoma.id_Reparacion_Sintoma }}</td>
                     <td>{{ sintoma.sintoma }}</td>
                     <td>{{ sintoma.repuesto }}</td>
                     <td>{{ sintoma.estado }}</td>
-                    <td><button (click)="cambiarEstadoSintoma(sintoma.id_Reparacion_Sintoma)" class="btn btn-primary">Cambiar Estado</button></td>
+                    <td><button (click)="cambiarEstadoSintoma(reparacion.id_Reparacion,sintoma.id_Reparacion_Sintoma)" class="btn btn-primary">Cambiar Estado</button></td>
                 </tr>
             </tbody>
         </table>

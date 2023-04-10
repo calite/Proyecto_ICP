@@ -11,7 +11,9 @@ import { VerReparacionComponent } from './ver-reparacion/ver-reparacion.componen
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ArticulosComponent } from './articulos/articulos.component';
 import { AltasComponent } from './altas/altas.component';
-import { AltaUsuarioComponent } from './dialogs/alta-usuario.component';
+import { AltaUsuarioComponent } from './dialogs/alta-usuario/alta-usuario.component';
+import { CambiarEstadoReparacionComponent } from './dialogs/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
+import { CambiarEstadoSintomaComponent } from './dialogs/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
 
 
 
@@ -25,7 +27,9 @@ import { AltaUsuarioComponent } from './dialogs/alta-usuario.component';
     UsuariosComponent,
     ArticulosComponent,
     AltasComponent,
-    AltaUsuarioComponent
+    AltaUsuarioComponent,
+    CambiarEstadoReparacionComponent,
+    CambiarEstadoSintomaComponent
   ],
   imports: [
     CommonModule,

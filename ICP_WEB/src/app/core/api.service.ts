@@ -36,6 +36,7 @@ export class ApiService {
     getReparacionSintomas(id_Reparacion: string) {
         const url = `${this.apiUrl}reparaciones/sintomas/${id_Reparacion}`;
         return this.http.get<ReparacionSintomas[]>(url);
+        
     }
 
     getRepuestos() {
@@ -68,10 +69,20 @@ export class ApiService {
         return this.http.get<Recogida[]>(url);
     }
 
-    postCambiarEstadoReparacion(IdReparacion: number, IdEstado: number) {
+    postCambiarEstadoReparacion(IdReparacion: number, IdEstado: number) { //post, por lo tango los parametros se tienen que llamar igual
         const url = `${this.apiUrl}reparaciones/cambiar_estado_reparacion`;
         const body = {
             IdReparacion: IdReparacion,
+            IdEstado: IdEstado
+          };
+        return this.http.post(url, body);
+    }
+
+    postCambiarEstadoSintoma(IdReparacion: number,IdReparacionEstado: number, IdEstado: number) { //post, por lo tango los parametros se tienen que llamar igual
+        const url = `${this.apiUrl}reparaciones/cambiar_estado_sintoma`;
+        const body = {
+            IdReparacion,
+            IdReparacionEstado: IdReparacionEstado,
             IdEstado: IdEstado
           };
         return this.http.post(url, body);

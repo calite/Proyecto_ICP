@@ -40,9 +40,12 @@ export class CambiarEstadoReparacionComponent implements OnInit {
 
       var id_Reparacion = parseInt(this.data.id_Reparacion);
       var estado = this.formularioReparacion.get('estado')?.value;
-      var id_Estado = this.buscarClave(estado, this.opcionesEstado);
+      var id_Estado_Reparacion = this.buscarClave(estado, this.opcionesEstado);
 
-      this.apiService.postCambiarEstadoReparacion(id_Reparacion, id_Estado)
+      console.log(id_Reparacion)
+      console.log(id_Estado_Reparacion)
+
+      this.apiService.postCambiarEstadoReparacion(id_Reparacion, id_Estado_Reparacion)
       .subscribe(() => {
         this.formClosed.emit(); //enviamos el aviso para que recarge
       });

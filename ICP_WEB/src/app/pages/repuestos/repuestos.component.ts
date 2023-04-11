@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/api.service';
-import { Repuestos } from 'src/app/core/interfaces/Repuestos.interface';
+import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
 import { EditarRepuestoComponent } from '../dialogs/editar-repuesto/editar-repuesto.component';
 import { AltaRepuestoComponent } from '../dialogs/alta-repuesto/alta-repuesto.component';
 
@@ -13,8 +13,8 @@ import { AltaRepuestoComponent } from '../dialogs/alta-repuesto/alta-repuesto.co
 })
 export class RepuestosComponent {
 
-  repuestos !: Repuestos[];
-  repuesto !: Repuestos;
+  repuestos !: Repuesto[];
+  repuesto !: Repuesto;
 
   constructor(
     private apiService : ApiService,
@@ -63,8 +63,8 @@ export class RepuestosComponent {
     });
   }
 
-  cambiarEstadoRepuesto(id_Repuesto : number) {
-    this.apiService.postCambiarEstadoRepuesto(id_Repuesto)
+  cambiarEstadoRepuesto(IdRepuesto : number) {
+    this.apiService.postCambiarEstadoRepuesto(IdRepuesto)
       .subscribe(response => {
         if(response == -1) {
           alert('No se puede dar de baja un repuesto si aun queda stock')

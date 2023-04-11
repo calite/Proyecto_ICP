@@ -10,7 +10,7 @@
 	
 #######################################################################
 */
-ALTER VIEW V_RECOGIDAS
+CREATE VIEW V_RECOGIDAS
 AS	
 	
 	SELECT 

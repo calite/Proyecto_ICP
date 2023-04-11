@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Repuestos } from 'src/app/core/interfaces/Repuestos.interface';
+import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
 import { ApiService } from '../../../core/api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -19,7 +19,7 @@ export class EditarRepuestoComponent {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<EditarRepuestoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
-      repuesto : Repuestos
+      repuesto : Repuesto
     }
   ) { }
 

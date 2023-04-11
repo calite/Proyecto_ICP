@@ -11,7 +11,7 @@
 	
 #######################################################################
 */
-CREATE VIEW V_STOCKS_REPUESTOS
+ALTER VIEW V_STOCKS_REPUESTOS
 AS	
 	
 	SELECT 

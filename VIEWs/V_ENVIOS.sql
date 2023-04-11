@@ -10,7 +10,7 @@
 	
 #######################################################################
 */
-ALTER VIEW V_ENVIOS
+create VIEW V_ENVIOS
 AS	
 	
 	SELECT 

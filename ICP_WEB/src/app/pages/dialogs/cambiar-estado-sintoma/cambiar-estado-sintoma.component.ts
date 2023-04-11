@@ -13,11 +13,10 @@ export class CambiarEstadoSintomaComponent {
 
   formularioReparacion !: FormGroup;
   opcionesEstado = new Map([
-    [101, 'EN TRANSITO'],
-    [202, 'SIN REPARAR'],
-    [303, 'REPARACION EN CURSO'],
-    [404, 'REPARADO'],
-    [505, 'ENVIADO']
+    [11, 'SIN REPARAR'],
+    [22, 'REPARACION EN CURSO'],
+    [33, 'REPARADO'],
+    [44, 'IMPOSIBLE REPARAR']
   ]);
   @Output() formClosed = new EventEmitter();
 
@@ -27,7 +26,7 @@ export class CambiarEstadoSintomaComponent {
     private dialogRef: MatDialogRef<CambiarEstadoSintomaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       id_Reparacion: number,
-      id_Reparacion_Estado: number
+      id_Reparacion_Sintoma_Estado: number
     }
   ) { }
 
@@ -41,12 +40,17 @@ export class CambiarEstadoSintomaComponent {
 
     if (this.formularioReparacion.valid) {
 
-      var id_Reparacion = this.data.id_Reparacion;
-      var id_Reparacion_Estado = this.data.id_Reparacion_Estado;
+      var IdReparacionSintomaEstado = this.data.id_Reparacion_Sintoma_Estado;
+      var IdReparacion = this.data.id_Reparacion;
       var estado = this.formularioReparacion.get('estado')?.value;
-      var id_Estado = this.buscarClave(estado, this.opcionesEstado);
+      var IdEstadoSintoma = this.buscarClave(estado, this.opcionesEstado);
 
-      this.apiService.postCambiarEstadoSintoma(id_Reparacion, id_Reparacion_Estado, id_Estado)
+      console.log('dialog')
+      console.log('RSE ' + IdReparacionSintomaEstado)
+      console.log('R ' + IdReparacion)
+      console.log('ES ' + IdEstadoSintoma)
+
+      this.apiService.postCambiarEstadoSintoma(IdReparacionSintomaEstado, IdReparacion, IdEstadoSintoma)
         .subscribe(() => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });

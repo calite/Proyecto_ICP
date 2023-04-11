@@ -252,10 +252,10 @@ namespace RespuestosAPI.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = request.IdReparacion
                     },
-                    new SqlParameter("@ID_ESTADO", System.Data.SqlDbType.Int)
+                    new SqlParameter("@ID_ESTADO_REPARACION", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdEstado
+                        Value = request.IdEstadoReparacion
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
@@ -272,7 +272,7 @@ namespace RespuestosAPI.Controllers
                     }
                  };
 
-                string PA_CAMBIAR_ESTADO_REPARACION = "EXEC PA_CAMBIAR_ESTADO_REPARACION @ID_REPARACION,@ID_ESTADO,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_CAMBIAR_ESTADO_REPARACION = "EXEC PA_CAMBIAR_ESTADO_REPARACION @ID_REPARACION,@ID_ESTADO_REPARACION,@INVOKER,@RETCODE,@MENSAJE";
 
 
                 return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_REPARACION, parametros));
@@ -299,20 +299,20 @@ namespace RespuestosAPI.Controllers
 
                 SqlParameter[] parametros = new SqlParameter[6]
                 {
+                    new SqlParameter("@ID_REPARACION_SINTOMA_ESTADO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.IdReparacionSintomaEstado
+                    },
                     new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
                         Value = request.IdReparacion
                     },
-                    new SqlParameter("@ID_REPARACION_ESTADO", System.Data.SqlDbType.Int)
+                    new SqlParameter("@ID_ESTADO_SINTOMA", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdReparacionEstado
-                    },
-                    new SqlParameter("@ID_ESTADO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdEstado
+                        Value = request.IdEstadoSintoma
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
@@ -329,7 +329,7 @@ namespace RespuestosAPI.Controllers
                     }
                  };
 
-                string PA_CAMBIAR_ESTADO_SINTOMA = "EXEC PA_CAMBIAR_ESTADO_SINTOMA @ID_REPARACION,@ID_REPARACION_ESTADO,@ID_ESTADO,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_CAMBIAR_ESTADO_SINTOMA = "EXEC PA_CAMBIAR_ESTADO_SINTOMA @ID_REPARACION_SINTOMA_ESTADO,@ID_REPARACION,@ID_ESTADO_SINTOMA,@INVOKER,@RETCODE,@MENSAJE";
 
 
                 return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_SINTOMA, parametros));

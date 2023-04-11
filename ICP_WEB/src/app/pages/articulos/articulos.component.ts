@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/core/api.service';
-import { Articulos } from 'src/app/core/interfaces/Articulos.interface';
+import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
 
 @Component({
   selector: 'app-articulos',
@@ -9,7 +9,7 @@ import { Articulos } from 'src/app/core/interfaces/Articulos.interface';
 })
 export class ArticulosComponent {
 
-  articulos !: Articulos[];
+  articulos !: Articulo[];
 
   constructor(
     private apiService : ApiService,
@@ -26,11 +26,11 @@ export class ArticulosComponent {
     
   }
 
-  editarArticulo(id_Articulo : number) {
+  editarArticulo(IdArticulo : number) {
 
   }
 
-  cambiarEstadoArticulo(id_Articulo : number) {
+  cambiarEstadoArticulo(IdArticulo : number) {
     
   }
 

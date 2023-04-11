@@ -1,4 +1,4 @@
-export interface UsuariosPerfiles {
+export interface UsuarioPerfil {
     id_Usuario:  number;
     usuario:     string;
     password:    string;

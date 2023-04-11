@@ -2,9 +2,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from "rxjs/operators";
 
-import { Reparaciones } from 'src/app/core/interfaces/Reparaciones.interface';
+import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
 import { ApiService } from '../../core/api.service';
-import { ReparacionSintomas } from 'src/app/core/interfaces/ReparacionSintomas.interface';
+import { ReparacionSintoma } from 'src/app/core/interfaces/ReparacionSintoma.interface';
 import { Recogida } from 'src/app/core/interfaces/Recogida.interface';
 import { Envio } from 'src/app/core/interfaces/Envio.interface';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,8 +18,8 @@ import { CambiarEstadoSintomaComponent } from '../dialogs/cambiar-estado-sintoma
 })
 export class VerReparacionComponent {
 
-  reparacion !: Reparaciones;
-  sintomas !: ReparacionSintomas[];
+  reparacion !: Reparacion;
+  sintomas !: ReparacionSintoma[];
   recogida !: Recogida;
   envio !: Envio;
 
@@ -87,9 +87,9 @@ export class VerReparacionComponent {
     });
   }
 
-  cambiarEstadoSintoma(id_Reparacion : number, id_Reparacion_Estado: number) {
+  cambiarEstadoSintoma(id_Reparacion_Sintoma_Estado: number,id_Reparacion : number) {
     const dialogRef = this.cambiarEstadoReparacionDialog.open(CambiarEstadoSintomaComponent, {
-      data: { id_Reparacion: id_Reparacion, id_Reparacion_Estado: id_Reparacion_Estado }
+      data: { id_Reparacion_Sintoma_Estado: id_Reparacion_Sintoma_Estado, id_Reparacion: id_Reparacion }
     });
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos

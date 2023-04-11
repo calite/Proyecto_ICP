@@ -2,8 +2,8 @@
 {
     public class CambiarEstadoSintomaRequest
     {
+        public int IdReparacionSintomaEstado { get; set; }
         public int IdReparacion { get; set; }
-        public int IdReparacionEstado { get; set; }
-        public int IdEstado { get; set; }
+        public int IdEstadoSintoma { get; set; }
     }
 }

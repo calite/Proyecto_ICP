@@ -1,4 +1,4 @@
-export interface RepuestosStock {
+export interface RepuestoStock {
     id_Repuesto:          number;
     descripcion_Repuesto: string;
     fabricante:           string;

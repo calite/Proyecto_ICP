@@ -13,12 +13,12 @@ import { AltasComponent } from './pages/altas/altas.component';
 const routes: Routes = [
 
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
     pathMatch: 'full'
   },
   {
-    path: 'altas',
+    path: '',
     component: AltasComponent
   },
   {

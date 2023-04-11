@@ -2,14 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Reparaciones } from './interfaces/Reparaciones.interface';
-import { ReparacionSintomas } from './interfaces/ReparacionSintomas.interface';
-import { RepuestosStock } from './interfaces/RepuestosStock.interface';
-import { Repuestos } from './interfaces/Repuestos.interface';
-import { UsuariosPerfiles } from './interfaces/UsuariosPerfiles.interface';
-import { Articulos } from './interfaces/Articulos.interface';
+import { Reparacion } from './interfaces/Reparacion.interface';
+import { RepuestoStock } from './interfaces/RepuestoStock.interface';
+import { Repuesto } from './interfaces/Repuesto.interface';
+import { UsuarioPerfil } from './interfaces/UsuarioPerfil.interface';
+import { Articulo } from './interfaces/Articulo.interface';
 import { Envio } from './interfaces/Envio.interface';
 import { Recogida } from './interfaces/Recogida.interface';
+import { ReparacionSintoma } from './interfaces/ReparacionSintoma.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -27,53 +27,60 @@ export class ApiService {
 
     getUsuariosPerfiles() {
         const url = `${this.apiUrl}usuarios/detalles`;
-        return this.http.get<UsuariosPerfiles[]>(url);
+        return this.http.get<UsuarioPerfil[]>(url);
     }
 
     //REPARACIONES
 
-    getReparaciones(): Observable<Reparaciones[]> {
+    getReparaciones(): Observable<Reparacion[]> {
         const url = `${this.apiUrl}reparaciones/detalles`;
-        return this.http.get<Reparaciones[]>(url);
+        return this.http.get<Reparacion[]>(url);
     }
 
-    getReparacionDetalles(id_Reparacion: string) {
-        const url = `${this.apiUrl}reparaciones/detalles/${id_Reparacion}`;
-        return this.http.get<Reparaciones[]>(url);
+    getReparacionDetalles(IdReparacion: string) {
+        const url = `${this.apiUrl}reparaciones/detalles/${IdReparacion}`;
+        return this.http.get<Reparacion[]>(url);
     }
 
-    getReparacionSintomas(id_Reparacion: string) {
-        const url = `${this.apiUrl}reparaciones/sintomas/${id_Reparacion}`;
-        return this.http.get<ReparacionSintomas[]>(url);
+    getReparacionSintomas(IdReparacion: string) {
+        const url = `${this.apiUrl}reparaciones/sintomas/${IdReparacion}`;
+        return this.http.get<ReparacionSintoma[]>(url);
         
     }
 
-    getEnvio(id_Reparacion: number) {
-        const url = `${this.apiUrl}reparaciones/envio/${id_Reparacion}`;
+    getEnvio(IdReparacion: number) {
+        const url = `${this.apiUrl}reparaciones/envio/${IdReparacion}`;
         return this.http.get<Envio[]>(url);
     }
 
-    getRecogida(id_Reparacion: number) {
-        const url = `${this.apiUrl}reparaciones/recogida/${id_Reparacion}`;
+    getRecogida(IdReparacion: number) {
+        const url = `${this.apiUrl}reparaciones/recogida/${IdReparacion}`;
         return this.http.get<Recogida[]>(url);
     }
 
-    postCambiarEstadoReparacion(IdReparacion: number, IdEstado: number) { //post, por lo tango los parametros se tienen que llamar igual
+    postCambiarEstadoReparacion(IdReparacion: number, IdEstadoReparacion: number) { //post, por lo tango los parametros se tienen que llamar igual
         const url = `${this.apiUrl}reparaciones/cambiar_estado_reparacion`;
         const body = {
             IdReparacion: IdReparacion,
-            IdEstado: IdEstado
+            IdEstadoReparacion: IdEstadoReparacion
           };
+
         return this.http.post(url, body);
     }
 
-    postCambiarEstadoSintoma(IdReparacion: number,IdReparacionEstado: number, IdEstado: number) { //post, por lo tango los parametros se tienen que llamar igual
+    postCambiarEstadoSintoma(IdReparacionSintomaEstado: number,IdReparacion: number, IdEstadoSintoma: number) { //post, por lo tango los parametros se tienen que llamar igual
         const url = `${this.apiUrl}reparaciones/cambiar_estado_sintoma`;
         const body = {
+            IdReparacionSintomaEstado: IdReparacionSintomaEstado,
             IdReparacion : IdReparacion,
-            IdReparacionEstado: IdReparacionEstado,
-            IdEstado: IdEstado
+            IdEstadoSintoma: IdEstadoSintoma
           };
+          /*
+          console.log('API - service')
+          console.log('RSE ' + IdReparacionSintomaEstado)
+          console.log('R ' + IdReparacion)
+          console.log('ES ' + IdEstadoSintoma)
+          */
         return this.http.post(url, body);
     }
 
@@ -81,14 +88,14 @@ export class ApiService {
 
     getArticulos() {
         const url = `${this.apiUrl}articulos/all`;
-        return this.http.get<Articulos[]>(url);
+        return this.http.get<Articulo[]>(url);
     }
 
     //REPUESTOS
 
     getRepuestos() {
         const url = `${this.apiUrl}repuestos/all`;
-        return this.http.get<Repuestos[]>(url);
+        return this.http.get<Repuesto[]>(url);
     }
 
 
@@ -114,7 +121,7 @@ export class ApiService {
             Largo : Largo,
             Ancho : Ancho,
             Imagen : Imagen,
-            cantidad : Cantidad
+            Cantidad : Cantidad
           };
         return this.http.post(url, body);
     }
@@ -123,13 +130,14 @@ export class ApiService {
 
     getRepuestosStock() {
         const url = `${this.apiUrl}repuestos/stock`;
-        return this.http.get<RepuestosStock[]>(url);
+        return this.http.get<RepuestoStock[]>(url);
+        
     }
 
-    postCambiarStockRepuesto(IdRepuesto: number, Cantidad: number) { //post, por lo tango los parametros se tienen que llamar igual
+    postCambiarStockRepuesto(Id_Repuesto: number, Cantidad: number) { //post, por lo tango los parametros se tienen que llamar igual
         const url = `${this.apiUrl}repuestos/cambiar_stocks`;
         const body = {
-            IdRepuesto: IdRepuesto,
+            IdRepuesto: Id_Repuesto,
             Cantidad: Cantidad,
           };
         return this.http.post(url, body);

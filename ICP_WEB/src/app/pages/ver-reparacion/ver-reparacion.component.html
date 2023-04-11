@@ -24,7 +24,7 @@
                     <td>{{ reparacion.marca }}</td>
                     <td>{{ reparacion.modelo }}</td>
                     <td>{{ reparacion.estado }}</td>
-                    <td><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>      
+                    <td><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>  
                 </tr>
             </tbody>
         </table>
@@ -43,11 +43,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let sintoma of sintomas">
-                    <td>{{ sintoma.id_Reparacion }} - {{ sintoma.id_Reparacion_Sintoma }}</td>
+                    <td>{{ sintoma.id_Reparacion_Sintoma }} - {{ sintoma.id_Reparacion }}</td>
                     <td>{{ sintoma.sintoma }}</td>
                     <td>{{ sintoma.repuesto }}</td>
                     <td>{{ sintoma.estado }}</td>
-                    <td><button (click)="cambiarEstadoSintoma(reparacion.id_Reparacion,sintoma.id_Reparacion_Sintoma)" class="btn btn-primary">Cambiar Estado</button></td>
+                    <td><button (click)="cambiarEstadoSintoma(sintoma.id_Reparacion_Sintoma, reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>
                 </tr>
             </tbody>
         </table>

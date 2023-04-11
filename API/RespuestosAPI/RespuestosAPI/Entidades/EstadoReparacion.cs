@@ -1,8 +1,8 @@
 ﻿namespace RespuestosAPI.Entidades
 {
-    public class Estado
+    public class EstadoReparacion
     {
-        public int Id_Estado { get; set; }
+        public int Id_Estado_Reparacion { get; set; }
         public string Descripcion_Estado { get; set; }
     }
 }

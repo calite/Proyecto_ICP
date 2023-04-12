@@ -1,1 +1,15 @@
 <p>altas works!</p>
+<form [formGroup]="formularioAltaReparacion" (ngSubmit)="submitFormularioAltaReparacion()" class="d-flex flex-column">
+
+    <label for="nombreUsuario" class="text-center">Nombre de usuario:</label>
+
+    <input type="checkbox" id="nombreUsuario" formControlName="nombreUsuario">
+
+    <label for="correoElectronico" class="text-center">Correo electrónico:</label>
+
+    <input type="email" id="correoElectronico" formControlName="correoElectronico">
+
+    <button type="submit" class="btn btn-primary mx-auto mt-4">Crear usuario</button>
+
+</form>
+

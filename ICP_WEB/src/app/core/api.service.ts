@@ -10,6 +10,7 @@ import { Articulo } from './interfaces/Articulo.interface';
 import { Envio } from './interfaces/Envio.interface';
 import { Recogida } from './interfaces/Recogida.interface';
 import { ReparacionSintoma } from './interfaces/ReparacionSintoma.interface';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,36 @@ export class ApiService {
         return this.http.get<UsuarioPerfil[]>(url);
     }
 
+    postAltaUsuario(Usuario : string, Email : string, Id_Perfil : number){
+        const url = `${this.apiUrl}usuarios/alta_usuario`;
+        const body = {
+            Usuario: Usuario,
+            Password: Usuario, //por el momento se la password sera la misma que el usuario
+            Email: Email,
+            Id_Perfil: Id_Perfil,
+          };
+        return this.http.post(url, body);
+    }
+
+    postCambiarEstadoUsuario(IdUsuario : number) {
+        const url = `${this.apiUrl}usuarios/baja_usuario`;
+        const body = {
+            IdUsuario: IdUsuario
+          };
+        return this.http.post(url, body);
+    }
+
+    postEditarUsuario(Id_Usuario : number, nombreUsuario : string, email : string, Id_Perfil : number) {
+        const url = `${this.apiUrl}usuarios/editar_usuario`;
+        const body = {
+            Id_Usuario: Id_Usuario,
+            Usuario: nombreUsuario,
+            Id_Perfil: Id_Perfil,
+            Email: email
+          };
+        return this.http.post(url, body);
+    }
+
     //REPARACIONES
 
     getReparaciones(): Observable<Reparacion[]> {
@@ -39,7 +70,7 @@ export class ApiService {
 
     getReparacionDetalles(IdReparacion: string) {
         const url = `${this.apiUrl}reparaciones/detalles/${IdReparacion}`;
-        return this.http.get<Reparacion[]>(url);
+        return this.http.get<Reparacion>(url);
     }
 
     getReparacionSintomas(IdReparacion: string) {
@@ -50,12 +81,12 @@ export class ApiService {
 
     getEnvio(IdReparacion: number) {
         const url = `${this.apiUrl}reparaciones/envio/${IdReparacion}`;
-        return this.http.get<Envio[]>(url);
+        return this.http.get<Envio>(url);
     }
 
     getRecogida(IdReparacion: number) {
         const url = `${this.apiUrl}reparaciones/recogida/${IdReparacion}`;
-        return this.http.get<Recogida[]>(url);
+        return this.http.get<Recogida>(url);
     }
 
     postCambiarEstadoReparacion(IdReparacion: number, IdEstadoReparacion: number) { //post, por lo tango los parametros se tienen que llamar igual
@@ -75,12 +106,7 @@ export class ApiService {
             IdReparacion : IdReparacion,
             IdEstadoSintoma: IdEstadoSintoma
           };
-          /*
-          console.log('API - service')
-          console.log('RSE ' + IdReparacionSintomaEstado)
-          console.log('R ' + IdReparacion)
-          console.log('ES ' + IdEstadoSintoma)
-          */
+
         return this.http.post(url, body);
     }
 
@@ -90,7 +116,34 @@ export class ApiService {
         const url = `${this.apiUrl}articulos/all`;
         return this.http.get<Articulo[]>(url);
     }
-
+    
+    postCambiarEstadoArticulo(IdArticulo : number) {
+        const url = `${this.apiUrl}articulos/baja_articulo`;
+        const body = {
+            IdArticulo: IdArticulo
+          };
+        return this.http.post(url, body);
+    }
+    
+    postEditarArticulo(Id_Articulo : number, marca : string, modelo : string) {
+        const url = `${this.apiUrl}articulos/editar_articulo`;
+        const body = {
+            id_Articulo : Id_Articulo,
+            marca : marca,
+            Modelo : modelo,
+          };
+        return this.http.post(url, body);
+    }
+    
+    postAltaArticulo(marca : string, modelo : string) {
+        const url = `${this.apiUrl}articulos/alta_articulo`;
+        const body = {
+            marca : marca,
+            Modelo : modelo,
+          };
+        return this.http.post(url, body);
+    }
+    
     //REPUESTOS
 
     getRepuestos() {
@@ -107,8 +160,19 @@ export class ApiService {
         return this.http.post(url, body);
     }
 
-    postEditarRepuesto() {
-
+    postEditarRepuesto(Id_Repuesto : number, Descripcion_Repuesto : string, Fabricante : string, Peso : number, Alto : number, Largo : number, Ancho : number, Imagen : string) {
+        const url = `${this.apiUrl}repuestos/editar_repuesto`;
+        const body = {
+            Id_Repuesto : Id_Repuesto,
+            Descripcion_Repuesto : Descripcion_Repuesto,
+            Fabricante : Fabricante,
+            Peso : Peso,
+            Alto : Alto,
+            Largo : Largo,
+            Ancho : Ancho,
+            Imagen : Imagen
+          };
+        return this.http.post(url, body);
     }
 
     postAltaRepuesto(Descripcion_Repuesto : string, Fabricante : string, Peso : number, Alto : number, Largo : number, Ancho : number, Imagen : string, Cantidad : number) {

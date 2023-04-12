@@ -39,9 +39,6 @@ export class CambiarStockComponent {
       var id_Repuesto = this.data.id_Repuesto;
       var cantidad = this.formularioStock.get('stock')?.value;
 
-      console.log(cantidad)
-      console.log(id_Repuesto)
-
       this.apiService.postCambiarStockRepuesto(id_Repuesto, cantidad)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamos el aviso para que recarge

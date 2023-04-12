@@ -72,7 +72,9 @@ AS
 			SET	
 				MARCA = @MARCA,
 				MODELO = @MODELO
-			WHERE ID_ARTICULO = @ID_ARTICULO
+
+			WHERE 
+				ID_ARTICULO = @ID_ARTICULO
 				
 				
 

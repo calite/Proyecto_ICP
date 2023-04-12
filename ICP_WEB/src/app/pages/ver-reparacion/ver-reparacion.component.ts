@@ -23,6 +23,7 @@ export class VerReparacionComponent {
   recogida !: Recogida;
   envio !: Envio;
 
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
@@ -45,7 +46,7 @@ export class VerReparacionComponent {
         switchMap(({ id_Reparacion }) => this.apiService.getReparacionDetalles(id_Reparacion)) //operadores rx
       )
       .subscribe(reparacion => {
-        this.reparacion = reparacion[0];
+        this.reparacion = reparacion;      
       });
 
     this.activatedRoute.params
@@ -54,7 +55,6 @@ export class VerReparacionComponent {
       )
       .subscribe(sintomas => {
         this.sintomas = sintomas;
-        console.log(sintomas)
       });
 
   }
@@ -62,10 +62,11 @@ export class VerReparacionComponent {
   cargarDatosEnviosRecogidas() {
     this.activatedRoute.params
       .pipe(
-        switchMap(({ id_Reparacion }) => this.apiService.getRecogida(id_Reparacion)),
+        switchMap(({ id_Reparacion }) => this.apiService.getRecogida(id_Reparacion))
       )
       .subscribe(recogida => {
-        this.recogida = recogida[0];
+        this.recogida = recogida;
+        
       });
 
     this.activatedRoute.params
@@ -73,13 +74,17 @@ export class VerReparacionComponent {
         switchMap(({ id_Reparacion }) => this.apiService.getEnvio(id_Reparacion)),
       )
       .subscribe(envio => {
-        this.envio = envio[0];
+        this.envio = envio;
       });
   }
 
   cambiarEstadoReparacion(id_Reparacion: number) {
+    
     const dialogRef = this.cambiarEstadoReparacionDialog.open(CambiarEstadoReparacionComponent, {
-      data: { id_Reparacion: id_Reparacion }
+      data: { 
+        id_Reparacion: id_Reparacion,
+        //id_Estado  : id_Estado
+      }
     });
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos

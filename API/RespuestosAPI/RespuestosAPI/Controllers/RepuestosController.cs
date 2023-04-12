@@ -179,6 +179,83 @@ namespace RespuestosAPI.Controllers
 
         }
 
+        [HttpPost("editar_repuesto")]
+        public async Task<ActionResult> EditarRepuesto(RepuestoEdicionDTO r)
+        {//string id, descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen
+            try
+            {
+                SqlParameter[] parametros = new SqlParameter[11]
+                {
+                     new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Id_Repuesto
+                    },
+                    new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Descripcion_Repuesto,
+                        Size = 50
+                    },
+                    new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Fabricante,
+                        Size = 50
+                    },
+                    new SqlParameter("@PESO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Peso
+                    },
+                    new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Alto
+                    },
+                    new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Largo
+                    },
+                    new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Ancho,
+                    },
+                    new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = r.Imagen,
+                        Size = 200
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                        Size = 8000
+                    }
+                };
+
+                string PA_EDITAR_REPUESTO = "EXEC PA_EDITAR_REPUESTO @ID_REPUESTO,@DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@INVOKER,@RETCODE,@MENSAJE";
+
+                return Ok(await context.Database.ExecuteSqlRawAsync(PA_EDITAR_REPUESTO, parametros));
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
         [HttpPost("baja_repuesto")]
         public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {

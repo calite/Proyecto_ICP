@@ -1,7 +1,7 @@
 <h4>Reparación</h4>
 <hr>
 
-<div *ngIf="!reparacion ; else divReparacion" class="alert alert-info">
+<div *ngIf="!reparacion || !sintomas || !envio || !recogida ; else divReparacion" class="alert alert-info">
     Espere por favor...
 </div>
 
@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let sintoma of sintomas">
-                    <td>{{ sintoma.id_Reparacion_Sintoma }} - {{ sintoma.id_Reparacion }}</td>
+                    <td>{{ sintoma.id_Reparacion_Sintoma }}</td>
                     <td>{{ sintoma.sintoma }}</td>
                     <td>{{ sintoma.repuesto }}</td>
                     <td>{{ sintoma.estado }}</td>

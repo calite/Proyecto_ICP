@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class EditarRepuestoComponent {
 
   formularioEditarRepuesto!: FormGroup;
+
   @Output() formClosed = new EventEmitter();
 
   constructor(
@@ -41,7 +42,21 @@ export class EditarRepuestoComponent {
     // Si el formulario es válido, muestra los datos del usuario en la consola
 
     if (this.formularioEditarRepuesto.valid) {
-      console.log('ey');
+      console.log(this.data.repuesto.id_Repuesto);
+      var Id_Repuesto = this.data.repuesto.id_Repuesto;
+      var Descripcion_Repuesto = this.formularioEditarRepuesto.get('descripcionRepuesto')?.value;
+      var Fabricante = this.formularioEditarRepuesto.get('fabricanteRepuesto')?.value;
+      var Peso = this.formularioEditarRepuesto.get('pesoRepuesto')?.value;
+      var Alto = this.formularioEditarRepuesto.get('altoRepuesto')?.value;
+      var Largo = this.formularioEditarRepuesto.get('largoRepuesto')?.value;
+      var Ancho = this.formularioEditarRepuesto.get('anchoRepuesto')?.value;
+      var Imagen = this.formularioEditarRepuesto.get('imagenRepuesto')?.value;
+
+      this.apiService.postEditarRepuesto(Id_Repuesto,Descripcion_Repuesto,Fabricante,Peso,Alto,Largo,Ancho,Imagen)
+        .subscribe((response) => {
+          this.formClosed.emit(); //enviamo el aviso para que recarge
+        });
+        this.dialogRef.close(); //cerramos dialog
     }
   }
 

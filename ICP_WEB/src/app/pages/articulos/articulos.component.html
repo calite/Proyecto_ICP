@@ -1,4 +1,4 @@
-<h4>Articulos</h4>
+<h4 class="mt-2">Articulos</h4>
 <hr>
 
 <div *ngIf="!articulos ; else divArticulos" class="alert alert-info">
@@ -20,6 +20,7 @@
                     <th>Modelo</th>
                     <th>Activo</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +29,8 @@
                     <td>{{ articulo.marca }}</td>
                     <td>{{ articulo.modelo }}</td>
                     <td>{{ articulo.activo }}</td>
-                    <td><button (click)="cambiarEstadoArticulo(articulo.id_Articulo)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="articulo.activo"><button (click)="cambiarEstadoArticulo(articulo.id_Articulo)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="!articulo.activo"><button (click)="cambiarEstadoArticulo(articulo.id_Articulo)" class="btn btn-warning">activar</button></td>
                     <td><button (click)="editarArticulo(articulo.id_Articulo)" class="btn btn-primary">editar</button></td>
                 </tr>
             </tbody>

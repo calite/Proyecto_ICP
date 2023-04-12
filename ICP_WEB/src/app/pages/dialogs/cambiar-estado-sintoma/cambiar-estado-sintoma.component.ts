@@ -45,11 +45,6 @@ export class CambiarEstadoSintomaComponent {
       var estado = this.formularioReparacion.get('estado')?.value;
       var IdEstadoSintoma = this.buscarClave(estado, this.opcionesEstado);
 
-      console.log('dialog')
-      console.log('RSE ' + IdReparacionSintomaEstado)
-      console.log('R ' + IdReparacion)
-      console.log('ES ' + IdEstadoSintoma)
-
       this.apiService.postCambiarEstadoSintoma(IdReparacionSintomaEstado, IdReparacion, IdEstadoSintoma)
         .subscribe(() => {
           this.formClosed.emit(); //enviamos el aviso para que recarge

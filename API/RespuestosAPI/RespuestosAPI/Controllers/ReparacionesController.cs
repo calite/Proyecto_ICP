@@ -92,13 +92,13 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("envio/{IdReparacion:int}")]
-        public async Task<ActionResult<IEnumerable<Envio>>> GetEnvio(int IdReparacion)
+        public async Task<ActionResult<Envio>> GetEnvio(int IdReparacion)
         {
             try
             {
-                var envio = await context.V_ENVIOS.Where(x => x.Id_Reparacion == IdReparacion).ToListAsync();
+                var envio = await context.V_ENVIOS.Where(x => x.Id_Reparacion == IdReparacion).FirstOrDefaultAsync();
 
-                if(envio.Count == 0)
+                if(envio == null)
                 {
                     return BadRequest($"No existe un envio con ese ID: {IdReparacion}");
                 }
@@ -112,13 +112,13 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("recogida/{IdReparacion:int}")]
-        public async Task<ActionResult<IEnumerable<Recogida>>> GetRecogida(int IdReparacion)
+        public async Task<ActionResult<Recogida>> GetRecogida(int IdReparacion)
         {
             try
             {
-                var recogida = await context.V_RECOGIDAS.Where(x => x.Id_Reparacion == IdReparacion).ToListAsync();
+                var recogida = await context.V_RECOGIDAS.Where(x => x.Id_Reparacion == IdReparacion).FirstOrDefaultAsync();
 
-                if(recogida.Count == 0)
+                if(recogida == null)
                 {
                     return BadRequest($"No existe una recogida con ese ID: {IdReparacion}");
                 }
@@ -132,13 +132,13 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("detalles/{IdReparacion:int}")]
-        public async Task<ActionResult<IEnumerable<ReparacionEstado>>> GetReparacionEstadoPorId(int IdReparacion)
+        public async Task<ActionResult<ReparacionEstado>> GetReparacionEstadoPorId(int IdReparacion)
         {
             try
             {
-                var reparaciones = await context.V_REPARACIONES_ESTADO.Where(x => x.Id_Reparacion == IdReparacion).ToListAsync();
+                var reparaciones = await context.V_REPARACIONES_ESTADO.Where(x => x.Id_Reparacion == IdReparacion).FirstOrDefaultAsync();
 
-                if(reparaciones.Count == 0)
+                if(reparaciones == null)
                 {
                     return BadRequest($"Ya existe una reparacion con ese ID: {IdReparacion}");
                 }

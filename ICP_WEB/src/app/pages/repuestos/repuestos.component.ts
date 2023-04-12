@@ -36,16 +36,13 @@ export class RepuestosComponent {
   }
 
   crearRepuesto() {
-    
     const dialogRef = this.altaRepuestoDialog.open(AltaRepuestoComponent);
-
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarRepuestos();
     });
   }
 
   editarRepuesto(id_Repuesto : number) {
-
     this.repuestos.forEach((repuesto) => {
       if (repuesto.id_Repuesto === id_Repuesto) {
         this.repuesto = repuesto;

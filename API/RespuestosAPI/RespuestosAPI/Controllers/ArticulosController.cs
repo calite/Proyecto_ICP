@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.BBDD;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
+using RespuestosAPI.Requests;
 
 namespace RespuestosAPI.Controllers
 {
@@ -85,7 +86,7 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpPost("alta_articulo")]
-        public async Task AltaArticulo(string marca, string modelo)
+        public async Task AltaArticulo(ArticuloCreacionDTO a)
         {
             try
             {
@@ -94,13 +95,13 @@ namespace RespuestosAPI.Controllers
                     new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = marca,
+                        Value = a.Marca,
                         Size = 50
                     },
                     new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = modelo,
+                        Value = a.Modelo,
                         Size = 50
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
@@ -130,16 +131,16 @@ namespace RespuestosAPI.Controllers
 
         }
 
-        [HttpPost("baja_articulo/{IdArticulo:int}")]
-        public async Task<ActionResult> BajaArticulo(int IdArticulo)
+        [HttpPost("baja_articulo")]
+        public async Task<ActionResult> BajaArticulo(CambiarEstadoArticuloRequest request)
         {
             try
             {
-                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == IdArticulo);
+                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == request.IdArticulo);
 
                 if (!existeArticulo)
                 {
-                    return BadRequest($"No existe un ARTICULO con el ID: {IdArticulo}");
+                    return BadRequest($"No existe un ARTICULO con el ID: {request.IdArticulo}");
                 }
 
                 SqlParameter[] parametros = new SqlParameter[4]
@@ -147,7 +148,7 @@ namespace RespuestosAPI.Controllers
                     new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = IdArticulo
+                        Value = request.IdArticulo
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
@@ -175,16 +176,16 @@ namespace RespuestosAPI.Controllers
 
         }
 
-        [HttpPost("cambiar_articulo/{IdArticulo:int}")]
-        public async Task<ActionResult> CambiarArticulo(int IdArticulo, string marca, string modelo)
+        [HttpPost("editar_articulo")]
+        public async Task<ActionResult> EditarArticulo(ArticuloEdicionDTO a)
         {
             try
             {
-                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == IdArticulo);
+                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == a.Id_Articulo);
 
                 if (!existeArticulo)
                 {
-                    return BadRequest($"No existe un ARTICULO con el ID: {IdArticulo}");
+                    return BadRequest($"No existe un ARTICULO con el ID: {a.Id_Articulo}");
                 }
 
                 SqlParameter[] parametros = new SqlParameter[6]
@@ -192,18 +193,18 @@ namespace RespuestosAPI.Controllers
                      new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = IdArticulo
+                        Value = a.Id_Articulo
                     },
                     new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = marca,
+                        Value = a.Marca,
                         Size = 30
                     },
                     new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = modelo,
+                        Value = a.Modelo,
                         Size = 30
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)

@@ -1,1 +1,86 @@
-<p>altas works!</p>
+<h4 class="mt-2">Altas</h4>
+<hr>
+
+<div *ngIf="!sintomas || !articulos ; else divFormulario" class="alert alert-info">
+    Espere por favor...
+</div>
+
+<ng-template #divFormulario>
+    <form [formGroup]="formularioAltaReparacion" (ngSubmit)="submitFormularioAltaReparacion()" class="mx-auto" type="FormGroup">
+        <div class="form-group">
+            <div class="form-group col-sm-4">
+                <h5 for="modelo">Telefono:</h5>
+                <select formControlName="articulos" id="articulos" class="form-control">
+                    <option value="">Seleccione un modelo</option>
+                    <option *ngFor="let articulo of articulos" [value]="articulo">{{articulo.marca}} -
+                        {{articulo.modelo}}
+                    </option>
+                </select>
+                <h5>Opciones de reparación:</h5>
+                <div *ngFor="let sintoma of sintomas; let i = index" class="form-check">
+                    <input type="checkbox" formControlName="sintomas" value="{{sintoma.id_Sintoma}}" id="{{sintoma.id_Sintoma}}"
+                        class="form-check-input">
+                    <label for="{{sintoma.id_Sintoma}}" class="form-check-label">{{sintoma.descripcion_Sintoma}}</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5>Recogida</h5>
+                    <div class="form-group">
+                        <label for="calle">Calle:</label>
+                        <input type="text" id="calle" name="calle" class="form-control" required>
+
+                        <label for="numero">Número:</label>
+                        <input type="text" id="numero" name="numero" class="form-control" required>
+
+                        <label for="poblacion">Población:</label>
+                        <input type="text" id="poblacion" name="poblacion" class="form-control" required>
+
+                        <label for="provincia">Provincia:</label>
+                        <input type="text" id="provincia" name="provincia" class="form-control" required>
+
+                        <label for="codigo_postal">Código Postal:</label>
+                        <input type="text" id="codigo_postal" name="codigo_postal" class="form-control" required>
+
+                        <label for="persona_contacto">Persona de contacto:</label>
+                        <input type="text" id="persona_contacto" name="persona_contacto" class="form-control" required>
+
+                        <label for="telefono">Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <h5>Envio</h5>
+                    <div class="form-group">
+                        <label for="calle">Calle:</label>
+                        <input type="text" id="calle" name="calle" class="form-control" required>
+
+                        <label for="numero">Número:</label>
+                        <input type="text" id="numero" name="numero" class="form-control" required>
+
+                        <label for="poblacion">Población:</label>
+                        <input type="text" id="poblacion" name="poblacion" class="form-control" required>
+
+                        <label for="provincia">Provincia:</label>
+                        <input type="text" id="provincia" name="provincia" class="form-control" required>
+
+                        <label for="codigo_postal">Código Postal:</label>
+                        <input type="text" id="codigo_postal" name="codigo_postal" class="form-control" required>
+
+                        <label for="persona_contacto">Persona de contacto:</label>
+                        <input type="text" id="persona_contacto" name="persona_contacto" class="form-control" required>
+
+                        <label for="telefono">Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+
+
+</ng-template>

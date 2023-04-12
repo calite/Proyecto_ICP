@@ -16,7 +16,7 @@ namespace RespuestosAPI
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,8 +39,8 @@ namespace RespuestosAPI
             modelBuilder.Entity<Reparacion>()
                 .HasKey(r => new { r.Id_Reparacion });
 
-            modelBuilder.Entity<Estado>()
-                .HasKey(s => new { s.Id_Estado });
+            modelBuilder.Entity<ReparacionEstado>()
+                .HasKey(s => new { s.Id_Reparacion });
 
             modelBuilder.Entity<Sintoma>()
                 .HasKey(s => new { s.Id_Sintoma });
@@ -49,11 +49,11 @@ namespace RespuestosAPI
                 .HasNoKey();
 
             modelBuilder.Entity<ReparacionEstado>().ToView("V_REPARACIONES_ESTADO")
-                .HasNoKey();
+                .HasKey(X => X.Id_Reparacion);
 
             modelBuilder.Entity<ReparacionSintomas>().ToView("v_REPARACION_SINTOMAS")
                 .HasNoKey();
-
+                //.HasKey(X => X.Id_Reparacion);
             modelBuilder.Entity<UsuarioPerfil>().ToView("V_USUARIOS_PERFILES")
                 .HasNoKey();
 
@@ -71,7 +71,7 @@ namespace RespuestosAPI
         public DbSet<Repuesto> REPUESTOS { get; set; }
         public DbSet<Stock> STOCKS { get; set; }
         public DbSet<Reparacion> REPARACIONES { get; set; }
-        public DbSet<Estado> ESTADOS { get; set; }
+        public DbSet<ReparacionEstado> ESTADOSREPARACION { get; set; }
         public DbSet<Sintoma> SINTOMAS { get; set; }
         public DbSet<StockRepuesto> V_STOCKS_REPUESTOS { get; set; }
         public DbSet<ReparacionEstado> V_REPARACIONES_ESTADO { get; set; }

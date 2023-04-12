@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
+using RespuestosAPI.Requests;
 
 namespace RespuestosAPI.Controllers
 {
@@ -140,42 +141,42 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("editar_usuario")]
-        public async Task<ActionResult> CambiarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<ActionResult> CambiarUsuario([FromBody] CambiarDatosUsuarioRequest request)
         {
             try
             {
-                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == usuarioDTO.Id_Usuario);
+                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == request.Id_Usuario);
 
                 if (!existeUsuario)
                 {
-                    return BadRequest($"No existe un usuario con el ID: {usuarioDTO.Id_Usuario}");
+                    return BadRequest($"No existe un usuario con el ID: {request.Id_Usuario}");
                 }
 
-                var existeUsuarioConElMismoEmail = await context.USUARIOS.AnyAsync(x => x.Email == usuarioDTO.Email);
+                var existeUsuarioConElMismoEmail = await context.USUARIOS.AnyAsync(x => x.Email == request.Email);
 
                 if (existeUsuarioConElMismoEmail)
                 {
-                    return BadRequest($"Ya existe un usuario con el email: {usuarioDTO.Email}");
+                    return BadRequest($"Ya existe un usuario con el email: {request.Email}");
                 }
 
-                var existePerfil = await context.PERFILES.AnyAsync(x => x.Id_Perfil == usuarioDTO.Id_Perfil);
+                var existePerfil = await context.PERFILES.AnyAsync(x => x.Id_Perfil == request.Id_Perfil);
 
                 if (!existePerfil)
                 {
-                    return BadRequest($"No existe un perfil con ese ID: {usuarioDTO.Id_Perfil}");
+                    return BadRequest($"No existe un perfil con ese ID: {request.Id_Perfil}");
                 }
 
-                string PA_CAMBIAR_USUARIO = "EXEC PA_CAMBIAR_USUARIO " +
-                            "@ID_USUARIO = '" + usuarioDTO.Id_Usuario + "' ," +
-                            "@USUARIO = '" + usuarioDTO.usuario + "' ," +
-                            "@PASSWORD = '" + usuarioDTO.Password + "' ," +
-                            "@ID_PERFIL = " + usuarioDTO.Id_Perfil + " ," +
-                            "@EMAIL = '" + usuarioDTO.Email + "' ," +
+                string PA_EDITAR_USUARIO = "EXEC PA_EDITAR_USUARIO " +
+                            "@ID_USUARIO = '" + request.Id_Usuario + "' ," +
+                            "@USUARIO = '" + request.Usuario + "' ," +
+                            //"@PASSWORD = '" + usuarioDTO.Password + "' ," +
+                            "@ID_PERFIL = " + request.Id_Perfil + " ," +
+                            "@EMAIL = '" + request.Email + "' ," +
                             "@INVOKER = " + 0 + "," +
                             "@RETCODE = " + 0 + "," +
                             "@MENSAJE = ' ' ";
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_CAMBIAR_USUARIO));
+                return Ok(context.Database.ExecuteSqlRaw(PA_EDITAR_USUARIO));
             }
             catch (Exception e) 
             { 
@@ -184,19 +185,19 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("baja_usuario")]
-        public async Task<ActionResult> BajaUsuario(int IdUsuario)
+        public async Task<ActionResult> BajaUsuario(CambiarEstadoUsuarioRequest request)
         {
             try
             {
-                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == IdUsuario);
+                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == request.IdUsuario);
 
                 if (!existeUsuario)
                 {
-                    return BadRequest($"No existe un usuario con el ID: {IdUsuario}");
+                    return BadRequest($"No existe un usuario con el ID: {request.IdUsuario}");
                 }
 
                 string PA_BAJA_USUARIO = "EXEC PA_BAJA_USUARIO " +
-                            "@ID_USUARIO = '" + IdUsuario + "' ," +
+                            "@ID_USUARIO = '" + request.IdUsuario + "' ," +
                             "@INVOKER = " + 0 + "," +
                             "@RETCODE = " + 0 + "," +
                             "@MENSAJE = ' ' ";

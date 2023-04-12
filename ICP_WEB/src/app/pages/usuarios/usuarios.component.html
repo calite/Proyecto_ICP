@@ -32,7 +32,8 @@
                     <td>{{ usuario.descripcion }}</td>
                     <td>{{ usuario.email }}</td>
                     <td>{{ usuario.activo }}</td>
-                    <td><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="!usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)" class="btn btn-warning">activar</button></td>
                     <td><button (click)="editarUsuario(usuario.id_Usuario)" class="btn btn-primary">editar</button></td>
                 </tr>
             </tbody>

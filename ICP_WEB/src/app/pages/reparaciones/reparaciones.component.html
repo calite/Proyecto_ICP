@@ -1,4 +1,4 @@
-<h4>Reparaciones</h4>
+<h4 class="mt-2">Reparaciones</h4>
 <hr>
 
 <div *ngIf="!reparaciones ; else divReparaciones" class="alert alert-info">
@@ -25,7 +25,7 @@
                     <td>{{ reparacion.modelo }}</td>
                     <td>{{ reparacion.estado }}</td>
                     <td>
-                        <a [routerLink]="['/detalle', reparacion.id_Reparacion]"><button class="btn btn-primary">ver...</button></a>
+                        <a [routerLink]="['./detalles', reparacion.id_Reparacion]"><button class="btn btn-primary">ver...</button></a>
                     </td>
                 </tr>
             </tbody>

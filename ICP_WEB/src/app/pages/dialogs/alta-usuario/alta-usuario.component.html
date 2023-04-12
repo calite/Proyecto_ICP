@@ -31,7 +31,7 @@
 
         <select id="perfil" formControlName="perfil">
 
-            <option *ngFor="let opcion of opcionesPerfil" [value]="opcion" class="text-center">{{opcion}}</option>
+            <option *ngFor="let opcion of opcionesPerfil.values()" [value]="opcion" class="text-center">{{opcion}}</option>
 
         </select>
 
@@ -40,7 +40,7 @@
             <div *ngIf="formularioUsuario?.get('perfil')?.errors?.['required']">El perfil es obligatorio</div>
         </div>
 
-        <button type="submit" [disabled]="formularioUsuario.invalid" class="mx-auto mt-4">Crear usuario</button>
+        <button type="submit" [disabled]="formularioUsuario.invalid" class="btn btn-primary mx-auto mt-4">Crear usuario</button>
 
     </form>
 </div>

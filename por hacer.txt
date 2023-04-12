@@ -1,0 +1,9 @@
+	/*
+	
+		1. RENOMBARAR REPARACIONES_ESTADO A REPARACIONES_SINTOMAS_ESTADO **
+		2. Añadir campo ID_SINTOMA a REPARACIONES_SINTOMAS_ESTADO **
+		4. Crear tabla ESTADOS_SINTOMAS **
+		3. Cruzar REPARACIONES_SINTOMAS_ESTADO con sintomas, reparaciones y estado - vista
+
+
+	*/

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/api.service';
-import { RepuestosStock } from 'src/app/core/interfaces/RepuestosStock.interface';
+import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
 import { CambiarStockComponent } from '../dialogs/cambiar-stock/cambiar-stock.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { CambiarStockComponent } from '../dialogs/cambiar-stock/cambiar-stock.co
 })
 export class StocksComponent {
 
-  repuestosStock !: RepuestosStock[];
+  repuestosStock !: RepuestoStock[];
 
   constructor(
     private apiService : ApiService,

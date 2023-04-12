@@ -1,4 +1,4 @@
-export interface Reparaciones {
+export interface Reparacion {
     id_Reparacion: number;
     marca:         string;
     modelo:        string;

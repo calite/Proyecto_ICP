@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ApiService } from 'src/app/core/api.service';
-import { Reparaciones } from 'src/app/core/interfaces/Reparaciones.interface';
+import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
 
 @Component({
   selector: 'app-reparaciones',
@@ -10,7 +10,7 @@ import { Reparaciones } from 'src/app/core/interfaces/Reparaciones.interface';
 })
 export class ReparacionesComponent{
 
-  reparaciones : Reparaciones[] = [];
+  reparaciones : Reparacion[] = [];
 
   /**
    *
@@ -27,10 +27,5 @@ export class ReparacionesComponent{
       });
       
   }
-
-  verReparacion( id_Reparacion : string ) {
-    console.log(id_Reparacion);
-  }
-
 
 }

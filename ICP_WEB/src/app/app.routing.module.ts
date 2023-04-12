@@ -13,12 +13,12 @@ import { AltasComponent } from './pages/altas/altas.component';
 const routes: Routes = [
 
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
     pathMatch: 'full'
   },
   {
-    path: 'altas',
+    path: '',
     component: AltasComponent
   },
   {
@@ -30,7 +30,7 @@ const routes: Routes = [
     component: ReparacionesComponent
   },
   {
-    path: 'detalle/:id_Reparacion',
+    path: 'reparaciones/detalles/:id_Reparacion',
     component: VerReparacionComponent
   },
   {

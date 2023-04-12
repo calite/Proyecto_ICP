@@ -41,7 +41,6 @@ export class CambiarStockComponent {
 
       this.apiService.postCambiarStockRepuesto(id_Repuesto, cantidad)
         .subscribe((response) => {
-          console.log(response)
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });
       this.dialogRef.close(); //cerramos el dialog

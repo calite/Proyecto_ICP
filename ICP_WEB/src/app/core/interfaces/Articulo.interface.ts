@@ -1,4 +1,4 @@
-export interface Articulos {
+export interface Articulo {
     id_Articulo: number;
     marca:       string;
     modelo:      string;

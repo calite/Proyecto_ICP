@@ -39,8 +39,8 @@
                     <td>{{ repuesto.ancho }}</td>
                     <td>{{ repuesto.imagen }}</td>
                     <td>{{ repuesto.activo }}</td>     
-                    <td *ngIf="repuesto.activo == 1"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td>
-                    <td *ngIf="repuesto.activo == 0"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">activar</button></td>  
+                    <td *ngIf="repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td>
+                    <td *ngIf="!repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning">activar</button></td>  
                     <td><button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button></td>   
                 </tr>
             </tbody>

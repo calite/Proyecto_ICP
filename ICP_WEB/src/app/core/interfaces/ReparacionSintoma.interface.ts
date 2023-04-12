@@ -1,4 +1,4 @@
-export interface ReparacionSintomas {
+export interface ReparacionSintoma {
     id_Reparacion: number;
     id_Reparacion_Sintoma : number;
     marca:         string;

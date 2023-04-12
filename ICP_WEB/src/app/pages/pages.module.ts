@@ -17,6 +17,9 @@ import { CambiarEstadoSintomaComponent } from './dialogs/cambiar-estado-sintoma/
 import { CambiarStockComponent } from './dialogs/cambiar-stock/cambiar-stock.component';
 import { EditarRepuestoComponent } from './dialogs/editar-repuesto/editar-repuesto.component';
 import { AltaRepuestoComponent } from './dialogs/alta-repuesto/alta-repuesto.component';
+import { EditarArticuloComponent } from './dialogs/editar-articulo/editar-articulo.component';
+import { AltaArticuloComponent } from './dialogs/alta-articulo/alta-articulo.component';
+import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.component';
 
 
 
@@ -35,7 +38,10 @@ import { AltaRepuestoComponent } from './dialogs/alta-repuesto/alta-repuesto.com
     CambiarEstadoSintomaComponent,
     CambiarStockComponent,
     EditarRepuestoComponent,
-    AltaRepuestoComponent
+    AltaRepuestoComponent,
+    EditarArticuloComponent,
+    AltaArticuloComponent,
+    EditarUsuarioComponent
   ],
   imports: [
     CommonModule,

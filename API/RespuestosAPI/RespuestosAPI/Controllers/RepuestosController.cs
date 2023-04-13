@@ -101,7 +101,7 @@ namespace RespuestosAPI.Controllers
          *                          POST
          * =====================================================
         \*/
-
+        /*
         [HttpPost("alta_repuesto")]
         public async Task<ActionResult> AltaRepuesto(RepuestoCreacionDTO r)
         {//string descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen, int cantidad
@@ -255,7 +255,7 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-
+        */
         [HttpPost("baja_repuesto")]
         public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {

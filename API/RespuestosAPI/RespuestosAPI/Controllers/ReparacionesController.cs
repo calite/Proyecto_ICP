@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
 using RespuestosAPI.Requests;
+using System.Text.Json;
 
 namespace RespuestosAPI.Controllers
 {
@@ -179,23 +180,41 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpPost("alta_reparacion")]
-        public async Task<ActionResult> AltaReparacion(int IdArticulo)
+        public async Task<ActionResult> AltaReparacion([FromBody] AltaReparacionRequest request)
         {
             try
             {
-                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == IdArticulo);
+                var existeArticulo = await context.ARTICULOS.AnyAsync(x => x.Id_Articulo == request.Id_Articulo);
 
                 if (!existeArticulo)
                 {
-                    return BadRequest($"No existe un ARTICULO con el ID: {IdArticulo}");
+                    return BadRequest($"No existe un ARTICULO con el ID: {request.Id_Articulo}");
                 }
 
-                SqlParameter[] parametros = new SqlParameter[4]
+                int[] sintomas = request.Sintomas;
+                int[] repuestos = request.Repuestos;
+
+                string sintomasJson = JsonSerializer.Serialize(sintomas);
+                string repuestosJson = JsonSerializer.Serialize(repuestos);
+
+
+
+                SqlParameter[] parametros = new SqlParameter[6]
                 {
-                     new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
+                    new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = IdArticulo
+                        Value = request.Id_Articulo
+                    },
+                    new SqlParameter("@SINTOMAS_JSON", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = sintomasJson
+                    },
+                    new SqlParameter("@REPUESTOS_JSON", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = repuestosJson
                     },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
@@ -212,7 +231,7 @@ namespace RespuestosAPI.Controllers
                     }
                  };
 
-                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@SINTOMAS_JSON,@REPUESTOS_JSON,@INVOKER,@RETCODE,@MENSAJE";
 
 
 

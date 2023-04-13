@@ -11,6 +11,7 @@ namespace RespuestosAPI.BBDD
             builder.ToTable(nameof(SintomaDTO));
             builder.HasKey(x => x.Id_Sintoma);
             builder.Property(x => x.Descripcion_Sintoma);
+            builder.Property(x => x.Id_Repuesto);
         }
     }
 }

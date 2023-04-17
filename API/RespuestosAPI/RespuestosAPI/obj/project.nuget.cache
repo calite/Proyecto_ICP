@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/+iAVX+u5RyP53xbZtRJhscxFSvm9v6KxE51T/suRVo6FtYNSJEp5Cs6AUwk+1m47037bbEn6yx6S2t6FoScuA==",
+  "dgSpecHash": "xN/Dlc7x++O2a+74CzwQacaiCvM1jRrs1cY0PRjUTkFJQZOVERN+Tnlzk+pXt8y8/EFPdyCt1Xjkhv00NnUTYg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Practicas.soporte\\Desktop\\git\\proyecto-final-icp\\API\\RespuestosAPI\\RespuestosAPI\\RespuestosAPI.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Practicas.soporte\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\Practicas.soporte\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",

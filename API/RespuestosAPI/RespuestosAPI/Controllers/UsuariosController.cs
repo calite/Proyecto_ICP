@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
 using RespuestosAPI.Requests;
+using System.Text;
 
 namespace RespuestosAPI.Controllers
 {
@@ -71,7 +74,7 @@ namespace RespuestosAPI.Controllers
 
                 throw e;
             }
-            
+
         }
 
         [HttpGet("detalles/{IdUsuario:int}")]
@@ -93,7 +96,7 @@ namespace RespuestosAPI.Controllers
 
                 throw e;
             }
-            
+
         }
 
         /*\
@@ -178,9 +181,9 @@ namespace RespuestosAPI.Controllers
 
                 return Ok(context.Database.ExecuteSqlRaw(PA_EDITAR_USUARIO));
             }
-            catch (Exception e) 
-            { 
-                throw e; 
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
@@ -207,6 +210,100 @@ namespace RespuestosAPI.Controllers
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<ResponseWrapper<Usuario>>> loginUsuario([FromBody] LoginRequest request)
+        {
+            try
+            {
+                //var usuario = await context.USUARIOS.AnyAsync(x => x.usuario == request.Usuario && x.Password == request.Password);
+
+                //if (!usuario)
+                //{
+                //    return BadRequest("Datos Incorrectos, o el usuario esta dado de baja.");
+                //}
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+                var jsonOut = new SqlParameter("@JSON_OUT", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[6]
+                {
+
+                    new SqlParameter("@LOGIN", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.Usuario,
+                        Size = 30
+                    },
+                    new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = request.Password,
+                        Size = 30
+                    },
+                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                    {
+                        Direction = System.Data.ParameterDirection.Output,
+                    },
+                    jsonOut,
+                    retcode,
+                    mensaje
+                 };
+
+                string PA_LOGIN = "EXEC PA_LOGIN @LOGIN, @PASSWORD, @INVOKER, @JSON_OUT OUTPUT, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_LOGIN, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<Usuario>() { 
+                        Mensaje = mensaje.Value.ToString(), 
+                        RetCode = (int)retcode.Value });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return Ok(new ResponseWrapper<Usuario>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                        Value = JsonConvert.DeserializeObject<Usuario>(jsonOut.Value.ToString())
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<Usuario>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseWrapper<Usuario>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 

@@ -22,6 +22,14 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
+
+    //LOGIN
+
+    postLogin(){
+        //const url = 
+    }
+
+
     //USUARIOS
 
     getUsuariosPerfiles() {

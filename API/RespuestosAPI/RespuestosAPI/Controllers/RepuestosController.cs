@@ -337,10 +337,15 @@ namespace RespuestosAPI.Controllers
                     {
                         Direction = System.Data.ParameterDirection.Output,
                         Size = 2000
+                        
                     }
                 };
 
                 string PA_CAMBIAR_STOCK = "EXEC PA_CAMBIAR_STOCK @ID_REPUESTO, @CANTIDAD, @INVOKER, @RETCODE, @MENSAJE";
+
+                var resp = context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK, parametros);
+                 
+                
 
                 return Ok(context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK, parametros));
             }

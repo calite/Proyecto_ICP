@@ -161,7 +161,7 @@ namespace RespuestosAPI.Controllers
 
                 if (reparaciones.Count == 0)
                 {
-                    return BadRequest($"Ya existe una reparacion con ese ID: {IdReparacion}");
+                    return BadRequest($"No existe una reparacion con ese ID: {IdReparacion}");
                 }
 
                 return reparaciones;
@@ -197,9 +197,32 @@ namespace RespuestosAPI.Controllers
                 string sintomasJson = JsonSerializer.Serialize(sintomas);
                 string repuestosJson = JsonSerializer.Serialize(repuestos);
 
+                var recogida = new RecogidaJson
+                {
+                    Calle_Recogida = request.Recogida_Calle,
+                    Numero_Recogida = Int32.Parse(request.Recogida_Numero),
+                    Poblacion_Recogida = request.Recogida_Poblacion,
+                    Provincia_Recogida = request.Recogida_Provincia,
+                    Codigo_Postal_Recogida = request.Recogida_Codigo_Postal,
+                    Persona_Contacto_Recogida = request.Recogida_Persona_Contacto,
+                    Telefono_Recogida = Int32.Parse(request.Recogida_Telefono)
+                };
 
+                var envio = new EnvioJson
+                {
+                    Calle_Envio = request.Envio_Calle,
+                    Numero_Envio = Int32.Parse(request.Envio_Numero),
+                    Poblacion_Envio = request.Envio_Poblacion,
+                    Provincia_Envio = request.Envio_Provincia,
+                    Codigo_Postal_Envio = request.Envio_Codigo_Postal,
+                    Persona_Contacto_Envio = request.Envio_Persona_Contacto,
+                    Telefono_Envio = Int32.Parse(request.Envio_Telefono)
+                };
 
-                SqlParameter[] parametros = new SqlParameter[6]
+                string recogidaJson = JsonSerializer.Serialize(recogida);
+                string envioJson = JsonSerializer.Serialize(envio);
+
+                SqlParameter[] parametros = new SqlParameter[8]
                 {
                     new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
                     {
@@ -216,6 +239,16 @@ namespace RespuestosAPI.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = repuestosJson
                     },
+                    new SqlParameter("@RECOGIDA_JSON", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = recogidaJson
+                    },
+                    new SqlParameter("@ENVIO_JSON", System.Data.SqlDbType.VarChar)
+                    {
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = envioJson
+                    },
                     new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                     {
                         Direction = System.Data.ParameterDirection.Output,
@@ -231,15 +264,7 @@ namespace RespuestosAPI.Controllers
                     }
                  };
 
-                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@SINTOMAS_JSON,@REPUESTOS_JSON,@INVOKER,@RETCODE,@MENSAJE";
-
-
-
-                //AQUI HAY QUE GESTIONAR LA INSERCION DE REPARACIONES_ESTADO, REPARACIONES_SINTOMA 
-                //EL PA PODRIA INSERTAR EN ENVIO Y REPARACION_ESTADO, PERO REPARACION_SINTOMAS DEBE HACERSE AQUI
-                //BUCLE -> N SINTOMAS (LLAMADA AL PA)
-
-
+                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@SINTOMAS_JSON,@REPUESTOS_JSON,@RECOGIDA_JSON,@ENVIO_JSON,@INVOKER,@RETCODE,@MENSAJE";
 
                 return Ok(await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPARACION, parametros));
 

@@ -173,3 +173,4 @@ D:\proyectos\git\proyecto_ICP\API\RespuestosAPI\RespuestosAPI\obj\Debug\net6.0\r
 D:\proyectos\git\proyecto_ICP\API\RespuestosAPI\RespuestosAPI\obj\Debug\net6.0\RespuestosAPI.pdb
 D:\proyectos\git\proyecto_ICP\API\RespuestosAPI\RespuestosAPI\obj\Debug\net6.0\RespuestosAPI.genruntimeconfig.cache
 D:\proyectos\git\proyecto_ICP\API\RespuestosAPI\RespuestosAPI\obj\Debug\net6.0\ref\RespuestosAPI.dll
+C:\Users\Practicas.soporte\Desktop\git\proyecto-final-icp\API\RespuestosAPI\RespuestosAPI\bin\Debug\net6.0\Newtonsoft.Json.dll

@@ -22,7 +22,6 @@ GO
 */
 
 /*
-
 	SI TODO OK -> RETCODE = 0
 	SI TODO ERROR -> RETCODE < 0
 	SI TODO ERROR CONTROLADO -> RETCODE > 0
@@ -37,6 +36,7 @@ ALTER PROCEDURE PA_LOGIN
 
 	@INVOKER		INTEGER,
 	
+	@JSON_OUT		VARCHAR(8000)	OUTPUT,
 	@RETCODE		INT		OUTPUT,
 	@MENSAJE		VARCHAR(8000)	OUTPUT
 AS
@@ -52,16 +52,37 @@ AS
 		IF ISNULL(@LOGIN,'') = ''
 		BEGIN
 			SET @RETCODE = 10
-			SET @MENSAJE = 'El login recibido esta vacío'
+			SET @MENSAJE = 'El login recibido esta vacío.'
 			RETURN
 		END
 
 		IF NOT EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE USUARIO = @LOGIN AND PASSWORD = @PASSWORD)
 		BEGIN
 			SET @RETCODE = 20
-			SET @MENSAJE = 'Datos incorrectos'
+			SET @MENSAJE = 'Datos incorrectos.'
 			RETURN
 		END
+
+		IF NOT EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE USUARIO = @LOGIN AND PASSWORD = @PASSWORD AND ACTIVO = 1)
+		BEGIN
+			SET @RETCODE = 30
+			SET @MENSAJE = 'Usuario desactivado.'
+			RETURN
+		END
+
+			SET @JSON_OUT = (
+			SELECT	
+				ID_USUARIO,
+				USUARIO,
+				PASSWORD,
+				ID_PERFIL,
+				EMAIL,
+				ACTIVO
+			FROM	USUARIOS
+			WHERE	USUARIO = @LOGIN
+			FOR JSON AUTO,  WITHOUT_ARRAY_WRAPPER)
+		
+
 		-- --------------------------------------------------------------------
 		-- TRANSACCIÓN
 		-- --------------------------------------------------------------------
@@ -69,12 +90,13 @@ AS
 			
 			-- CUERPO DEL PA
 			-- INSTRUCCIONES INSERT, UPDATE, DELETE, LLAMADAS A OTROS PAS, ETC
-	
+
+
+
 		IF @NTRANS = 0 AND @@TRANCOUNT > 0 COMMIT TRANSACTION [TR_LOGIN]
 		
 		SET @RETCODE = 0
 		SET @MENSAJE = ''
-		
 
 	END TRY
 	BEGIN CATCH
@@ -85,4 +107,3 @@ AS
 
 	END CATCH
 
-	RETURN @RETCODE

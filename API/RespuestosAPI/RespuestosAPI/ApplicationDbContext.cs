@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RespuestosAPI.BBDD;
 using RespuestosAPI.Entidades;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RespuestosAPI
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         internal readonly object output;
 

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ namespace RespuestosAPI.Controllers
 {
     [ApiController]
     [Route("api/articulos")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ArticulosController : Controller
     {
 
@@ -30,6 +33,7 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<ActionResult<ArticuloDTO>> GetTodosLosArticulos()
         {
             try

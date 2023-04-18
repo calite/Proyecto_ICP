@@ -5,7 +5,7 @@ namespace RespuestosAPI.DTOs
     public class UsuarioCreacionDTO
     {
         [Required]
-        public string usuario { get; set; }
+        public string Usuario { get; set; }
         [Required]
         public string Password { get; set; }
         [Required]

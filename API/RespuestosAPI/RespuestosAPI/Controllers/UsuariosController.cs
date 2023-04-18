@@ -1,27 +1,41 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
 using RespuestosAPI.Requests;
+using RespuestosAPI.Servicios;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+using WebAPIAutores.DTOs;
 
 namespace RespuestosAPI.Controllers
 {
 
     [ApiController]
     [Route("api/usuarios")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsuariosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IConfiguration configuration;
         private readonly IMapper mapper;
+        private readonly TokenService tokenService;
+        private readonly HashService hashService;
 
-        public UsuariosController(ApplicationDbContext context, IMapper mapper)
+        public UsuariosController(ApplicationDbContext context, IConfiguration configuration, IMapper mapper, TokenService tokenService, HashService hashService)
         {
             this.context = context;
+            this.configuration = configuration;
             this.mapper = mapper;
+            this.tokenService = tokenService;
+            this.hashService = hashService;
         }
 
         /*\
@@ -106,39 +120,112 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpPost("alta_usuario")]
-        public async Task<ActionResult> AltaUsuario([FromBody] UsuarioCreacionDTO usuarioCreacionDTO)
+        public async Task<ActionResult> AltaUsuario([FromBody] UsuarioCreacionDTO request)
         {
             try
             {
-                var existeUsuarioConElMismoEmail = await context.USUARIOS.AnyAsync(x => x.Email == usuarioCreacionDTO.Email);
 
-                if (existeUsuarioConElMismoEmail)
+                //generado de hash de contraseña
+                var cifrado = hashService.Hash(request.Password);
+
+                var usuario = new SqlParameter("@USUARIO", System.Data.SqlDbType.VarChar)
                 {
-                    return BadRequest($"Ya existe un usuario con el email: {usuarioCreacionDTO.Email}");
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Usuario,
+                    Size = 50
+                };
+                var password = new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = cifrado.Hash,
+                    Size = 500
+                };
+                var idPerfil = new SqlParameter("@ID_PERFIL", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Perfil
+                };
+                var email = new SqlParameter("@EMAIL", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Email,
+                    Size = 50
+                };
+                var salt = new SqlParameter("@SALT", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = Convert.ToBase64String(cifrado.Sal),
+                    Size = 500
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[8]
+               {
+                    usuario,
+                    password,
+                    idPerfil,
+                    email,
+                    salt,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+
+
+                string PA_ALTA_USUARIO = "EXEC PA_ALTA_USUARIO @USUARIO, @PASSWORD, @ID_PERFIL, @EMAIL, @SALT,@INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_ALTA_USUARIO, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
                 }
 
-                var existePerfil = await context.PERFILES.AnyAsync(x => x.Id_Perfil == usuarioCreacionDTO.Id_Perfil);
-
-                if (!existePerfil)
+                if ((int)retcode.Value == 0)
                 {
-                    return BadRequest($"No existe un perfil con ese ID: {usuarioCreacionDTO.Id_Perfil}");
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
                 }
 
-                string PA_ALTA_USUARIO = "EXEC PA_ALTA_USUARIO " +
-                            "@USUARIO = '" + usuarioCreacionDTO.usuario + "' ," +
-                            "@PASSWORD = '" + usuarioCreacionDTO.Password + "' ," +
-                            "@ID_PERFIL = " + usuarioCreacionDTO.Id_Perfil + " ," +
-                            "@EMAIL = '" + usuarioCreacionDTO.Email + "' ," +
-                            "@INVOKER = " + 0 + "," +
-                            "@RETCODE = " + 0 + "," +
-                            "@MENSAJE = ' ' ";
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_ALTA_USUARIO));
+
+                return Ok();
             }
             catch (Exception e)
             {
-
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
@@ -155,35 +242,111 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe un usuario con el ID: {request.Id_Usuario}");
                 }
 
-                var existeUsuarioConElMismoEmail = await context.USUARIOS.AnyAsync(x => x.Email == request.Email);
+                //generado de hash de contraseña
+                var cifrado = hashService.Hash(request.Password);
 
-                if (existeUsuarioConElMismoEmail)
+                var idUsuario = new SqlParameter("@ID_USUARIO", System.Data.SqlDbType.Int)
                 {
-                    return BadRequest($"Ya existe un usuario con el email: {request.Email}");
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Usuario,
+                };
+                var usuario = new SqlParameter("@USUARIO", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Usuario,
+                    Size = 50
+                };
+                var password = new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = cifrado.Hash,
+                    Size = 500
+                };
+                var idPerfil = new SqlParameter("@ID_PERFIL", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Perfil
+                };
+                var email = new SqlParameter("@EMAIL", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Email,
+                    Size = 50
+                };
+                var salt = new SqlParameter("@SALT", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = Convert.ToBase64String(cifrado.Sal),
+                    Size = 500
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[9]
+               {
+                    idUsuario,
+                    usuario,
+                    password,
+                    idPerfil,
+                    email,
+                    salt,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_EDITAR_USUARIO = "EXEC PA_EDITAR_USUARIO @ID_USUARIO, @USUARIO, @PASSWORD, @ID_PERFIL, @EMAIL, @SALT, @INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_EDITAR_USUARIO, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
                 }
 
-                var existePerfil = await context.PERFILES.AnyAsync(x => x.Id_Perfil == request.Id_Perfil);
-
-                if (!existePerfil)
+                if ((int)retcode.Value == 0)
                 {
-                    return BadRequest($"No existe un perfil con ese ID: {request.Id_Perfil}");
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
                 }
 
-                string PA_EDITAR_USUARIO = "EXEC PA_EDITAR_USUARIO " +
-                            "@ID_USUARIO = '" + request.Id_Usuario + "' ," +
-                            "@USUARIO = '" + request.Usuario + "' ," +
-                            //"@PASSWORD = '" + usuarioDTO.Password + "' ," +
-                            "@ID_PERFIL = " + request.Id_Perfil + " ," +
-                            "@EMAIL = '" + request.Email + "' ," +
-                            "@INVOKER = " + 0 + "," +
-                            "@RETCODE = " + 0 + "," +
-                            "@MENSAJE = ' ' ";
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_EDITAR_USUARIO));
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 
@@ -192,39 +355,116 @@ namespace RespuestosAPI.Controllers
         {
             try
             {
-                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == request.IdUsuario);
+                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == request.Id_Usuario);
 
                 if (!existeUsuario)
                 {
-                    return BadRequest($"No existe un usuario con el ID: {request.IdUsuario}");
+                    return BadRequest($"No existe un usuario con el ID: {request.Id_Usuario}");
                 }
 
-                string PA_BAJA_USUARIO = "EXEC PA_BAJA_USUARIO " +
-                            "@ID_USUARIO = '" + request.IdUsuario + "' ," +
-                            "@INVOKER = " + 0 + "," +
-                            "@RETCODE = " + 0 + "," +
-                            "@MENSAJE = ' ' ";
+                var idUsuario = new SqlParameter("@ID_USUARIO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Usuario,
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_BAJA_USUARIO));
+                SqlParameter[] parametros = new SqlParameter[4]
+                {
+                    idUsuario,
+                    invoker,
+                    retcode,
+                    mensaje
+                 };
+
+
+                string PA_BAJA_USUARIO = "EXEC PA_BAJA_USUARIO @ID_USUARIO, @INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_BAJA_USUARIO, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<ResponseWrapper<Usuario>>> loginUsuario([FromBody] LoginRequest request)
+        [AllowAnonymous]
+        public async Task<ActionResult<ResponseWrapper<Usuario, RespuestaAutenticacion>>> loginUsuario([FromBody] LoginRequest request)
         {
             try
             {
-                //var usuario = await context.USUARIOS.AnyAsync(x => x.usuario == request.Usuario && x.Password == request.Password);
+                var usuario = await context.USUARIOS.Where(x => x.usuario == request.Usuario).FirstOrDefaultAsync();
 
-                //if (!usuario)
-                //{
-                //    return BadRequest("Datos Incorrectos, o el usuario esta dado de baja.");
-                //}
+                if (usuario == null)
+                {
+                    return BadRequest("Usuario o contraseña no conciden.");
+                }
 
+                var cifrado = hashService.Hash(request.Password, Convert.FromBase64String(usuario.Salt));
+
+
+                var login = new SqlParameter("@LOGIN", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Usuario,
+                    Size = 50
+                };
+                var password = new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = cifrado.Hash,
+                    Size = 500
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
                 var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
                 {
                     Direction = System.Data.ParameterDirection.Output,
@@ -242,23 +482,9 @@ namespace RespuestosAPI.Controllers
 
                 SqlParameter[] parametros = new SqlParameter[6]
                 {
-
-                    new SqlParameter("@LOGIN", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.Usuario,
-                        Size = 30
-                    },
-                    new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.Password,
-                        Size = 30
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
+                    login,
+                    password,
+                    invoker,
                     jsonOut,
                     retcode,
                     mensaje
@@ -270,42 +496,46 @@ namespace RespuestosAPI.Controllers
 
                 if ((int)retcode.Value > 0)
                 {
-                    return BadRequest(new ResponseWrapper<Usuario>() { 
-                        Mensaje = mensaje.Value.ToString(), 
-                        RetCode = (int)retcode.Value });
+                    return BadRequest(new ResponseWrapper<Usuario, RespuestaAutenticacion>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
                 }
 
                 if ((int)retcode.Value == 0)
                 {
-                    return Ok(new ResponseWrapper<Usuario>()
+                    return base.Ok(new ResponseWrapper<Usuario, RespuestaAutenticacion>()
                     {
                         Mensaje = mensaje.Value.ToString(),
                         RetCode = (int)retcode.Value,
-                        Value = JsonConvert.DeserializeObject<Usuario>(jsonOut.Value.ToString())
+                        Value = JsonConvert.DeserializeObject<Usuario>(jsonOut.Value.ToString()),
+                        Token = await tokenService.ConstruirToken(request)
                     });
                 }
 
                 if ((int)retcode.Value < 0)
                 {
-                    return StatusCode(500, new ResponseWrapper<Usuario>()
+                    return StatusCode(500, new ResponseWrapper<Usuario, RespuestaAutenticacion>()
                     {
                         Mensaje = mensaje.Value.ToString(),
                         RetCode = (int)retcode.Value,
                     });
                 }
 
-
                 return Ok();
             }
             catch (Exception e)
             {
-                return StatusCode(500, new ResponseWrapper<Usuario>()
+                return StatusCode(500, new ResponseWrapper<Usuario, RespuestaAutenticacion>()
                 {
                     Mensaje = e.Message,
                     RetCode = -1
                 });
             }
         }
+
+
 
 
     }

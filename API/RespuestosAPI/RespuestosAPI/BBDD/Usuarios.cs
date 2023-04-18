@@ -12,10 +12,11 @@ namespace RespuestosAPI.BBDD
             builder.ToTable(nameof(UsuarioDTO));
             builder.HasKey(x => x.Id_Usuario);
             builder.Property(x => x.usuario);
-            //builder.Property(x => x.Password);
+            builder.Property(x => x.Password);
             builder.Property(x => x.Email);
             builder.Property(x => x.Id_Perfil);
             builder.Property(x => x.Activo);
+            builder.Property(x => x.Salt);
         }
     }
 }

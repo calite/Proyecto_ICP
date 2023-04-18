@@ -10,6 +10,7 @@ namespace RespuestosAPI.Entidades
         public string Email { get; set; }
         public int Id_Perfil { get; set; }
         public int Activo { get; set; }
+        public string Salt { get; set; }
 
     }
 }

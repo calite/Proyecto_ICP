@@ -2,6 +2,6 @@
 {
     public class CambiarEstadoUsuarioRequest
     {
-        public int IdUsuario { get; set; }
+        public int Id_Usuario { get; set; }
     }
 }

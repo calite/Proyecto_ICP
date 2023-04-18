@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ namespace RespuestosAPI.Controllers
 {
     [ApiController]
     [Route("api/reparaciones")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ReparacionesController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -65,6 +68,7 @@ namespace RespuestosAPI.Controllers
         */
 
         [HttpGet("sintomas")]
+        [AllowAnonymous]
         public async Task<List<SintomaDTO>> GetSintomas()
         {
             var sintoma = await context.SINTOMAS.ToListAsync();
@@ -180,6 +184,7 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpPost("alta_reparacion")]
+        [AllowAnonymous]
         public async Task<ActionResult> AltaReparacion([FromBody] AltaReparacionRequest request)
         {
             try

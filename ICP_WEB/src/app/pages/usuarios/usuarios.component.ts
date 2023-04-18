@@ -54,10 +54,11 @@ export class UsuariosComponent {
         usuario: this.usuario
       }
     });
-
+    
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarUsuarios();
     });
+    
   }
 
   cambiarEstadoUsuario(IdUsuario : number) {

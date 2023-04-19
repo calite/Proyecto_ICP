@@ -46,6 +46,12 @@ namespace RespuestosAPI
             modelBuilder.Entity<Sintoma>()
                 .HasKey(s => new { s.Id_Sintoma });
 
+            modelBuilder.Entity<EstadoReparacion>()
+            .HasKey(s => new { s.Id_Estado_Reparacion });
+
+            modelBuilder.Entity<EstadoSintoma>()
+                .HasKey(s => new { s.Id_Estado_Sintoma });
+
             modelBuilder.Entity<StockRepuesto>().ToView("V_STOCKS_REPUESTOS")
                 .HasNoKey();
 
@@ -73,6 +79,8 @@ namespace RespuestosAPI
         public DbSet<Stock> STOCKS { get; set; }
         public DbSet<Reparacion> REPARACIONES { get; set; }
         public DbSet<ReparacionEstado> ESTADOSREPARACION { get; set; }
+        public DbSet<EstadoReparacion> ESTADOS_REPARACION { get; set; }
+        public DbSet<EstadoSintoma> ESTADOS_SINTOMA { get; set; }
         public DbSet<Sintoma> SINTOMAS { get; set; }
         public DbSet<StockRepuesto> V_STOCKS_REPUESTOS { get; set; }
         public DbSet<ReparacionEstado> V_REPARACIONES_ESTADO { get; set; }

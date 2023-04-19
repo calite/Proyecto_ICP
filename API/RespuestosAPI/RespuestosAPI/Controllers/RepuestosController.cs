@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ namespace RespuestosAPI.Controllers
 {
     [ApiController]
     [Route("api/repuestos")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RepuestosController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -27,7 +30,7 @@ namespace RespuestosAPI.Controllers
          *                         GET
          * =====================================================
         \*/
-
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("all")]
         public async Task<ActionResult<RepuestoDTO>> GetTodosLosRepuestos()
         {
@@ -47,7 +50,7 @@ namespace RespuestosAPI.Controllers
                 throw e;
             }
         }
-
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("{IdRepuesto:int}")]
         public async Task<ActionResult<RepuestoDTO>> GetRepuestoPorId(int IdRepuesto)
         {
@@ -74,7 +77,7 @@ namespace RespuestosAPI.Controllers
          *                         VISTA
          * =====================================================
         \*/
-
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("stock")]
         public async Task<ActionResult<IEnumerable<StockRepuesto>>> GetStockRepuestos()
         {
@@ -101,84 +104,138 @@ namespace RespuestosAPI.Controllers
          *                          POST
          * =====================================================
         \*/
-        /*
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         [HttpPost("alta_repuesto")]
         public async Task<ActionResult> AltaRepuesto(RepuestoCreacionDTO r)
         {//string descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen, int cantidad
             try
             {
-                SqlParameter[] parametros = new SqlParameter[11]
+
+                var descripcionRepuesto = new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
                 {
-                    new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Descripcion_Repuesto,
-                        Size = 50
-                    },
-                    new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Fabricante,
-                        Size = 50
-                    },
-                    new SqlParameter("@PESO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Peso
-                    },
-                    new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Alto
-                    },
-                    new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Largo
-                    },
-                    new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Ancho,
-                    },
-                    new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Imagen,
-                        Size = 200
-                    },
-                    new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Cantidad,
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 8000
-                    }
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Descripcion_Repuesto,
+                    Size = 50
+                };
+                var fabricante = new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Fabricante,
+                    Size = 50
+                };
+                var peso = new SqlParameter("@PESO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Peso
+                };
+                var alto = new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Alto
+                };
+                var largo = new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Largo
+                };
+                var ancho = new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Ancho,
+                };
+                var imagen = new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Imagen,
+                    Size = 200
+                };
+                var cantidad = new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Cantidad,
+                };
+                var descripcionSintoma = new SqlParameter("@DESCRIPCION_SINTOMA", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Descripcion_Sintoma,
+                    Size = 50
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
                 };
 
-                string PA_ALTA_REPUESTO = "EXEC PA_ALTA_REPUESTO @DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@CANTIDAD,@INVOKER,@RETCODE,@MENSAJE";
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPUESTO, parametros));
+                SqlParameter[] parametros = new SqlParameter[12]
+                {
+                    descripcionRepuesto,
+                    fabricante,
+                    peso,
+                    alto,
+                    largo,
+                    ancho,
+                    imagen,
+                    cantidad,
+                    descripcionSintoma,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
 
+                string PA_ALTA_REPUESTO = "EXEC PA_ALTA_REPUESTO @DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@CANTIDAD,@DESCRIPCION_SINTOMA,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPUESTO, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
-
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         [HttpPost("editar_repuesto")]
         public async Task<ActionResult> EditarRepuesto(RepuestoEdicionDTO r)
         {//string id, descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen
@@ -255,7 +312,7 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-        */
+        [AutorizacionPorPerfil(new string[] { "administrador"})]
         [HttpPost("baja_repuesto")]
         public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {
@@ -300,7 +357,7 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpPost("cambiar_stocks")]
         public async Task<ActionResult> CambiarStock([FromBody] CambiarStockRequest request)
         {

@@ -30,33 +30,18 @@ namespace RespuestosAPI.Controllers
          *                         GET
          * =====================================================
         \*/
-        /*
-        [HttpGet("all")]
-        public async Task<List<ReparacionDTO>> GetTodosLasReparaciones()
-        {
-            var reparaciones = await context.REPARACIONES.ToListAsync();
+        
 
-            return mapper.Map<List<ReparacionDTO>>(reparaciones);
-        }
-
-        [HttpGet("{IdReparacion:int}")]
-        public async Task<List<ReparacionDTO>> GetReparacionPorId(int IdReparacion)
-        {
-            var reparacion = await context.REPARACIONES.Where(x => x.Id_Reparacion == IdReparacion).ToListAsync();
-
-            return mapper.Map<List<ReparacionDTO>>(reparacion);
-        }
-
-        [HttpGet("estado/{IdEstado:int}")]
-        public async Task<List<EstadoDTO>> GetEstadoPorId(int IdEstado)
+        [HttpGet("estados_reparacion")]
+        [AllowAnonymous]
+        public async Task<List<EstadoReparacionDTO>> GetEstadosReparacion()
         {
             try
             {
-                var estado = await context.ESTADOS
-                    .Where(x => x.Id_Estado == IdEstado)
+                var estado = await context.ESTADOS_REPARACION
                     .ToListAsync();
 
-                return mapper.Map<List<EstadoDTO>>(estado);
+                return mapper.Map<List<EstadoReparacionDTO>>(estado);
 
             }
             catch (Exception ex)
@@ -65,8 +50,26 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-        */
+        
+        [HttpGet("estados_sintoma")]
+        [AllowAnonymous]
+        public async Task<List<EstadoSintomaDTO>> GetEstadosSintomas()
+        {
+            try
+            {
+                var estado = await context.ESTADOS_SINTOMA
+                    .ToListAsync();
 
+                return mapper.Map<List<EstadoSintomaDTO>>(estado);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        
         [HttpGet("sintomas")]
         [AllowAnonymous]
         public async Task<List<SintomaDTO>> GetSintomas()
@@ -83,6 +86,7 @@ namespace RespuestosAPI.Controllers
         \*/
 
         [HttpGet("detalles")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor", "operador" })]
         public async Task<ActionResult<IEnumerable<ReparacionEstado>>> GetReparacionesEstado()
         {
             try
@@ -96,6 +100,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("envio/{IdReparacion:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor", "operador" })]
         public async Task<ActionResult<Envio>> GetEnvio(int IdReparacion)
         {
             try
@@ -116,6 +121,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("recogida/{IdReparacion:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor", "operador" })]
         public async Task<ActionResult<Recogida>> GetRecogida(int IdReparacion)
         {
             try
@@ -136,6 +142,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("detalles/{IdReparacion:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor", "operador" })]
         public async Task<ActionResult<ReparacionEstado>> GetReparacionEstadoPorId(int IdReparacion)
         {
             try
@@ -157,6 +164,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpGet("sintomas/{IdReparacion:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor", "operador" })]
         public async Task<ActionResult<IEnumerable<ReparacionSintomas>>> GetReparacionSintomaPorId(int IdReparacion)
         {
             try
@@ -227,60 +235,103 @@ namespace RespuestosAPI.Controllers
                 string recogidaJson = JsonSerializer.Serialize(recogida);
                 string envioJson = JsonSerializer.Serialize(envio);
 
+                var idArticulo = new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Articulo
+                };
+                var sintomasJSON = new SqlParameter("@SINTOMAS_JSON", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = sintomasJson
+                };
+                var repuestosJSON = new SqlParameter("@REPUESTOS_JSON", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = repuestosJson
+                };
+                var recogidaJSON = new SqlParameter("@RECOGIDA_JSON", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = recogidaJson
+                };
+                var envioJSON = new SqlParameter("@ENVIO_JSON", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = envioJson
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
                 SqlParameter[] parametros = new SqlParameter[8]
                 {
-                    new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.Id_Articulo
-                    },
-                    new SqlParameter("@SINTOMAS_JSON", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = sintomasJson
-                    },
-                    new SqlParameter("@REPUESTOS_JSON", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = repuestosJson
-                    },
-                    new SqlParameter("@RECOGIDA_JSON", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = recogidaJson
-                    },
-                    new SqlParameter("@ENVIO_JSON", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = envioJson
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    idArticulo,
+                    sintomasJSON,
+                    repuestosJSON,
+                    recogidaJSON,
+                    envioJSON,
+                    invoker,
+                    retcode,
+                    mensaje
                  };
 
-                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@SINTOMAS_JSON,@REPUESTOS_JSON,@RECOGIDA_JSON,@ENVIO_JSON,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_ALTA_REPARACION = "EXEC PA_ALTA_REPARACION @ID_ARTICULO,@SINTOMAS_JSON,@REPUESTOS_JSON,@RECOGIDA_JSON,@ENVIO_JSON,@INVOKER OUTPUT,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPARACION, parametros));
+                await context.Database.ExecuteSqlRawAsync(PA_ALTA_REPARACION, parametros);
 
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 
         [HttpPost("cambiar_estado_reparacion")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         public async Task<ActionResult> CambiarEstadoReparacion([FromBody] CambiarEstadoReparacionRequest request)
         {
             try
@@ -333,6 +384,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("cambiar_estado_sintoma")]
+        [AutorizacionPorPerfil(new string[] { "administrador","operador" })]
         public async Task<ActionResult> CambiarEstadoSintoma([FromBody] CambiarEstadoSintomaRequest request)
         {
             try

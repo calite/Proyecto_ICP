@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApiService } from 'src/app/core/api.service';
+import { Perfil } from 'src/app/core/interfaces/Perfil.interface';
 
 @Component({
   selector: 'app-alta-usuario',
@@ -11,26 +12,36 @@ import { ApiService } from 'src/app/core/api.service';
 export class AltaUsuarioComponent implements OnInit {
 
   formularioUsuario!: FormGroup;
-  opcionesPerfil = new Map([
-    [10, 'administrador'],
-    [20, 'operador'],
-    [30, 'gestor']
-  ]);
   @Output() formClosed = new EventEmitter();
+  opcionesPerfil : Perfil[];
+  private token : string;
+
 
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AltaUsuarioComponent>
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
 
-  ngOnInit(): void {
-    // Inicializa el formulario con validaciones requeridas para cada campo
     this.formularioUsuario = this.formBuilder.group({
       nombreUsuario: ['', Validators.required],
       correoElectronico: ['', [Validators.required, Validators.email]],
       perfil: ['', Validators.required]
     });
+   }
+
+
+  ngOnInit(): void {
+    // Inicializa el formulario con validaciones requeridas para cada campo
+    this.cargarPerfiles();
+  }
+
+  cargarPerfiles(){
+    this.apiService.getPerfiles(this.token)
+      .subscribe(perfiles => {
+        this.opcionesPerfil = perfiles;
+      });
   }
 
   // Método que se llama al enviar el formulario
@@ -40,10 +51,9 @@ export class AltaUsuarioComponent implements OnInit {
 
       var nombreUsuario = this.formularioUsuario.get('nombreUsuario')?.value;
       var correoElectronico = this.formularioUsuario.get('correoElectronico')?.value;
-      var perfil = this.formularioUsuario.get('perfil')?.value;
-      var IdPerfil = this.buscarClave(perfil, this.opcionesPerfil);
+      var IdPerfil = this.formularioUsuario.get('perfil')?.value;
 
-      this.apiService.postAltaUsuario(nombreUsuario, correoElectronico, IdPerfil)
+      this.apiService.postAltaUsuario(nombreUsuario, correoElectronico, IdPerfil, this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });
@@ -53,13 +63,5 @@ export class AltaUsuarioComponent implements OnInit {
     }
   }
 
-  buscarClave(valorBuscado: any, objetoMap: any) {
-    for (const [clave, valor] of objetoMap) {
-      if (valor === valorBuscado) {
-        return clave;
-      }
-    }
-    return null;
-  }
-
+  
 }

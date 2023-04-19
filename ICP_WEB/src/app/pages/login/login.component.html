@@ -1,17 +1,28 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="text-center">
 
-        <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+        <form [formGroup]="formLogin" (ngSubmit)="submitLogin()">
             <div class="mt-4">
-                <label for="correoElectronico" class="text-center">Correo electrónico:</label>
-                <input type="text" class="form-control" placeholder="Email" formControlName="email">
+                <label for="usuario" class="text-center">Usuario:</label>
+                <input type="text" class="form-control" placeholder="usuario" formControlName="usuario">
             </div>
+
+            <div *ngIf="formLogin.get('usuario')?.invalid && formLogin.get('usuario')?.touched" class="text-center">
+                <div *ngIf="formLogin.get('formLogin')?.errors?.['required']">El nombre de usuario es obligatorio</div>
+            </div>
+
             <div class="mt-4">
                 <label for="password" class="text-center">Contraseña:</label>
                 <input type="password" class="form-control" placeholder="Password" formControlName="password">
             </div>
+
+            <div *ngIf="formLogin?.get('password')?.invalid && formLogin?.get('password')?.touched" class="text-center">
+                <div *ngIf="formLogin?.get('formLogin')?.errors?.['required']">El password es obligatorio</div>
+            </div>
+
+
             <div class="mt-4">
-                <input class="btn btn-primary" type="submit" value="Login">
+                <button type="submit" [disabled]="formLogin.invalid" class="mx-auto mt-4 btn btn-primary">Login</button>
             </div>
         </form>
 

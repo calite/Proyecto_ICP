@@ -32,7 +32,6 @@ export class AltasComponent {
     this.formularioAltaReparacion = this.formBuilder.group({
       articulos: new FormControl('', Validators.required),
       sintomas: new FormArray([], this.comprobarSintomas(1)),
-      //temp
       recogida_calle: ['', Validators.required],
       recogida_numero: ['', Validators.required],
       recogida_poblacion: ['', Validators.required],

@@ -15,12 +15,15 @@ export class RepuestosComponent {
 
   repuestos !: Repuesto[];
   repuesto !: Repuesto;
+  private token : string;
 
   constructor(
     private apiService : ApiService,
     private editarRepuestoDialog: MatDialog,
     private altaRepuestoDialog: MatDialog,
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
+   }
 
   ngOnInit() {
     
@@ -29,7 +32,7 @@ export class RepuestosComponent {
   }
 
   cargarRepuestos() {
-    this.apiService.getRepuestos()
+    this.apiService.getRepuestos(this.token)
     .subscribe( repuestos => {
       this.repuestos = repuestos;
     });
@@ -61,7 +64,7 @@ export class RepuestosComponent {
   }
 
   cambiarEstadoRepuesto(IdRepuesto : number) {
-    this.apiService.postCambiarEstadoRepuesto(IdRepuesto)
+    this.apiService.postCambiarEstadoRepuesto(IdRepuesto, this.token)
       .subscribe(response => {
         if(response == -1) {
           alert('No se puede dar de baja un repuesto si aun queda stock')

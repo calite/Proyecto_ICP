@@ -13,11 +13,14 @@ import { CambiarStockComponent } from '../dialogs/cambiar-stock/cambiar-stock.co
 export class StocksComponent {
 
   repuestosStock !: RepuestoStock[];
+  private token : string;
 
   constructor(
     private apiService : ApiService,
     private cambiarStockDialog: MatDialog
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
+  }
 
   ngOnInit() {
    
@@ -26,7 +29,7 @@ export class StocksComponent {
   }
 
   cargarStocks() {
-    this.apiService.getRepuestosStock()
+    this.apiService.getRepuestosStock(this.token)
     .subscribe( repuestosStock => {
       this.repuestosStock = repuestosStock;
     });

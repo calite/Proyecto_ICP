@@ -14,12 +14,15 @@ export class ArticulosComponent {
 
   articulos !: Articulo[];
   articulo !: Articulo;
+  private token : string;
 
   constructor(
     private apiService: ApiService,
     private editarArticuloDialog: MatDialog,
     private altaArticuloDialog: MatDialog,
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
+  }
 
   ngOnInit() {
 
@@ -60,7 +63,7 @@ export class ArticulosComponent {
   }
 
   cambiarEstadoArticulo(IdArticulo: number) {
-    this.apiService.postCambiarEstadoArticulo(IdArticulo)
+    this.apiService.postCambiarEstadoArticulo(IdArticulo, this.token)
       .subscribe(response => {
         this.cargarArticulos();
       });

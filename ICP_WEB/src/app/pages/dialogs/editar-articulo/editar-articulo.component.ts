@@ -12,9 +12,7 @@ import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
 export class EditarArticuloComponent {
 
   formularioEditarArticulo!: FormGroup;
-
-  pepito : boolean = false;
-
+  private token : string;
   @Output() formClosed = new EventEmitter();
 
   constructor(
@@ -24,7 +22,9 @@ export class EditarArticuloComponent {
     @Inject(MAT_DIALOG_DATA) public data: {
       articulo : Articulo
     }
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
+   }
 
   ngOnInit(): void {
     // Inicializa el formulario con validaciones requeridas para cada campo
@@ -43,7 +43,7 @@ export class EditarArticuloComponent {
       var Marca = this.formularioEditarArticulo.get('marcaArticulo')?.value;
       var Modelo = this.formularioEditarArticulo.get('modeloArticulo')?.value;
 
-      this.apiService.postEditarArticulo(Id_Articulo,Marca,Modelo)
+      this.apiService.postEditarArticulo(Id_Articulo,Marca,Modelo, this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamo el aviso para que recarge
         });

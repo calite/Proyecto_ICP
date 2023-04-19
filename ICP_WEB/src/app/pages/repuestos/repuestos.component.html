@@ -7,9 +7,9 @@
 
 <ng-template #divRepuestos>
 
-    <!-- <div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="d-flex justify-content-center align-items-center mt-5">
         <button (click)="crearRepuesto()" class="btn btn-primary">Crear Repuesto</button>
-    </div> -->
+    </div> 
 
     <div>
         <table class="table table-hover mt-5">
@@ -41,7 +41,7 @@
                     <td>{{ repuesto.activo }}</td>     
                     <td *ngIf="repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td>
                     <td *ngIf="!repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning">activar</button></td>  
-                    <!-- <td><button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button></td>    -->
+                    <td><button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button></td>
                 </tr>
             </tbody>
         </table>

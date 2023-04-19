@@ -8,7 +8,7 @@
 
         <select id="estado" formControlName="estado">
 
-            <option *ngFor="let opcion of opcionesEstado.values()" [value]="opcion" class="text-center">{{opcion}}</option>
+            <option *ngFor="let opcion of opcionesEstado" [value]="opcion.id_Estado_Reparacion" class="text-center">{{opcion.descripcion_Estado}}</option>
 
         </select>
 

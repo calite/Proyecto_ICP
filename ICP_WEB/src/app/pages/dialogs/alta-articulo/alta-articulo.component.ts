@@ -11,14 +11,16 @@ import { ApiService } from '../../../core/api.service';
 export class AltaArticuloComponent {
 
   formularioAltaArticulo!: FormGroup;
-
+  private token : string;
   @Output() formClosed = new EventEmitter();
 
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AltaArticuloComponent>
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
+   }
 
   ngOnInit(): void {
     // Inicializa el formulario con validaciones requeridas para cada campo
@@ -37,7 +39,7 @@ export class AltaArticuloComponent {
       var Marca = this.formularioAltaArticulo.get('marcaArticulo')?.value;
       var Modelo = this.formularioAltaArticulo.get('modeloArticulo')?.value;
 
-      this.apiService.postAltaArticulo(Marca, Modelo)
+      this.apiService.postAltaArticulo(Marca, Modelo, this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });

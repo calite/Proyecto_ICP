@@ -20,7 +20,7 @@ namespace RespuestosAPI.Controllers
 
     [ApiController]
     [Route("api/usuarios")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsuariosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -59,7 +59,7 @@ namespace RespuestosAPI.Controllers
 
             return mapper.Map<List<UsuarioDTO>>(usuario);
         }
-
+        
         [HttpGet("perfil/{id_perfil:int}")]
         public async Task<List<PerfilDTO>> GetPerfilPorId(int id_perfil)
         {
@@ -70,13 +70,22 @@ namespace RespuestosAPI.Controllers
             return mapper.Map<List<PerfilDTO>>(perfil);
         }
         */
+
+        [HttpGet("perfiles")]
+        public async Task<List<PerfilDTO>> GetPerfiles()
+        {
+            var perfil = await context.PERFILES.ToListAsync();
+
+            return mapper.Map<List<PerfilDTO>>(perfil);
+        }
+
         /*\
          * =====================================================
          *                         VISTA
          * =====================================================
         \*/
-
         [HttpGet("detalles")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult<IEnumerable<UsuarioPerfil>>> GetUsuariosDetalles()
         {
             try
@@ -90,8 +99,8 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-
         [HttpGet("detalles/{IdUsuario:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult<IEnumerable<UsuarioPerfil>>> GetUsuarioDetalle(int IdUsuario)
         {
             try
@@ -118,8 +127,8 @@ namespace RespuestosAPI.Controllers
          *                          POST
          * =====================================================
         \*/
-
         [HttpPost("alta_usuario")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> AltaUsuario([FromBody] UsuarioCreacionDTO request)
         {
             try
@@ -229,8 +238,8 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-
         [HttpPost("editar_usuario")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> CambiarUsuario([FromBody] CambiarDatosUsuarioRequest request)
         {
             try
@@ -349,8 +358,8 @@ namespace RespuestosAPI.Controllers
                 });
             }
         }
-
         [HttpPost("baja_usuario")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> BajaUsuario(CambiarEstadoUsuarioRequest request)
         {
             try

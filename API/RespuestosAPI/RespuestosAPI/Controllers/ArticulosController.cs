@@ -8,6 +8,7 @@ using RespuestosAPI.BBDD;
 using RespuestosAPI.DTOs;
 using RespuestosAPI.Entidades;
 using RespuestosAPI.Requests;
+using RespuestosAPI.Servicios;
 
 namespace RespuestosAPI.Controllers
 {
@@ -53,7 +54,30 @@ namespace RespuestosAPI.Controllers
             }
         }
 
+        [HttpGet("all_visibles")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ArticuloDTO>> GetTodosLosArticulosVisibles()
+        {
+            try
+            {
+                var articulos = await context.ARTICULOS.Where(x => x.Activo == 1).ToListAsync();
+
+                if (articulos.Count == 0)
+                {
+                    return BadRequest($"No existen ARTICULOS");
+                }
+
+                return Ok(mapper.Map<List<ArticuloDTO>>(articulos));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
         [HttpGet("{IdArticulo:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador","gestor","operador" })]
         public async Task<ActionResult<ArticuloDTO>> GetArticuloPorId(int IdArticulo)
         {
             try
@@ -88,8 +112,8 @@ namespace RespuestosAPI.Controllers
             *                          POST
             * =====================================================
         \*/
-
         [HttpPost("alta_articulo")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task AltaArticulo(ArticuloCreacionDTO a)
         {
             try
@@ -136,6 +160,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("baja_articulo")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> BajaArticulo(CambiarEstadoArticuloRequest request)
         {
             try
@@ -181,6 +206,7 @@ namespace RespuestosAPI.Controllers
         }
 
         [HttpPost("editar_articulo")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> EditarArticulo(ArticuloEdicionDTO a)
         {
             try

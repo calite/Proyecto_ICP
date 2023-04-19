@@ -13,7 +13,7 @@ export class CambiarStockComponent {
 
 
   formularioStock !: FormGroup;
-
+  private token : string;
   @Output() formClosed = new EventEmitter();
 
   constructor(
@@ -24,7 +24,9 @@ export class CambiarStockComponent {
       id_Repuesto: number,
       cantidad: number
     }
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
+  }
 
   ngOnInit(): void {
     this.formularioStock = this.formBuilder.group({
@@ -39,7 +41,7 @@ export class CambiarStockComponent {
       var id_Repuesto = this.data.id_Repuesto;
       var cantidad = this.formularioStock.get('stock')?.value;
 
-      this.apiService.postCambiarStockRepuesto(id_Repuesto, cantidad)
+      this.apiService.postCambiarStockRepuesto(id_Repuesto, cantidad, this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });

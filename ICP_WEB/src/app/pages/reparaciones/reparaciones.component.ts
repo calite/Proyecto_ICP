@@ -10,18 +10,19 @@ import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
 })
 export class ReparacionesComponent{
 
-  reparaciones : Reparacion[] = [];
+  reparaciones !: Reparacion[];
+  private token : string;
 
-  /**
-   *
-   */
+  
   constructor(
     private apiService: ApiService,
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
+   }
 
   ngOnInit() {
 
-    this.apiService.getReparaciones()
+    this.apiService.getReparaciones(this.token)
       .subscribe( reparaciones => {
         this.reparaciones = reparaciones;
       });

@@ -26,14 +26,10 @@ namespace RespuestosAPI.Servicios
         
         public async Task<RespuestaAutenticacion> ConstruirToken(LoginRequest credencialesUsuario)
         {
-            var claims = new List<Claim>()
-            {
-                new Claim("usuario",credencialesUsuario.Usuario)
-            };
 
-            var usuario = context.USUARIOS.Where(x => x.usuario == credencialesUsuario.Usuario).FirstOrDefault();
+            var usuario = context.V_USUARIOS_PERFILES.Where(x => x.Usuario == credencialesUsuario.Usuario).FirstOrDefault();
 
-            if(usuario == null)
+            if (usuario == null)
             {
                 return new RespuestaAutenticacion
                 {
@@ -41,6 +37,15 @@ namespace RespuestosAPI.Servicios
                     Expiracion = DateTime.Now
                 };
             }
+
+
+
+            var claims = new List<Claim>()
+            {
+                new Claim("rol",usuario.Descripcion)
+            };
+
+           
 
             var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["llavejwt"]));
             var credenciales = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);

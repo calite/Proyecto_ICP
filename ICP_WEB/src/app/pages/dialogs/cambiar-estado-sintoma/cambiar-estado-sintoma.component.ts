@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/api.service';
+import { EstadoSintoma } from '../../../core/interfaces/EstadoSintoma.interface';
 
 @Component({
   selector: 'app-cambiar-estado-sintoma',
@@ -12,13 +13,9 @@ import { ApiService } from 'src/app/core/api.service';
 export class CambiarEstadoSintomaComponent {
 
   formularioReparacion !: FormGroup;
-  opcionesEstado = new Map([
-    [11, 'SIN REPARAR'],
-    [22, 'REPARACION EN CURSO'],
-    [33, 'REPARADO'],
-    [44, 'IMPOSIBLE REPARAR']
-  ]);
+  opcionesEstado : EstadoSintoma[];
   @Output() formClosed = new EventEmitter();
+  private token : string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,12 +25,25 @@ export class CambiarEstadoSintomaComponent {
       id_Reparacion: number,
       id_Reparacion_Sintoma_Estado: number
     }
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
 
-  ngOnInit(): void {
     this.formularioReparacion = this.formBuilder.group({
       estado: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+
+    this.cargarEstados();
+
+  }
+
+  cargarEstados() {
+    this.apiService.getEstadosSintomas()
+      .subscribe(estados => {
+        this.opcionesEstado = estados;
+      });
   }
 
   submitFormularioReparacion(): void {
@@ -45,7 +55,7 @@ export class CambiarEstadoSintomaComponent {
       var estado = this.formularioReparacion.get('estado')?.value;
       var IdEstadoSintoma = this.buscarClave(estado, this.opcionesEstado);
 
-      this.apiService.postCambiarEstadoSintoma(IdReparacionSintomaEstado, IdReparacion, IdEstadoSintoma)
+      this.apiService.postCambiarEstadoSintoma(IdReparacionSintomaEstado, IdReparacion, IdEstadoSintoma, this.token)
         .subscribe(() => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });

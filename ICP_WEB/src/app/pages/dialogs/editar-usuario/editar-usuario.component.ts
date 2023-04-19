@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from 'src/app/core/api.service';
+import { Perfil } from 'src/app/core/interfaces/Perfil.interface';
 import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
 
 @Component({
@@ -13,11 +14,8 @@ export class EditarUsuarioComponent {
 
   formularioEditarUsuario!: FormGroup;
   @Output() formClosed = new EventEmitter();
-  opcionesPerfil = new Map([
-    [10, 'administrador'],
-    [20, 'operador'],
-    [30, 'gestor']
-  ]);
+  opcionesPerfil : Perfil[];
+  private token : string;
 
   constructor(
     private apiService: ApiService,
@@ -26,16 +24,30 @@ export class EditarUsuarioComponent {
     @Inject(MAT_DIALOG_DATA) public data: {
       usuario: UsuarioPerfil
     }
-  ) { }
+  ) {
+    this.token = sessionStorage.getItem('token');
+
+    this.formularioEditarUsuario = this.formBuilder.group({
+      nombreUsuario: [this.data.usuario.usuario, Validators.required],
+      passUsuario: ['', Validators.required],
+      correoElectronico: [this.data.usuario.email, [Validators.required, Validators.email]],
+      perfil: new FormControl('', Validators.required)
+    });
+   }
 
   ngOnInit(): void {
     // Inicializa el formulario con validaciones requeridas para cada campo
-    this.formularioEditarUsuario = this.formBuilder.group({
-      nombreUsuario: [this.data.usuario.usuario, Validators.required],
-      correoElectronico: [this.data.usuario.email, [Validators.required, Validators.email]],
-      perfil: [this.data.usuario.descripcion, Validators.required]
-    });
+    this.cargarPerfiles();
+
   }
+
+  cargarPerfiles(){
+    this.apiService.getPerfiles(this.token)
+      .subscribe(perfiles => {
+        this.opcionesPerfil = perfiles;
+      });
+  }
+
 
   // Método que se llama al enviar el formulario
   submitFormularioEditarUsuario(): void {
@@ -44,11 +56,11 @@ export class EditarUsuarioComponent {
 
       var Id_Usuario = this.data.usuario.id_Usuario;
       var nombreUsuario = this.formularioEditarUsuario.get('nombreUsuario')?.value;
+      var passUsuario = this.formularioEditarUsuario.get('passUsuario')?.value;
       var correoElectronico = this.formularioEditarUsuario.get('correoElectronico')?.value;
-      var perfil = this.formularioEditarUsuario.get('perfil')?.value;
-      var IdPerfil = this.buscarClave(perfil, this.opcionesPerfil);
+      var IdPerfil = this.formularioEditarUsuario.get('perfil')?.value;
 
-      this.apiService.postEditarUsuario(Id_Usuario, nombreUsuario, correoElectronico, IdPerfil)
+      this.apiService.postEditarUsuario(Id_Usuario, passUsuario,nombreUsuario, correoElectronico, IdPerfil, this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamo el aviso para que recarge
         });
@@ -57,12 +69,4 @@ export class EditarUsuarioComponent {
     }
   }
 
-  buscarClave(valorBuscado: any, objetoMap: any) {
-    for (const [clave, valor] of objetoMap) {
-      if (valor === valorBuscado) {
-        return clave;
-      }
-    }
-    return null;
-  }
 }

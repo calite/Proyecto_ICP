@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
 import { ApiService } from '../../../core/api.service';
+import { Sintoma } from 'src/app/core/interfaces/Sintoma.interface';
 
 @Component({
   selector: 'app-alta-repuesto',
@@ -12,17 +13,18 @@ import { ApiService } from '../../../core/api.service';
 export class AltaRepuestoComponent {
 
   formularioAltaRepuesto!: FormGroup;
-
+  private token : string;
   @Output() formClosed = new EventEmitter();
+
 
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AltaRepuestoComponent>
-  ) { }
+  ) { 
 
-  ngOnInit(): void {
-    // Inicializa el formulario con validaciones requeridas para cada campo
+    this.token = sessionStorage.getItem('token');
+
     this.formularioAltaRepuesto = this.formBuilder.group({
       descripcionRepuesto: ['', Validators.required],
       fabricanteRepuesto: ['', Validators.required],
@@ -31,13 +33,23 @@ export class AltaRepuestoComponent {
       largoRepuesto: ['', Validators.required],
       anchoRepuesto: ['', Validators.required],
       imagenRepuesto: ['', Validators.required],
-      cantidadRepuesto: ['', Validators.required]
+      cantidadRepuesto: ['', Validators.required],
+      sintoma: ['', Validators.required]
     });
+
+  }
+
+  ngOnInit(): void {
+    // Inicializa el formulario con validaciones requeridas para cada campo
+
+    console.log(this.token)
   }
 
   // Método que se llama al enviar el formulario
   submitFormularioAltaRepuesto(): void {
     // Si el formulario es válido, muestra los datos del usuario en la consola
+
+    
 
     if (this.formularioAltaRepuesto.valid) {
 
@@ -49,8 +61,9 @@ export class AltaRepuestoComponent {
       var anchoRepuesto = this.formularioAltaRepuesto.value.anchoRepuesto;
       var imagenRepuesto = this.formularioAltaRepuesto.value.imagenRepuesto;
       var cantidadRepuesto = this.formularioAltaRepuesto.value.cantidadRepuesto;
+      var descripcionSintoma = this.formularioAltaRepuesto.value.sintoma;
 
-      this.apiService.postAltaRepuesto(descripcionRepuesto, fabricanteRepuesto, pesoRepuesto, altoRepuesto, largoRepuesto, anchoRepuesto, imagenRepuesto, cantidadRepuesto)
+      this.apiService.postAltaRepuesto(descripcionRepuesto, fabricanteRepuesto, pesoRepuesto, altoRepuesto, largoRepuesto, anchoRepuesto, imagenRepuesto, cantidadRepuesto, descripcionSintoma, this.token)
         .subscribe((response) => {
           console.log(response)
           this.formClosed.emit(); //enviamos el aviso para que recarge

@@ -16,20 +16,23 @@ export class UsuariosComponent {
 
   usuarios !: UsuarioPerfil[];
   usuario !: UsuarioPerfil;
+  private token : string;
 
   
   constructor(
     private apiService : ApiService,
     private altaUsuarioDialog: MatDialog,
     private editarUsuarioDialog : MatDialog
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
+   }
 
   ngOnInit() {
     this.cargarUsuarios()
   }
 
   cargarUsuarios() {
-    this.apiService.getUsuariosPerfiles()
+    this.apiService.getUsuariosPerfiles(this.token)
       .subscribe( usuarios => {
         this.usuarios = usuarios;
       });
@@ -62,7 +65,7 @@ export class UsuariosComponent {
   }
 
   cambiarEstadoUsuario(IdUsuario : number) {
-    this.apiService.postCambiarEstadoUsuario(IdUsuario)
+    this.apiService.postCambiarEstadoUsuario(IdUsuario, this.token)
       .subscribe(response => {
         this.cargarUsuarios();
       });

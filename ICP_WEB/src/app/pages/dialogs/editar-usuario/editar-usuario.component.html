@@ -14,15 +14,27 @@
                 obligatorio</div>
         </div>
 
+        <label for="passUsuario" class="text-center">Contraseña de usuario:</label>
+
+        <input type="text" id="passUsuario" formControlName="passUsuario">
+
+        <div *ngIf="formularioEditarUsuario?.get('passUsuario')?.invalid && formularioEditarUsuario?.get('passUsuario')?.touched"
+            class="text-center">
+            <div *ngIf="formularioEditarUsuario?.get('passUsuario')?.errors?.['required']">La contraseña de usuario es
+                obligatoria</div>
+        </div>
+
         <label for="correoElectronico" class="text-center">Correo electrónico:</label>
 
         <input type="email" id="correoElectronico" formControlName="correoElectronico">
 
         <div *ngIf="formularioEditarUsuario?.get('correoElectronico')?.invalid && formularioEditarUsuario?.get('correoElectronico')?.touched"
             class="text-center">
-            <div *ngIf="formularioEditarUsuario?.get('correoElectronico')?.errors?.['required']">El correo electrónico es
+            <div *ngIf="formularioEditarUsuario?.get('correoElectronico')?.errors?.['required']">El correo electrónico
+                es
                 obligatorio</div>
-            <div *ngIf="formularioEditarUsuario?.get('correoElectronico')?.errors?.['email']">El correo electrónico no es
+            <div *ngIf="formularioEditarUsuario?.get('correoElectronico')?.errors?.['email']">El correo electrónico no
+                es
                 válido</div>
         </div>
 
@@ -31,7 +43,8 @@
 
         <select id="perfil" formControlName="perfil">
 
-            <option *ngFor="let opcion of opcionesPerfil.values()" [value]="opcion" class="text-center">{{opcion}}</option>
+            <option *ngFor="let opcion of opcionesPerfil" [value]="opcion.id_Perfil" class="text-center">
+                {{opcion.descripcion_Perfil}}</option>
 
         </select>
 
@@ -40,7 +53,8 @@
             <div *ngIf="formularioEditarUsuario?.get('perfil')?.errors?.['required']">El perfil es obligatorio</div>
         </div>
 
-        <button type="submit" [disabled]="formularioEditarUsuario.invalid" class="btn btn-primary mx-auto mt-4">Editar usuario</button>
+        <button type="submit" [disabled]="formularioEditarUsuario.invalid" class="btn btn-primary mx-auto mt-4">Editar
+            usuario</button>
 
     </form>
 </div>

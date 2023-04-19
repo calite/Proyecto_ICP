@@ -12,7 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class EditarRepuestoComponent {
 
   formularioEditarRepuesto!: FormGroup;
-
+  private token : string;
   @Output() formClosed = new EventEmitter();
 
   constructor(
@@ -22,7 +22,9 @@ export class EditarRepuestoComponent {
     @Inject(MAT_DIALOG_DATA) public data: {
       repuesto : Repuesto
     }
-  ) { }
+  ) { 
+    this.token = sessionStorage.getItem('token');
+  }
 
   ngOnInit(): void {
     // Inicializa el formulario con validaciones requeridas para cada campo
@@ -33,7 +35,7 @@ export class EditarRepuestoComponent {
       altoRepuesto: [this.data.repuesto.alto, Validators.required],
       largoRepuesto: [this.data.repuesto.largo, Validators.required],
       anchoRepuesto: [this.data.repuesto.ancho, Validators.required],
-      imagenRepuesto: [this.data.repuesto.imagen, Validators.required],
+      imagenRepuesto: [this.data.repuesto.imagen, Validators.required]
     });
   }
 
@@ -52,7 +54,7 @@ export class EditarRepuestoComponent {
       var Ancho = this.formularioEditarRepuesto.get('anchoRepuesto')?.value;
       var Imagen = this.formularioEditarRepuesto.get('imagenRepuesto')?.value;
 
-      this.apiService.postEditarRepuesto(Id_Repuesto,Descripcion_Repuesto,Fabricante,Peso,Alto,Largo,Ancho,Imagen)
+      this.apiService.postEditarRepuesto(Id_Repuesto,Descripcion_Repuesto,Fabricante,Peso,Alto,Largo,Ancho,Imagen,this.token)
         .subscribe((response) => {
           this.formClosed.emit(); //enviamo el aviso para que recarge
         });

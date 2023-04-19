@@ -13,6 +13,7 @@
             <div *ngIf="formularioAltaRepuesto?.get('descripcionRepuesto')?.errors?.['required']">La descripción del repuesto es obligatoria</div>
         </div>
 
+
         <label for="fabricanteRepuesto" class="text-center">Fabricante:</label>
 
         <input type="text" id="fabricanteRepuesto" formControlName="fabricanteRepuesto">
@@ -22,6 +23,7 @@
             <div *ngIf="formularioAltaRepuesto?.get('fabricanteRepuesto')?.errors?.['required']">El fabricante del repuesto es
                 obligatorio</div>
         </div>
+
 
         <label for="pesoRepuesto" class="text-center">Peso:</label>
 
@@ -33,6 +35,7 @@
                 obligatorio</div>
         </div>
 
+
         <label for="altoRepuesto" class="text-center">Alto:</label>
 
         <input type="number" id="altoRepuesto" formControlName="altoRepuesto">
@@ -42,6 +45,7 @@
             <div *ngIf="formularioAltaRepuesto?.get('altoRepuesto')?.errors?.['required']">El alto del repuesto es
                 obligatorio</div>
         </div>
+
 
         <label for="largoRepuesto" class="text-center">Largo:</label>
 
@@ -53,6 +57,7 @@
                 obligatorio</div>
         </div>
 
+
         <label for="anchoRepuesto" class="text-center">Ancho:</label>
 
         <input type="number" id="anchoRepuesto" formControlName="anchoRepuesto">
@@ -62,6 +67,7 @@
             <div *ngIf="formularioAltaRepuesto?.get('anchoRepuesto')?.errors?.['required']">El ancho del repuesto es
                 obligatorio</div>
         </div>
+
 
         <label for="imagenRepuesto" class="text-center">Imagen:</label>
 
@@ -73,6 +79,7 @@
                 obligatoria</div>
         </div>
 
+
         <label for="cantidadRepuesto" class="text-center">Cantidad:</label>
 
         <input type="text" id="cantidadRepuesto" formControlName="cantidadRepuesto">
@@ -81,6 +88,16 @@
             class="text-center">
             <div *ngIf="formularioAltaRepuesto?.get('cantidadRepuesto')?.errors?.['required']">La cantidad del repuesto es
                 obligatoria</div>
+        </div>
+
+
+        <label for="sintoma" class="text-center">Descripción del sintoma:</label>
+
+        <input type="text" id="sintoma" formControlName="sintoma">
+
+        <div *ngIf="formularioAltaRepuesto?.get('sintoma')?.invalid && formularioAltaRepuesto?.get('sintoma')?.touched"
+            class="text-center">
+            <div *ngIf="formularioAltaRepuesto?.get('sintoma')?.errors?.['required']">El sintoma es obligatorio</div>
         </div>
 
         <button type="submit" [disabled]="formularioAltaRepuesto.invalid" class="mx-auto mt-4 btn btn-primary">Crear Repuesto</button>

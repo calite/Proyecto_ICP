@@ -18,6 +18,9 @@ namespace RespuestosAPI.DTOs
         public int Ancho { get; set; }
         [Required]
         public string Imagen { get; set; }
+        [Required]
         public int Cantidad { get; set; }
+        [Required]
+        public string Descripcion_Sintoma { get; set; }
     }
 }

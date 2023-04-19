@@ -22,6 +22,7 @@ export class VerReparacionComponent {
   sintomas !: ReparacionSintoma[];
   recogida !: Recogida;
   envio !: Envio;
+  private token : string;
 
 
   constructor(
@@ -29,7 +30,7 @@ export class VerReparacionComponent {
     private apiService: ApiService,
     private cambiarEstadoReparacionDialog: MatDialog
   ) {
-
+    this.token = sessionStorage.getItem('token');
   }
 
   ngOnInit(): void {
@@ -42,7 +43,7 @@ export class VerReparacionComponent {
   cargarDatosReparacion() {
     this.activatedRoute.params
       .pipe(
-        switchMap(({ id_Reparacion }) => this.apiService.getReparacionDetalles(id_Reparacion)) //operadores rx
+        switchMap(({ id_Reparacion }) => this.apiService.getReparacionDetalles(id_Reparacion, this.token)) //operadores rx
       )
       .subscribe(reparacion => {
         this.reparacion = reparacion;      
@@ -50,7 +51,7 @@ export class VerReparacionComponent {
 
     this.activatedRoute.params
       .pipe(
-        switchMap(({ id_Reparacion }) => this.apiService.getReparacionSintomas(id_Reparacion)),
+        switchMap(({ id_Reparacion }) => this.apiService.getReparacionSintomas(id_Reparacion, this.token)),
       )
       .subscribe(sintomas => {
         this.sintomas = sintomas;
@@ -61,7 +62,7 @@ export class VerReparacionComponent {
   cargarDatosEnviosRecogidas() {
     this.activatedRoute.params
       .pipe(
-        switchMap(({ id_Reparacion }) => this.apiService.getRecogida(id_Reparacion))
+        switchMap(({ id_Reparacion }) => this.apiService.getRecogida(id_Reparacion, this.token))
       )
       .subscribe(recogida => {
         this.recogida = recogida;
@@ -70,7 +71,7 @@ export class VerReparacionComponent {
 
     this.activatedRoute.params
       .pipe(
-        switchMap(({ id_Reparacion }) => this.apiService.getEnvio(id_Reparacion)),
+        switchMap(({ id_Reparacion }) => this.apiService.getEnvio(id_Reparacion, this.token)),
       )
       .subscribe(envio => {
         this.envio = envio;

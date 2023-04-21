@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
 import { EditarRepuestoComponent } from '../dialogs/editar-repuesto/editar-repuesto.component';
 import { AltaRepuestoComponent } from '../dialogs/alta-repuesto/alta-repuesto.component';

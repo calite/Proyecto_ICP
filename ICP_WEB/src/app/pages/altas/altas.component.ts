@@ -4,7 +4,7 @@ import {
   FormGroup, FormArray, FormControl, ValidatorFn, Validators
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
 import { Sintoma } from 'src/app/core/interfaces/Sintoma.interface';
 

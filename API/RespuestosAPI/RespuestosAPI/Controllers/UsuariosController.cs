@@ -59,7 +59,7 @@ namespace RespuestosAPI.Controllers
 
             return mapper.Map<List<UsuarioDTO>>(usuario);
         }
-        
+
         [HttpGet("perfil/{id_perfil:int}")]
         public async Task<List<PerfilDTO>> GetPerfilPorId(int id_perfil)
         {
@@ -99,6 +99,7 @@ namespace RespuestosAPI.Controllers
             }
 
         }
+
         [HttpGet("detalles/{IdUsuario:int}")]
         [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult<IEnumerable<UsuarioPerfil>>> GetUsuarioDetalle(int IdUsuario)

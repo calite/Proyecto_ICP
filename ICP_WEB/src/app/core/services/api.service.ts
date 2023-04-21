@@ -2,18 +2,18 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Reparacion } from './interfaces/Reparacion.interface';
-import { RepuestoStock } from './interfaces/RepuestoStock.interface';
-import { Repuesto } from './interfaces/Repuesto.interface';
-import { UsuarioPerfil } from './interfaces/UsuarioPerfil.interface';
-import { Articulo } from './interfaces/Articulo.interface';
-import { Envio } from './interfaces/Envio.interface';
-import { Recogida } from './interfaces/Recogida.interface';
-import { ReparacionSintoma } from './interfaces/ReparacionSintoma.interface';
-import { Sintoma } from './interfaces/Sintoma.interface';
-import { Perfil } from './interfaces/Perfil.interface';
-import { EstadoSintoma } from './interfaces/EstadoSintoma.interface';
-import { EstadoReparacion } from './interfaces/EstadoReparacion.interface';
+import { Reparacion } from '../interfaces/Reparacion.interface';
+import { RepuestoStock } from '../interfaces/RepuestoStock.interface';
+import { Repuesto } from '../interfaces/Repuesto.interface';
+import { UsuarioPerfil } from '../interfaces/UsuarioPerfil.interface';
+import { Articulo } from '../interfaces/Articulo.interface';
+import { Envio } from '../interfaces/Envio.interface';
+import { Recogida } from '../interfaces/Recogida.interface';
+import { ReparacionSintoma } from '../interfaces/ReparacionSintoma.interface';
+import { Sintoma } from '../interfaces/Sintoma.interface';
+import { Perfil } from '../interfaces/Perfil.interface';
+import { EstadoSintoma } from '../interfaces/EstadoSintoma.interface';
+import { EstadoReparacion } from '../interfaces/EstadoReparacion.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -26,19 +26,32 @@ export class ApiService {
     constructor(private http: HttpClient) { }
 
 
-    //LOGIN
+    // LOGIN
 
-    postLogin(Usuario: string, Password: string) {
-        const url = `${this.apiUrl}usuarios/login`;
-        const body = {
-            Usuario: Usuario,
-            Password: Password
-        }
-        return this.http.post(url, body);
-    }
+    // postLogin(Usuario: string, Password: string) {
+    //     const url = `${this.apiUrl}usuarios/login`;
+    //     const body = {
+    //         Usuario: Usuario,
+    //         Password: Password
+    //     }
+    //     return this.http.post(url, body);
+    // }
 
 
     //USUARIOS
+
+    getUsuarioPorPerfil( token : string){
+
+        var httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            })
+        };
+
+        const url = `${this.apiUrl}usuarios/perfiles`;
+        return this.http.get<Perfil[]>(url, httpOptions);
+    }
 
     getPerfiles( token : string){
 

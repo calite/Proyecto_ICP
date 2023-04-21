@@ -1,7 +1,9 @@
 import { Token } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl,FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../core/api.service';
+import { Router } from '@angular/router';
+import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +15,13 @@ export class LoginComponent {
   formLogin: FormGroup;
 
   constructor(
-    private apiService : ApiService,
-    private formBuilder: FormBuilder
+    private authService : AuthService,
+    private formBuilder: FormBuilder,
+    private router : Router
   ) {
     this.formLogin = this.formBuilder.group({
-      usuario : ['', Validators.required],
-      password: ['', Validators.required],
+      usuario : ['gestor', Validators.required],
+      password: ['gestor', Validators.required],
     });
   }
 
@@ -30,13 +33,13 @@ export class LoginComponent {
       var usuario = this.formLogin.value.usuario;
       var password = this.formLogin.value.password;
 
-      this.apiService.postLogin(usuario,password)
+      this.authService.postLogin(usuario,password)
       .subscribe( resp => {
         var token = resp['token'];
         sessionStorage.setItem('token', token.token);
+
+        this.router.navigate(['/administracion']);
       });
     }
-
-    
   }
 }

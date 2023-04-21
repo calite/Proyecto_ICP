@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
 import { CambiarStockComponent } from '../dialogs/cambiar-stock/cambiar-stock.component';
 

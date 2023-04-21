@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
-import { ApiService } from '../../../core/api.service';
+import { ApiService } from '../../../core/services/api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Perfil } from 'src/app/core/interfaces/Perfil.interface';
 
 @Component({

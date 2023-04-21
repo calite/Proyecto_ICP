@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 
 @Component({
   selector: 'app-cambiar-stock',

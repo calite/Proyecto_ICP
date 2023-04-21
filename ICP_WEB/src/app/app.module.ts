@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card'
 import { AppRoutingModule } from './app.routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from '@angular/cdk/dialog';
@@ -27,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     PagesModule,
     DialogModule,
+    MatCardModule
   ],
   exports: [
     AppRoutingModule,

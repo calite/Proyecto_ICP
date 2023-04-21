@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
 import { AltaUsuarioComponent } from '../dialogs/alta-usuario/alta-usuario.component';
 import { EditarUsuarioComponent } from '../dialogs/editar-usuario/editar-usuario.component';

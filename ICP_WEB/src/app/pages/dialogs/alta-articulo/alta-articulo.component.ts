@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ApiService } from '../../../core/api.service';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-alta-articulo',

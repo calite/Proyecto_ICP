@@ -1,0 +1,38 @@
+.card {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px 24px;
+    font-size: 16px;
+    color: white;
+    background-color: #F42C04;
+    border: none;
+    border-radius: 40px;
+    box-shadow: 4px 4px #E2856E,
+        inset -3px -3px #E2856E,
+        inset -2px -2px #E2856E,
+        inset -1px -1px #E2856E;
+    position: relative;
+    top: 0;
+    transition: top 0.3s ease-out;
+
+}
+
+ .cuerpo {
+      height: 100vh;
+      display: flex;
+      justify-content: space-evenly;
+      overflow: hidden;
+  }
+  
+  .card:hover {
+    top: 2px;
+    box-shadow: 0 2px #E2856E;
+  }
+  
+
+
+  

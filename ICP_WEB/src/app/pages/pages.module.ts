@@ -20,6 +20,9 @@ import { AltaRepuestoComponent } from './dialogs/alta-repuesto/alta-repuesto.com
 import { EditarArticuloComponent } from './dialogs/editar-articulo/editar-articulo.component';
 import { AltaArticuloComponent } from './dialogs/alta-articulo/alta-articulo.component';
 import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.component';
+import { BackendComponent } from './backend/backend.component';
+import { HomeComponent } from './home/home.component';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -41,12 +44,15 @@ import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.
     AltaRepuestoComponent,
     EditarArticuloComponent,
     AltaArticuloComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    BackendComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    MatCardModule
   ]
 })
 export class PagesModule { }

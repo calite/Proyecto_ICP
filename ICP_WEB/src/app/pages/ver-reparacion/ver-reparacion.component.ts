@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from "rxjs/operators";
 
 import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
-import { ApiService } from '../../core/api.service';
+import { ApiService } from '../../core/services/api.service';
 import { ReparacionSintoma } from 'src/app/core/interfaces/ReparacionSintoma.interface';
 import { Recogida } from 'src/app/core/interfaces/Recogida.interface';
 import { Envio } from 'src/app/core/interfaces/Envio.interface';

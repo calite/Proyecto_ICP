@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
 import { AltaArticuloComponent } from '../dialogs/alta-articulo/alta-articulo.component';
 import { EditarArticuloComponent } from '../dialogs/editar-articulo/editar-articulo.component';

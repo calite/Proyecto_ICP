@@ -1,0 +1,9 @@
+    <header class="d-flex justify-content-between">
+        <div class="mx-2 logo">
+            Reparaciones ICP
+        </div>
+        <div *ngIf="usuarioConectado" class=" mt-1 mx-2">
+            <span  class="text-white mx-2">nombreUsuario</span>
+            <button class="btn btn-danger"> logout</button>
+        </div>
+    </header>

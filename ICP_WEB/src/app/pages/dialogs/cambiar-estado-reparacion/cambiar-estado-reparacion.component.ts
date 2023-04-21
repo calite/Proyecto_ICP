@@ -2,7 +2,7 @@ import { Component, OnInit,Inject, ChangeDetectorRef, EventEmitter, Output } fro
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/core/services/api.service';
 import { EstadoReparacion } from '../../../core/interfaces/EstadoReparacion.interface';
 
 @Component({

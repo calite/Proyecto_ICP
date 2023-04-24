@@ -1,6 +1,9 @@
 
 <div class="container d-flex justify-content-evenly align-items-center cuerpo">
-                <mat-card class="card" routerLink="alta" routerLinkActive="active">
+                <mat-card 
+                class="card" 
+                routerLink="alta" 
+                routerLinkActive="active">
                     <mat-card-header>
                         <mat-card-title>
                             <h4>Alta</h4>
@@ -9,7 +12,11 @@
                 </mat-card>
 
 
-            <mat-card class="card" routerLink="administracion/login" routerLinkActive="active">
+            <mat-card 
+            class="card" 
+            routerLink="administracion" 
+            routerLinkActive="active" 
+            *ngIf="usuarioConectado">
                 <mat-card-header>
                     <mat-card-title>
                         <h4>Administración</h4>

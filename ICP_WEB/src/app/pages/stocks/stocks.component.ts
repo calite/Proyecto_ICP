@@ -14,18 +14,24 @@ export class StocksComponent {
 
   repuestosStock !: RepuestoStock[];
   private token : string;
+  private datosUsuario;
 
   constructor(
     private apiService : ApiService,
     private cambiarStockDialog: MatDialog
   ) { 
     this.token = sessionStorage.getItem('token');
+    this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
   }
 
   ngOnInit() {
    
     this.cargarStocks()
 
+  }
+
+  perfilActual(){
+    return this.datosUsuario['id_Perfil'];
   }
 
   cargarStocks() {

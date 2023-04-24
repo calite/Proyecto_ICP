@@ -16,6 +16,8 @@ export class RepuestosComponent {
   repuestos !: Repuesto[];
   repuesto !: Repuesto;
   private token : string;
+  private datosUsuario;
+
 
   constructor(
     private apiService : ApiService,
@@ -23,12 +25,17 @@ export class RepuestosComponent {
     private altaRepuestoDialog: MatDialog,
   ) {
     this.token = sessionStorage.getItem('token');
+    this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
    }
 
   ngOnInit() {
     
     this.cargarRepuestos()
 
+  }
+
+  perfilActual(){
+    return this.datosUsuario['id_Perfil'];
   }
 
   cargarRepuestos() {

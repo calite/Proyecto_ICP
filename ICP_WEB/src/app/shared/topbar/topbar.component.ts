@@ -1,29 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
-  styleUrls: ['./topbar.component.scss']
+  styleUrls: ['./topbar.component.scss'],
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent {
 
-  public usuarioConectado : boolean = false;
-  private token : string;
+  public usuarioConectado: boolean = false;
+  private token: string;
+  private datosUsuario: UsuarioPerfil;
 
-  constructor(private authService: AuthService ) { }
+  get nombreUsuario() {
+    return this.datosUsuario['usuario'];
+  }
 
+  constructor(
+    private authService: AuthService,
+    private router : Router
+  ) {
 
-  ngOnInit(): void {
-    
     this.token = sessionStorage.getItem('token')
-
+    this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
     this.existeToken()
+
   }
 
   private existeToken() {
-    if( !this.token == null ) this.usuarioConectado = true;
+    if (this.token != null && this.token != '') {
+      this.usuarioConectado = true;
+    } else {
+      this.usuarioConectado = false;
+    }
+
   }
 
 
+  logout() {
+    this.authService.logout();
+  }
+
+  login() {
+    this.router.navigate(['/login'])
+  }
 }

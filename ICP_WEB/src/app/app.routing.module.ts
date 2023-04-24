@@ -12,6 +12,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { BackendComponent } from './pages/backend/backend.component';
 import { PublicGuard } from './core/guards/public.guard';
+import { RolGuard } from './core/guards/rol.guard';
 
 const routes: Routes = [
   {
@@ -23,44 +24,51 @@ const routes: Routes = [
     component: AltasComponent
   },
   {
-    path: 'administracion',
-    component: BackendComponent,
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [PublicGuard],
+    canMatch: [PublicGuard]
   },
   {
-    path: 'administracion/login',
-    component: LoginComponent,
-    canActivate : [ PublicGuard ],
-    canMatch : [ PublicGuard ]
+    path: 'administracion',
+    component: BackendComponent,
+    canActivate: [AuthGuard],
+    canMatch: [AuthGuard]
   },
   {
     path: 'administracion/usuarios',
     component: UsuariosComponent,
-    canActivate : [ AuthGuard ],
-    canMatch : [ AuthGuard ]
+    canActivate: [AuthGuard, RolGuard],
+    canMatch: [AuthGuard],
+    data: { roles: [10] }
   },
   {
     path: 'administracion/reparaciones',
     component: ReparacionesComponent,
-    canActivate : [ AuthGuard ],
-    canMatch : [ AuthGuard ]
+    canActivate: [AuthGuard, RolGuard],
+    canMatch: [AuthGuard],
+    data: { roles: [10, 20, 30] }
   },
   {
     path: 'administracion/reparaciones/detalles/:id_Reparacion',
     component: VerReparacionComponent,
-    canActivate : [ AuthGuard ],
-    canMatch : [ AuthGuard ]
+    canActivate: [AuthGuard, RolGuard],
+    canMatch: [AuthGuard],
+    data: { roles: [10, 20, 30] }
   },
   {
     path: 'administracion/articulos',
     component: ArticulosComponent,
-    canActivate : [ AuthGuard ],
-    canMatch : [ AuthGuard ]
+    canActivate: [AuthGuard, RolGuard],
+    canMatch: [AuthGuard],
+    data: { roles: [10] }
   },
   {
     path: 'administracion/repuestos',
     component: RepuestosComponent,
-    canActivate : [ AuthGuard ],
-    canMatch : [ AuthGuard ]
+    canActivate: [AuthGuard, RolGuard],
+    canMatch: [AuthGuard],
+    data: { roles: [10, 30] }
   },
   {
     path: '**',

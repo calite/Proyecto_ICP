@@ -1,52 +1,64 @@
-<h4 class="mt-2">Repuestos</h4>
-<hr>
+<div class="container">
+    <h4 class="mt-2">Repuestos</h4>
+    <hr>
 
-<div *ngIf="!repuestos ; else divRepuestos" class="alert alert-info">
-    Espere por favor...
-</div>
-
-<ng-template #divRepuestos>
-
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        <button (click)="crearRepuesto()" class="btn btn-primary">Crear Repuesto</button>
-    </div> 
-
-    <div>
-        <table class="table table-hover mt-5">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Descripción</th>
-                    <th>Fabricante</th>
-                    <th>Peso</th>
-                    <th>Alto</th>
-                    <th>Largo</th>
-                    <th>Ancho</th>
-                    <th>Imagen</th>
-                    <th>Activo</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let repuesto of repuestos">
-                    <td>{{ repuesto.id_Repuesto }}</td>
-                    <td>{{ repuesto.descripcion_Repuesto }}</td>
-                    <td>{{ repuesto.fabricante }}</td>
-                    <td>{{ repuesto.peso }}</td>
-                    <td>{{ repuesto.alto }}</td>
-                    <td>{{ repuesto.largo }}</td>
-                    <td>{{ repuesto.ancho }}</td>
-                    <td>{{ repuesto.imagen }}</td>
-                    <td>{{ repuesto.activo }}</td>     
-                    <td *ngIf="repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button></td>
-                    <td *ngIf="!repuesto.activo"><button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning">activar</button></td>  
-                    <td><button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button></td>
-                </tr>
-            </tbody>
-        </table>
+    <div *ngIf="!repuestos ; else divRepuestos" class="alert alert-info">
+        Espere por favor...
     </div>
 
-    <app-stocks></app-stocks>
-    
-</ng-template>
+    <ng-template #divRepuestos>
+
+        <div class="d-flex justify-content-center align-items-center mt-5">
+            <button (click)="crearRepuesto()" class="btn btn-primary" *ngIf="perfilActual() == 10">Crear
+                Repuesto</button>
+        </div>
+
+        <div>
+            <table class="table table-hover mt-5">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Fabricante</th>
+                        <th>Peso</th>
+                        <th>Alto</th>
+                        <th>Largo</th>
+                        <th>Ancho</th>
+                        <th>Imagen</th>
+                        <th>Activo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let repuesto of repuestos">
+                        <td>{{ repuesto.id_Repuesto }}</td>
+                        <td>{{ repuesto.descripcion_Repuesto }}</td>
+                        <td>{{ repuesto.fabricante }}</td>
+                        <td>{{ repuesto.peso }}</td>
+                        <td>{{ repuesto.alto }}</td>
+                        <td>{{ repuesto.largo }}</td>
+                        <td>{{ repuesto.ancho }}</td>
+                        <td>{{ repuesto.imagen }}</td>
+                        <td>{{ repuesto.activo }}</td>
+                        <td *ngIf="repuesto.activo">
+                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"
+                                *ngIf="perfilActual() == 10">desactivar</button>
+                        </td>
+                        <td *ngIf="!repuesto.activo">
+                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning"
+                                *ngIf="perfilActual() == 10">activar</button>
+                        </td>
+                        <td>
+                            <button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"
+                                *ngIf="perfilActual() == 10">editar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <app-stocks></app-stocks>
+
+    </ng-template>
+</div>

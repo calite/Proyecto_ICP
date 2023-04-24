@@ -1,111 +1,117 @@
-<h4>Reparación</h4>
-<hr>
+<div class="container">
+    <h4>Reparación</h4>
+    <hr>
 
-<div *ngIf="!reparacion || !sintomas || !envio || !recogida ; else divReparacion" class="alert alert-info">
-    Espere por favor...
-</div>
-
-<ng-template #divReparacion>
-
-    <div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ reparacion.id_Reparacion }}</td>
-                    <td>{{ reparacion.marca }}</td>
-                    <td>{{ reparacion.modelo }}</td>
-                    <td>{{ reparacion.estado }}</td>
-                    <td><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>  
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Sintomas</h4>
-        <hr>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Sintoma</th>
-                    <th>Repuesto</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let sintoma of sintomas">
-                    <td>{{ sintoma.id_Reparacion_Sintoma }}</td>
-                    <td>{{ sintoma.sintoma }}</td>
-                    <td>{{ sintoma.repuesto }}</td>
-                    <td>{{ sintoma.estado }}</td>
-                    <td><button (click)="cambiarEstadoSintoma(sintoma.id_Reparacion_Sintoma, reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Recogida</h4>
-        <hr>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Calle</th>
-                    <th>Numero</th>
-                    <th>Población</th>
-                    <th>Provincia</th>
-                    <th>Codigo Postal</th>
-                    <th>Contacto</th>
-                    <th>Telefono</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ recogida.calle }}</td>
-                    <td>{{ recogida.numero }}</td>
-                    <td>{{ recogida.poblacion }}</td>
-                    <td>{{ recogida.provincia }}</td>
-                    <td>{{ recogida.codigo_Postal }}</td>
-                    <td>{{ recogida.persona_Contacto }}</td>
-                    <td>{{ recogida.telefono }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Envio</h4>
-        <hr>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Calle</th>
-                    <th>Numero</th>
-                    <th>Población</th>
-                    <th>Provincia</th>
-                    <th>Codigo Postal</th>
-                    <th>Contacto</th>
-                    <th>Telefono</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ envio.calle }}</td>
-                    <td>{{ envio.numero }}</td>
-                    <td>{{ envio.poblacion }}</td>
-                    <td>{{ envio.provincia }}</td>
-                    <td>{{ envio.codigo_Postal }}</td>
-                    <td>{{ envio.persona_Contacto }}</td>
-                    <td>{{ envio.telefono }}</td>
-                </tr>
-            </tbody>
-        </table>
-
+    <div *ngIf="!reparacion || !sintomas || !envio || !recogida ; else divReparacion" class="alert alert-info">
+        Espere por favor...
     </div>
 
-</ng-template>
+    <ng-template #divReparacion>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ reparacion.id_Reparacion }}</td>
+                        <td>{{ reparacion.marca }}</td>
+                        <td>{{ reparacion.modelo }}</td>
+                        <td>{{ reparacion.estado }}</td>
+                        <td><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary"
+                                *ngIf="perfilActual() == 10 || perfilActual() == 30">Cambiar Estado</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Sintomas</h4>
+            <hr>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Sintoma</th>
+                        <th>Repuesto</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sintoma of sintomas">
+                        <td>{{ sintoma.id_Reparacion_Sintoma }}</td>
+                        <td>{{ sintoma.sintoma }}</td>
+                        <td>{{ sintoma.repuesto }}</td>
+                        <td>{{ sintoma.estado }}</td>
+                        <td><button
+                                (click)="cambiarEstadoSintoma(sintoma.id_Reparacion_Sintoma, reparacion.id_Reparacion)"
+                                class="btn btn-primary" *ngIf="perfilActual() == 10 || perfilActual() == 20">Cambiar
+                                Estado</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Recogida</h4>
+            <hr>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Calle</th>
+                        <th>Numero</th>
+                        <th>Población</th>
+                        <th>Provincia</th>
+                        <th>Codigo Postal</th>
+                        <th>Contacto</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ recogida.calle }}</td>
+                        <td>{{ recogida.numero }}</td>
+                        <td>{{ recogida.poblacion }}</td>
+                        <td>{{ recogida.provincia }}</td>
+                        <td>{{ recogida.codigo_Postal }}</td>
+                        <td>{{ recogida.persona_Contacto }}</td>
+                        <td>{{ recogida.telefono }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Envio</h4>
+            <hr>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Calle</th>
+                        <th>Numero</th>
+                        <th>Población</th>
+                        <th>Provincia</th>
+                        <th>Codigo Postal</th>
+                        <th>Contacto</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ envio.calle }}</td>
+                        <td>{{ envio.numero }}</td>
+                        <td>{{ envio.poblacion }}</td>
+                        <td>{{ envio.provincia }}</td>
+                        <td>{{ envio.codigo_Postal }}</td>
+                        <td>{{ envio.persona_Contacto }}</td>
+                        <td>{{ envio.telefono }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </ng-template>
+</div>

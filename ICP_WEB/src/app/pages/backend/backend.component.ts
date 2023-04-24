@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class BackendComponent {
 
+  private datosUsuario;
+
+
+  constructor(){
+    this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
+  }
+
+  perfilActual(){
+    return this.datosUsuario['id_Perfil'];
+  }
+
 }

@@ -1,44 +1,49 @@
 <h4 class="mt-2">Usuarios</h4>
 <hr>
+<div class="container">
 
-<div *ngIf="!usuarios ; else divUsuarios" class="alert alert-info">
-    Espere por favor...
+    <div *ngIf="!usuarios ; else divUsuarios" class="alert alert-info">
+        Espere por favor...
+    </div>
+
+    <ng-template #divUsuarios>
+
+        <div class="d-flex justify-content-center align-items-center mt-5">
+            <button (click)="crearUsuario()" class="btn btn-primary">Crear Usuario</button>
+        </div>
+
+        <div>
+            <table class="table table-hover mt-5">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Password</th>
+                        <th>Tipo</th>
+                        <th>Email</th>
+                        <th>Activo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarios">
+                        <td>{{ usuario.id_Usuario }}</td>
+                        <td>{{ usuario.usuario }}</td>
+                        <td>{{ usuario.password }}</td>
+                        <td>{{ usuario.descripcion }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.activo }}</td>
+                        <td *ngIf="usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)"
+                                class="btn btn-primary">desactivar</button></td>
+                        <td *ngIf="!usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)"
+                                class="btn btn-warning">activar</button></td>
+                        <td><button (click)="editarUsuario(usuario.id_Usuario)" class="btn btn-primary">editar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </ng-template>
 </div>
-
-<ng-template #divUsuarios>
-
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        <button (click)="crearUsuario()" class="btn btn-primary">Crear Usuario</button>
-    </div>
-
-    <div>
-        <table class="table table-hover mt-5">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Password</th>
-                    <th>Tipo</th>
-                    <th>Email</th>
-                    <th>Activo</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let usuario of usuarios">
-                    <td>{{ usuario.id_Usuario }}</td>
-                    <td>{{ usuario.usuario }}</td>
-                    <td>{{ usuario.password }}</td>
-                    <td>{{ usuario.descripcion }}</td>
-                    <td>{{ usuario.email }}</td>
-                    <td>{{ usuario.activo }}</td>
-                    <td *ngIf="usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)" class="btn btn-primary">desactivar</button></td>
-                    <td *ngIf="!usuario.activo"><button (click)="cambiarEstadoUsuario(usuario.id_Usuario)" class="btn btn-warning">activar</button></td>
-                    <td><button (click)="editarUsuario(usuario.id_Usuario)" class="btn btn-primary">editar</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-</ng-template>

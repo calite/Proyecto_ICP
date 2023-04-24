@@ -14,7 +14,6 @@ export class PublicGuard implements CanMatch, CanActivate{
     private comprobarEstadoAutentificacion(): boolean | Observable<boolean> {
         return this.authService.comprobarAutenticacion()
             .pipe(
-                tap(isAuthenticated => console.log('Authenticated: ' , isAuthenticated)),
                 tap(isAuthenticated => {
                     if (isAuthenticated) {
                         this.router.navigate(['./administracion'])
@@ -26,19 +25,10 @@ export class PublicGuard implements CanMatch, CanActivate{
     }
 
     canMatch(route: Route, segments: UrlSegment[]): boolean | Observable<boolean> {
-        // console.log('can match')
-        // console.log({ route, segments })
-
-        // return true;
         return this.comprobarEstadoAutentificacion()
-
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
-        // console.log('can activate')
-        // console.log({ route, state })
-
-        // return true;
         return this.comprobarEstadoAutentificacion()
     }
     

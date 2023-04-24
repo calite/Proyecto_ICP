@@ -1,35 +1,39 @@
 <h4 class="mt-2">Reparaciones</h4>
 <hr>
 
-<div *ngIf="!reparaciones ; else divReparaciones" class="alert alert-info">
-    Espere por favor...
-</div>
+<div class="container">
 
-<ng-template #divReparaciones>
-
-    <div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Estado</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let reparacion of reparaciones">
-                    <td>{{ reparacion.id_Reparacion }}</td>
-                    <td>{{ reparacion.marca }}</td>
-                    <td>{{ reparacion.modelo }}</td>
-                    <td>{{ reparacion.estado }}</td>
-                    <td>
-                        <a [routerLink]="['./detalles', reparacion.id_Reparacion]"><button class="btn btn-primary">ver...</button></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div *ngIf="!reparaciones ; else divReparaciones" class="alert alert-info">
+        Espere por favor...
     </div>
-    
-</ng-template>
+
+    <ng-template #divReparaciones>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reparacion of reparaciones">
+                        <td>{{ reparacion.id_Reparacion }}</td>
+                        <td>{{ reparacion.marca }}</td>
+                        <td>{{ reparacion.modelo }}</td>
+                        <td>{{ reparacion.estado }}</td>
+                        <td>
+                            <a [routerLink]="['./detalles', reparacion.id_Reparacion]"><button
+                                    class="btn btn-primary">ver...</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </ng-template>
+</div>

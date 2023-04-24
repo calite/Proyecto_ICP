@@ -3,10 +3,10 @@ import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, UrlSegment, Route
 import { Observable, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanMatch, CanActivate {
-   
-    
+
+
     constructor(
         private authService: AuthService,
         private router: Router
@@ -16,13 +16,12 @@ export class AuthGuard implements CanMatch, CanActivate {
     private comprobarEstadoAutentificacion(): boolean | Observable<boolean> {
         return this.authService.comprobarAutenticacion()
             .pipe(
-                tap(estaLogeado => console.log('good: ' , estaLogeado)),
                 tap(estaLogeado => {
                     if (!estaLogeado) {
-                        this.router.navigate(['./administracion'])
+                        this.router.navigate(['./login'])
                     }
                 }),
-                
+
             )
     }
 
@@ -35,5 +34,5 @@ export class AuthGuard implements CanMatch, CanActivate {
         return this.comprobarEstadoAutentificacion()
     }
 
-    
+
 }

@@ -23,6 +23,7 @@ export class VerReparacionComponent {
   recogida !: Recogida;
   envio !: Envio;
   private token : string;
+  private datosUsuario;
 
 
   constructor(
@@ -31,6 +32,7 @@ export class VerReparacionComponent {
     private cambiarEstadoReparacionDialog: MatDialog
   ) {
     this.token = sessionStorage.getItem('token');
+    this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
   }
 
   ngOnInit(): void {
@@ -38,6 +40,10 @@ export class VerReparacionComponent {
     this.cargarDatosReparacion();
     this.cargarDatosEnviosRecogidas();
 
+  }
+
+  perfilActual(){
+    return this.datosUsuario['id_Perfil'];
   }
 
   cargarDatosReparacion() {

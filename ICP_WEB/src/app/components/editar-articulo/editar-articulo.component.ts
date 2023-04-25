@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../core/services/api.service';
 import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
 
 @Component({
@@ -9,7 +9,7 @@ import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
   templateUrl: './editar-articulo.component.html',
   styleUrls: ['./editar-articulo.component.scss']
 })
-export class EditarArticuloComponent {
+export class EditarArticuloComponent implements OnInit {
 
   formularioEditarArticulo!: FormGroup;
   private token : string;

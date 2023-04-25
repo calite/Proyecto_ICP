@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../core/services/api.service';
 import { Sintoma } from 'src/app/core/interfaces/Sintoma.interface';
 
 @Component({
@@ -39,12 +39,6 @@ export class AltaRepuestoComponent {
 
   }
 
-  ngOnInit(): void {
-    // Inicializa el formulario con validaciones requeridas para cada campo
-
-    console.log(this.token)
-  }
-
   // Método que se llama al enviar el formulario
   submitFormularioAltaRepuesto(): void {
     // Si el formulario es válido, muestra los datos del usuario en la consola
@@ -65,7 +59,6 @@ export class AltaRepuestoComponent {
 
       this.apiService.postAltaRepuesto(descripcionRepuesto, fabricanteRepuesto, pesoRepuesto, altoRepuesto, largoRepuesto, anchoRepuesto, imagenRepuesto, cantidadRepuesto, descripcionSintoma, this.token)
         .subscribe((response) => {
-          console.log(response)
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });
       this.dialogRef.close(); //cerramos el dialog

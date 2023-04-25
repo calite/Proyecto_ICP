@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/core/services/api.service';
   templateUrl: './cambiar-stock.component.html',
   styleUrls: ['./cambiar-stock.component.scss']
 })
-export class CambiarStockComponent {
+export class CambiarStockComponent implements OnInit {
 
 
   formularioStock !: FormGroup;

@@ -1,17 +1,17 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
-import { EditarRepuestoComponent } from '../dialogs/editar-repuesto/editar-repuesto.component';
-import { AltaRepuestoComponent } from '../dialogs/alta-repuesto/alta-repuesto.component';
+import { EditarRepuestoComponent } from '../../../components/editar-repuesto/editar-repuesto.component';
+import { AltaRepuestoComponent } from '../../../components/alta-repuesto/alta-repuesto.component';
 
 @Component({
   selector: 'app-repuestos',
   templateUrl: './repuestos.component.html',
   styleUrls: ['./repuestos.component.scss']
 })
-export class RepuestosComponent {
+export class RepuestosComponent implements OnInit {
 
   repuestos !: Repuesto[];
   repuesto !: Repuesto;

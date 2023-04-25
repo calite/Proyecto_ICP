@@ -1,12 +1,12 @@
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { ReparacionesComponent } from './pages/reparaciones/reparaciones.component';
-import { RepuestosComponent } from './pages/repuestos/repuestos.component';
-import { StocksComponent } from './pages/stocks/stocks.component';
-import { VerReparacionComponent } from './pages/ver-reparacion/ver-reparacion.component';
-import { UsuariosComponent } from './pages/usuarios/usuarios.component';
-import { ArticulosComponent } from './pages/articulos/articulos.component';
+import { ReparacionesComponent } from './pages/backend/reparaciones/reparaciones.component';
+import { RepuestosComponent } from './pages/backend/repuestos/repuestos.component';
+import { StocksComponent } from './pages/backend/stocks/stocks.component';
+import { VerReparacionComponent } from './pages/backend/ver-reparacion/ver-reparacion.component';
+import { UsuariosComponent } from './pages/backend/usuarios/usuarios.component';
+import { ArticulosComponent } from './pages/backend/articulos/articulos.component';
 import { AltasComponent } from './pages/altas/altas.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';

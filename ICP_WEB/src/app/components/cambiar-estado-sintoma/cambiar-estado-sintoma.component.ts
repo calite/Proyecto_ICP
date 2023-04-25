@@ -3,14 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
-import { EstadoSintoma } from '../../../core/interfaces/EstadoSintoma.interface';
+import { EstadoSintoma } from '../../core/interfaces/EstadoSintoma.interface';
 
 @Component({
   selector: 'app-cambiar-estado-sintoma',
   templateUrl: './cambiar-estado-sintoma.component.html',
   styleUrls: ['./cambiar-estado-sintoma.component.scss']
 })
-export class CambiarEstadoSintomaComponent {
+export class CambiarEstadoSintomaComponent implements OnInit {
 
   formularioReparacion !: FormGroup;
   opcionesEstado : EstadoSintoma[];

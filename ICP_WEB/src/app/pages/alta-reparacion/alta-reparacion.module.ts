@@ -4,6 +4,7 @@ import { TipoTelefonoComponent } from './tipo-telefono/tipo-telefono.component';
 import { SintomasComponent } from './sintomas/sintomas.component';
 import { TransporteComponent } from './transporte/transporte.component';
 import { AltaReparacionRoutingModule } from './alta-reparacion-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,6 +16,7 @@ import { AltaReparacionRoutingModule } from './alta-reparacion-routing.module';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     AltaReparacionRoutingModule
   ]
 })

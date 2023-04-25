@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
-import { AltaUsuarioComponent } from '../dialogs/alta-usuario/alta-usuario.component';
-import { EditarUsuarioComponent } from '../dialogs/editar-usuario/editar-usuario.component';
+import { AltaUsuarioComponent } from '../../../components/alta-usuario/alta-usuario.component';
+import { EditarUsuarioComponent } from '../../../components/editar-usuario/editar-usuario.component';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { EditarUsuarioComponent } from '../dialogs/editar-usuario/editar-usuario
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss']
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
 
   usuarios !: UsuarioPerfil[];
   usuario !: UsuarioPerfil;

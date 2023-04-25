@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Articulo } from 'src/app/core/interfaces/Articulo.interface';
-import { AltaArticuloComponent } from '../dialogs/alta-articulo/alta-articulo.component';
-import { EditarArticuloComponent } from '../dialogs/editar-articulo/editar-articulo.component';
+import { AltaArticuloComponent } from '../../../components/alta-articulo/alta-articulo/alta-articulo.component';
+import { EditarArticuloComponent } from '../../../components/editar-articulo/editar-articulo.component';
 
 @Component({
   selector: 'app-articulos',
   templateUrl: './articulos.component.html',
   styleUrls: ['./articulos.component.scss']
 })
-export class ArticulosComponent {
+export class ArticulosComponent implements OnInit {
 
   articulos !: Articulo[];
   articulo !: Articulo;

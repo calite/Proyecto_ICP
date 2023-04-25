@@ -126,9 +126,14 @@ export class AltasComponent {
       json['Sintomas'] = sintomasSeleccionados;
       json['Repuestos'] = repuestosNecesarios;
 
-      this.apiService.postAltaReparacion(json).subscribe(x => {
-        alert('Reparacion creada.')
-      });
+      console.log(sintomasSeleccionados)
+      console.log(repuestosNecesarios)
+
+      console.log(json)
+
+       this.apiService.postAltaReparacion(json).subscribe(x => {
+         alert('Reparacion creada.')
+       });
 
     }
 

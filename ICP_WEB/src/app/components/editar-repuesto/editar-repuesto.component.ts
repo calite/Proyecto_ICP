@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../core/services/api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './editar-repuesto.component.html',
   styleUrls: ['./editar-repuesto.component.scss']
 })
-export class EditarRepuestoComponent {
+export class EditarRepuestoComponent implements OnInit {
 
   formularioEditarRepuesto!: FormGroup;
   private token : string;
@@ -44,7 +44,7 @@ export class EditarRepuestoComponent {
     // Si el formulario es válido, muestra los datos del usuario en la consola
 
     if (this.formularioEditarRepuesto.valid) {
-      console.log(this.data.repuesto.id_Repuesto);
+
       var Id_Repuesto = this.data.repuesto.id_Repuesto;
       var Descripcion_Repuesto = this.formularioEditarRepuesto.get('descripcionRepuesto')?.value;
       var Fabricante = this.formularioEditarRepuesto.get('fabricanteRepuesto')?.value;

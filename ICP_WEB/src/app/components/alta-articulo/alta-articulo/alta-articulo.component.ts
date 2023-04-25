@@ -8,7 +8,7 @@ import { ApiService } from '../../../core/services/api.service';
   templateUrl: './alta-articulo.component.html',
   styleUrls: ['./alta-articulo.component.scss']
 })
-export class AltaArticuloComponent {
+export class AltaArticuloComponent implements OnInit {
 
   formularioAltaArticulo!: FormGroup;
   private token : string;

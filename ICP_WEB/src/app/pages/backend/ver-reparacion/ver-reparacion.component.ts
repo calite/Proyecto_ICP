@@ -1,22 +1,22 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from "rxjs/operators";
 
 import { Reparacion } from 'src/app/core/interfaces/Reparacion.interface';
-import { ApiService } from '../../core/services/api.service';
+import { ApiService } from '../../../core/services/api.service';
 import { ReparacionSintoma } from 'src/app/core/interfaces/ReparacionSintoma.interface';
 import { Recogida } from 'src/app/core/interfaces/Recogida.interface';
 import { Envio } from 'src/app/core/interfaces/Envio.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { CambiarEstadoReparacionComponent } from '../dialogs/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
-import { CambiarEstadoSintomaComponent } from '../dialogs/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
+import { CambiarEstadoReparacionComponent } from '../../../components/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
+import { CambiarEstadoSintomaComponent } from '../../../components/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
 
 @Component({
   selector: 'app-ver-reparacion',
   templateUrl: './ver-reparacion.component.html',
   styleUrls: ['./ver-reparacion.component.scss']
 })
-export class VerReparacionComponent {
+export class VerReparacionComponent implements OnInit {
 
   reparacion !: Reparacion;
   sintomas !: ReparacionSintoma[];

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { ReparacionesComponent } from './pages/reparaciones/reparaciones.component';
@@ -13,6 +13,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { BackendComponent } from './pages/backend/backend.component';
 import { PublicGuard } from './core/guards/public.guard';
 import { RolGuard } from './core/guards/rol.guard';
+import { AltaReparacionModule } from './pages/alta-reparacion/alta-reparacion.module';
 
 const routes: Routes = [
   {
@@ -20,8 +21,8 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'alta',
-    component: AltasComponent
+    path: 'alta-reparacion',
+    loadChildren: () => import('./pages/alta-reparacion/alta-reparacion.module').then( m => m.AltaReparacionModule)
   },
   {
     path: 'login',

@@ -13,8 +13,6 @@ export class LoginComponent {
 
   formLogin: FormGroup;
 
-  @Output() loginEmitter = new EventEmitter();
-
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
@@ -39,7 +37,7 @@ export class LoginComponent {
           var token = resp['token'];
           sessionStorage.setItem('token', token.token);
 
-          this.loginEmitter.emit();
+
 
           this.router.navigate(['/administracion']);
         });

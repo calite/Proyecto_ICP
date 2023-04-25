@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -13,9 +14,10 @@ export class TopbarComponent {
   public usuarioConectado: boolean = false;
   private token: string;
   private datosUsuario: UsuarioPerfil;
+  private authServiceSubscription : Subscription | undefined;
 
   get nombreUsuario() {
-    return this.datosUsuario['usuario'];
+    return this.datosUsuario.usuario;
   }
 
   constructor(
@@ -25,8 +27,16 @@ export class TopbarComponent {
 
     this.token = sessionStorage.getItem('token')
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
-    this.existeToken()
+  }
 
+  ngOnInit(): void {
+
+    this.authServiceSubscription = this.authService.usuarioObservable.subscribe(
+      usuarioActual => {
+        this.existeToken()
+      }
+    );
+    
   }
 
   private existeToken() {
@@ -38,8 +48,8 @@ export class TopbarComponent {
 
   }
 
-
   logout() {
+    this.usuarioConectado = false;
     this.authService.logout();
   }
 

@@ -36,7 +36,7 @@ export class TopbarComponent {
         this.existeToken()
       }
     );
-    
+
   }
 
   private existeToken() {

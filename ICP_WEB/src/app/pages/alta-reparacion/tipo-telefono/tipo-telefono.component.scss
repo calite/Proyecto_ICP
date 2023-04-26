@@ -1,0 +1,34 @@
+.card {
+    background-color: #88a2aa;
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+}
+
+.card label {
+    font-weight: bold;
+}
+
+.card input {
+    width: 20px;
+    height: 20px;
+    accent-color: #f42c04;
+    cursor: pointer;
+}
+
+.select-telefono {
+    background-color: #88a2aa;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+.btn-primary {
+    background-color: #f42c04;
+    border-color: #e2856e;
+}
+
+.btn-primary:hover {
+    background-color: #e2856e;
+    border-color: #f42c04;
+    color: #0f1a20;
+}

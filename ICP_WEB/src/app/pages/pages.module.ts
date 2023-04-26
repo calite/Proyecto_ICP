@@ -10,19 +10,19 @@ import { ReparacionesComponent } from './backend/reparaciones/reparaciones.compo
 import { VerReparacionComponent } from './backend/ver-reparacion/ver-reparacion.component';
 import { UsuariosComponent } from './backend/usuarios/usuarios.component';
 import { ArticulosComponent } from './backend/articulos/articulos.component';
-import { AltasComponent } from './altas/altas.component';
-import { AltaUsuarioComponent } from '../components/alta-usuario/alta-usuario.component';
-import { CambiarEstadoReparacionComponent } from '../components/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
-import { CambiarEstadoSintomaComponent } from '../components/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
-import { CambiarStockComponent } from '../components/cambiar-stock/cambiar-stock.component';
-import { EditarRepuestoComponent } from '../components/editar-repuesto/editar-repuesto.component';
-import { AltaRepuestoComponent } from '../components/alta-repuesto/alta-repuesto.component';
-import { EditarArticuloComponent } from '../components/editar-articulo/editar-articulo.component';
-import { AltaArticuloComponent } from '../components/alta-articulo/alta-articulo/alta-articulo.component';
-import { EditarUsuarioComponent } from '../components/editar-usuario/editar-usuario.component';
+// import { AltaUsuarioComponent } from '../shared/dialogs/alta-usuario/alta-usuario.component';
+// import { CambiarEstadoReparacionComponent } from '../shared/dialogs/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
+// import { CambiarEstadoSintomaComponent } from '../shared/dialogs/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
+// import { CambiarStockComponent } from '../shared/dialogs/cambiar-stock/cambiar-stock.component';
+// import { EditarRepuestoComponent } from '../shared/dialogs/editar-repuesto/editar-repuesto.component';
+// import { AltaRepuestoComponent } from '../shared/dialogs/alta-repuesto/alta-repuesto.component';
+// import { EditarArticuloComponent } from '../shared/dialogs/editar-articulo/editar-articulo.component';
+// import { AltaArticuloComponent } from '../shared/dialogs/alta-articulo/alta-articulo.component';
+// import { EditarUsuarioComponent } from '../shared/dialogs/editar-usuario/editar-usuario.component';
 import { BackendComponent } from './backend/backend.component';
 import { HomeComponent } from './home/home.component';
 import { MatCardModule } from '@angular/material/card';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -35,16 +35,15 @@ import { MatCardModule } from '@angular/material/card';
     VerReparacionComponent,
     UsuariosComponent,
     ArticulosComponent,
-    AltasComponent,
-    AltaUsuarioComponent,
-    CambiarEstadoReparacionComponent,
-    CambiarEstadoSintomaComponent,
-    CambiarStockComponent,
-    EditarRepuestoComponent,
-    AltaRepuestoComponent,
-    EditarArticuloComponent,
-    AltaArticuloComponent,
-    EditarUsuarioComponent,
+    // AltaUsuarioComponent,
+    // CambiarEstadoReparacionComponent,
+    // CambiarEstadoSintomaComponent,
+    // CambiarStockComponent,
+    // EditarRepuestoComponent,
+    // AltaRepuestoComponent,
+    // EditarArticuloComponent,
+    // AltaArticuloComponent,
+    // EditarUsuarioComponent,
     BackendComponent,
     HomeComponent
   ],
@@ -52,7 +51,8 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    MatCardModule
+    MatCardModule,
+    SharedModule,
   ]
 })
 export class PagesModule { }

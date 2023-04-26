@@ -48,3 +48,33 @@ body {
 body {
   
 }
+
+.btn-primary {
+  background-color: #f42c04;
+  border-color: #e2856e;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #e2856e;
+  border-color: #f42c04;
+  color: #0f1a20;
+}
+
+
+
+table {
+  border-color: #0f1a20 !important;
+}
+
+table thead th {
+  background-color: #88a2aa !important;
+  text-align: center;
+}
+
+table tbody tr td{
+  text-align: center;
+}
+
+.form-control {
+  border: 1px solid #0f1a20;
+}

@@ -1,0 +1,46 @@
+<div class="mx-auto dialog-container">
+
+    <h3 class="text-center">Alta Usuario:</h3>
+
+    <form [formGroup]="formularioUsuario" (ngSubmit)="submitFormularioUsuario()" class="d-flex flex-column">
+
+        <label for="nombreUsuario" class="text-center">Nombre de usuario:</label>
+
+        <input type="text" id="nombreUsuario" formControlName="nombreUsuario">
+
+        <div *ngIf="formularioUsuario?.get('nombreUsuario')?.invalid && formularioUsuario?.get('nombreUsuario')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioUsuario?.get('nombreUsuario')?.errors?.['required']">El nombre de usuario es
+                obligatorio</div>
+        </div>
+
+        <label for="correoElectronico" class="text-center">Correo electrónico:</label>
+
+        <input type="email" id="correoElectronico" formControlName="correoElectronico">
+
+        <div *ngIf="formularioUsuario?.get('correoElectronico')?.invalid && formularioUsuario?.get('correoElectronico')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioUsuario?.get('correoElectronico')?.errors?.['required']">El correo electrónico es
+                obligatorio</div>
+            <div class="alert alert-danger position-absolute" *ngIf="formularioUsuario?.get('correoElectronico')?.errors?.['email']">El correo electrónico no es
+                válido</div>
+        </div>
+
+
+        <label for="perfil" class="text-center">Perfil:</label>
+
+        <select id="perfil" formControlName="perfil">
+
+            <option *ngFor="let opcion of opcionesPerfil" [value]="opcion.id_Perfil" class="text-center">{{opcion.descripcion_Perfil}}</option>
+
+        </select>
+
+        <div *ngIf="formularioUsuario?.get('perfil')?.invalid && formularioUsuario?.get('perfil')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioUsuario?.get('perfil')?.errors?.['required']">El perfil es obligatorio</div>
+        </div>
+
+        <button type="submit" [disabled]="formularioUsuario.invalid" class="btn btn-primary mx-auto mt-4">Crear usuario</button>
+
+    </form>
+</div>

@@ -2,7 +2,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConfirmBoxInitializer, DialogLayoutDisplay, AppearanceAnimation, DisappearanceAnimation, ToastNotificationInitializer, ToastPositionEnum, ToastProgressBarEnum, ToastUserViewTypeEnum } from '@costlydeveloper/ngx-awesome-popup';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +18,12 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.formLogin = this.formBuilder.group({
-      usuario: ['gestor', Validators.required],
-      password: ['gestor', Validators.required],
+      usuario: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
@@ -36,11 +39,16 @@ export class LoginComponent {
         .subscribe(resp => {
           var token = resp['token'];
           sessionStorage.setItem('token', token.token);
-
-
-
           this.router.navigate(['/administracion']);
-        });
+
+        },
+          error => {
+            if (error.status = 400) {
+              this.toastService.toastGenerator('Error!', 'Los datos son incorrectos.', 4)
+            }
+          })
     }
   }
+
+
 }

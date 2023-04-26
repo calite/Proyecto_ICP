@@ -7,3 +7,20 @@ header {
     color: aliceblue;
     font-size: 30px;
 }
+
+i:hover {
+    color: #f42c04;
+    cursor:pointer;
+}
+
+.btn-danger{
+    background-color: #f42c04;
+    border-color: #e2856e;
+}
+
+.btn-danger:hover {
+    background-color: #e2856e;
+    border-color: #f42c04;
+    color: #0f1a20;
+}
+

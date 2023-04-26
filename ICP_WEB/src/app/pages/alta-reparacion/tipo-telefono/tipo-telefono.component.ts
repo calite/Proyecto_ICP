@@ -38,7 +38,7 @@ export class TipoTelefonoComponent implements OnInit {
 
   //metodos para cargar datos desde la api
   cargarArticulos() {
-    this.apiService.getArticulos()
+    this.apiService.getArticulosVisibles()
       .subscribe(articulos => {
         this.articulosOpciones = articulos;
       });

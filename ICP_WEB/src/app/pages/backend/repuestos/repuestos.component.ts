@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
-import { EditarRepuestoComponent } from '../../../components/editar-repuesto/editar-repuesto.component';
-import { AltaRepuestoComponent } from '../../../components/alta-repuesto/alta-repuesto.component';
+import { EditarRepuestoComponent } from '../../../shared/dialogs/editar-repuesto/editar-repuesto.component';
+import { AltaRepuestoComponent } from '../../../shared/dialogs/alta-repuesto/alta-repuesto.component';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-repuestos',
@@ -23,6 +24,7 @@ export class RepuestosComponent implements OnInit {
     private apiService : ApiService,
     private editarRepuestoDialog: MatDialog,
     private altaRepuestoDialog: MatDialog,
+    private toastService : ToastService
   ) {
     this.token = sessionStorage.getItem('token');
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
@@ -49,6 +51,7 @@ export class RepuestosComponent implements OnInit {
     const dialogRef = this.altaRepuestoDialog.open(AltaRepuestoComponent);
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarRepuestos();
+      this.toastService.toastGenerator("Aviso", "Repuesto creado correctamente", 2)
     });
   }
 
@@ -67,6 +70,7 @@ export class RepuestosComponent implements OnInit {
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarRepuestos();
+      this.toastService.toastGenerator("Aviso", "Repuesto editado correctamente", 2)
     });
   }
 
@@ -74,9 +78,11 @@ export class RepuestosComponent implements OnInit {
     this.apiService.postCambiarEstadoRepuesto(IdRepuesto, this.token)
       .subscribe(response => {
         if(response == -1) {
-          alert('No se puede dar de baja un repuesto si aun queda stock')
+          this.toastService.toastGenerator("Error!", "No se puede dar de baja un repuesto si aun queda stock", 4)
+        } else {
+          this.cargarRepuestos()
+          this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
         }
-        this.cargarRepuestos()
       })
   }
   

@@ -34,6 +34,7 @@ export class AuthService {
                     sessionStorage.setItem('datos', JSON.stringify(this.usuario));
                     sessionStorage.setItem('token', respuesta['token']['token'])
                     this.usuarioActualSubject.next(respuesta['value']);
+                    window.location.reload();
                 })
             );
     }
@@ -47,6 +48,7 @@ export class AuthService {
         this.usuario = undefined;
         sessionStorage.clear();
         this.router.navigate(['./']);
+        window.location.reload();
     }
 
 }

@@ -6,7 +6,7 @@
 
     <form [formGroup]="formularioAltaReparacion" (ngSubmit)="submitFormularioAltaReparacion()">
 
-        
+
 
         <div class="row mt-4 d-flex justify-content-center">
             <div class="col-3 mt-4">
@@ -16,16 +16,16 @@
                 <input type="text" formControlName="recogida_calle" id="recogida_calle" name="recogida_calle"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_calle').invalid && formularioAltaReparacion.get('recogida_calle').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="numero">Número:</label>
-                <input type="text" formControlName="recogida_numero" id="recogida_numero" name="recogida_numero"
+                <input type="number" formControlName="recogida_numero" id="recogida_numero" name="recogida_numero"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_numero').invalid && formularioAltaReparacion.get('recogida_numero').touched">
                     Rellene los datos.
                 </div>
@@ -34,7 +34,7 @@
                 <input type="text" formControlName="recogida_poblacion" id="recogida_poblacion"
                     name="recogida_poblacion" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_poblacion').invalid && formularioAltaReparacion.get('recogida_poblacion').touched">
                     Rellene los datos.
                 </div>
@@ -43,16 +43,16 @@
                 <input type="text" formControlName="recogida_provincia" id="recogida_provincia"
                     name="recogida_provincia" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_provincia').invalid && formularioAltaReparacion.get('recogida_provincia').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="codigo_postal">Código Postal:</label>
-                <input type="text" formControlName="recogida_codigo_postal" id="recogida_codigo_postal"
+                <input type="number" formControlName="recogida_codigo_postal" id="recogida_codigo_postal"
                     name="recogida_codigo_postal" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_codigo_postal').invalid && formularioAltaReparacion.get('recogida_codigo_postal').touched">
                     Rellene los datos.
                 </div>
@@ -61,16 +61,16 @@
                 <input type="text" formControlName="recogida_persona_contacto" id="recogida_persona_contacto"
                     name="recogida_persona_contacto" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_persona_contacto').invalid && formularioAltaReparacion.get('recogida_persona_contacto').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="telefono">Teléfono:</label>
-                <input type="text" formControlName="recogida_telefono" id="recogida_telefono" name="recogida_telefono"
+                <input type="number" formControlName="recogida_telefono" id="recogida_telefono" name="recogida_telefono"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('recogida_telefono').invalid && formularioAltaReparacion.get('recogida_telefono').touched">
                     Rellene los datos.
                 </div>
@@ -79,7 +79,8 @@
             <div class="col-3">
 
                 <div>
-                    <input type="checkbox" formControlName="duplicar_valores" value="duplicarValores" (change)="duplicarValores()">
+                    <input type="checkbox" formControlName="duplicar_valores" value="duplicarValores"
+                        (change)="duplicarValores()">
                     <label for="duplicarValores">Duplicar datos</label>
                 </div>
 
@@ -89,16 +90,16 @@
                 <input type="text" formControlName="envio_calle" id="envio_calle" name="envio_calle"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_calle').invalid && formularioAltaReparacion.get('envio_calle').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="numero">Número:</label>
-                <input type="text" formControlName="envio_numero" id="envio_numero" name="envio_numero"
+                <input type="number" formControlName="envio_numero" id="envio_numero" name="envio_numero"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_numero').invalid && formularioAltaReparacion.get('envio_numero').touched">
                     Rellene los datos.
                 </div>
@@ -107,7 +108,7 @@
                 <input type="text" formControlName="envio_poblacion" id="envio_poblacion" name="envio_poblacion"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_poblacion').invalid && formularioAltaReparacion.get('envio_poblacion').touched">
                     Rellene los datos.
                 </div>
@@ -116,16 +117,16 @@
                 <input type="text" formControlName="envio_provincia" id="envio_provincia" name="envio_provincia"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger  position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_provincia').invalid && formularioAltaReparacion.get('envio_provincia').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="codigo_postal">Código Postal:</label>
-                <input type="text" formControlName="envio_codigo_postal" id="envio_codigo_postal"
+                <input type="number" formControlName="envio_codigo_postal" id="envio_codigo_postal"
                     name="envio_codigo_postal" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_codigo_postal').invalid && formularioAltaReparacion.get('envio_codigo_postal').touched">
                     Rellene los datos.
                 </div>
@@ -134,23 +135,24 @@
                 <input type="text" formControlName="envio_persona_contacto" id="envio_persona_contacto"
                     name="envio_persona_contacto" class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_persona_contacto').invalid && formularioAltaReparacion.get('envio_persona_contacto').touched">
                     Rellene los datos.
                 </div>
 
                 <label for="telefono">Teléfono:</label>
-                <input type="text" formControlName="envio_telefono" id="envio_telefono" name="envio_telefono"
+                <input type="number" formControlName="envio_telefono" id="envio_telefono" name="envio_telefono"
                     class="form-control" required>
 
-                <div class="alert alert-danger"
+                <div class="alert alert-danger position-absolute"
                     *ngIf="formularioAltaReparacion.get('envio_telefono').invalid && formularioAltaReparacion.get('envio_telefono').touched">
                     Rellene los datos.
                 </div>
             </div>
 
-            <div class="col-12 d-flex justify-content-center mt-4">
-                <button type="submit" [disabled]="formularioAltaReparacion.invalid" class="btn btn-primary">Enviar</button>
+            <div class="col-12 d-flex justify-content-end mt-4">
+                <button type="submit" [disabled]="formularioAltaReparacion.invalid"
+                    class="btn btn-primary">Enviar</button>
             </div>
 
         </div>

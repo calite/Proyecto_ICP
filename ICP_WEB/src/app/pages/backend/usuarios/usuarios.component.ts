@@ -3,8 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
-import { AltaUsuarioComponent } from '../../../components/alta-usuario/alta-usuario.component';
-import { EditarUsuarioComponent } from '../../../components/editar-usuario/editar-usuario.component';
+import { AltaUsuarioComponent } from '../../../shared/dialogs/alta-usuario/alta-usuario.component';
+import { EditarUsuarioComponent } from '../../../shared/dialogs/editar-usuario/editar-usuario.component';
+import { bindCallback } from 'rxjs';
 
 
 @Component({

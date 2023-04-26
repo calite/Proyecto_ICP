@@ -1,0 +1,22 @@
+.dialog-container {
+  width: 30vw;
+  height: auto;
+  padding: 50px;
+  background-color: rgb(233, 233, 233) !important;
+  border: 2px solid #0f1a20;
+}
+
+.btn-primary {
+  background-color: #f42c04;
+  border-color: #e2856e;
+}
+
+.btn-primary:hover {
+  background-color: #e2856e;
+  border-color: #f42c04;
+  color: #0f1a20;
+}
+
+.form-control {
+  border: 1px solid #0f1a20;
+}

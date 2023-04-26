@@ -1,0 +1,106 @@
+<div class="mx-auto dialog-container">
+
+    <h3 class="text-center">Editar Repuesto:</h3>
+
+    <form [formGroup]="formularioAltaRepuesto" (ngSubmit)="submitFormularioAltaRepuesto()" class="d-flex flex-column">
+
+        <label for="descripcionRepuesto" class="text-center">Descripción:</label>
+
+        <input type="text" id="descripcionRepuesto" formControlName="descripcionRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('descripcionRepuesto')?.invalid && formularioAltaRepuesto?.get('descripcionRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('descripcionRepuesto')?.errors?.['required']">La descripción del repuesto es obligatoria</div>
+        </div>
+
+
+        <label for="fabricanteRepuesto" class="text-center">Fabricante:</label>
+
+        <input type="text" id="fabricanteRepuesto" formControlName="fabricanteRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('fabricanteRepuesto')?.invalid && formularioAltaRepuesto?.get('fabricanteRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('fabricanteRepuesto')?.errors?.['required']">El fabricante del repuesto es
+                obligatorio</div>
+        </div>
+
+
+        <label for="pesoRepuesto" class="text-center">Peso:</label>
+
+        <input type="number" id="pesoRepuesto" formControlName="pesoRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('pesoRepuesto')?.invalid && formularioAltaRepuesto?.get('pesoRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('pesoRepuesto')?.errors?.['required']">El peso del repuesto es
+                obligatorio</div>
+        </div>
+
+
+        <label for="altoRepuesto" class="text-center">Alto:</label>
+
+        <input type="number" id="altoRepuesto" formControlName="altoRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('altoRepuesto')?.invalid && formularioAltaRepuesto?.get('altoRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('altoRepuesto')?.errors?.['required']">El alto del repuesto es
+                obligatorio</div>
+        </div>
+
+
+        <label for="largoRepuesto" class="text-center">Largo:</label>
+
+        <input type="number" id="largoRepuesto" formControlName="largoRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('largoRepuesto')?.invalid && formularioAltaRepuesto?.get('largoRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('largoRepuesto')?.errors?.['required']">El largo del repuesto es
+                obligatorio</div>
+        </div>
+
+
+        <label for="anchoRepuesto" class="text-center">Ancho:</label>
+
+        <input type="number" id="anchoRepuesto" formControlName="anchoRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('anchoRepuesto')?.invalid && formularioAltaRepuesto?.get('anchoRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('anchoRepuesto')?.errors?.['required']">El ancho del repuesto es
+                obligatorio</div>
+        </div>
+
+
+        <label for="imagenRepuesto" class="text-center">Imagen:</label>
+
+        <input type="text" id="imagenRepuesto" formControlName="imagenRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('imagenRepuesto')?.invalid && formularioAltaRepuesto?.get('imagenRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('imagenRepuesto')?.errors?.['required']">La imagen del repuesto es
+                obligatoria</div>
+        </div>
+
+
+        <label for="cantidadRepuesto" class="text-center">Cantidad:</label>
+
+        <input type="text" id="cantidadRepuesto" formControlName="cantidadRepuesto">
+
+        <div *ngIf="formularioAltaRepuesto?.get('cantidadRepuesto')?.invalid && formularioAltaRepuesto?.get('cantidadRepuesto')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('cantidadRepuesto')?.errors?.['required']">La cantidad del repuesto es
+                obligatoria</div>
+        </div>
+
+
+        <label for="sintoma" class="text-center">Descripción del sintoma:</label>
+
+        <input type="text" id="sintoma" formControlName="sintoma">
+
+        <div *ngIf="formularioAltaRepuesto?.get('sintoma')?.invalid && formularioAltaRepuesto?.get('sintoma')?.touched"
+            class="text-center">
+            <div class="alert alert-danger position-absolute" *ngIf="formularioAltaRepuesto?.get('sintoma')?.errors?.['required']">El sintoma es obligatorio</div>
+        </div>
+
+        <button type="submit" [disabled]="formularioAltaRepuesto.invalid" class="mx-auto mt-4 btn btn-primary">Crear Repuesto</button>
+
+    </form>
+</div>

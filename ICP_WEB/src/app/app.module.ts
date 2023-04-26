@@ -13,7 +13,12 @@ import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 
-
+import {
+  NgxAwesomePopupModule,
+  DialogConfigModule,
+  ConfirmBoxConfigModule,
+  ToastNotificationConfigModule
+} from '@costlydeveloper/ngx-awesome-popup';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,23 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     PagesModule,
     DialogModule,
-    MatCardModule
+    MatCardModule,
+    
+
+    NgxAwesomePopupModule.forRoot({
+      colorList: {
+        success: '#3caea3', // optional
+        info: '#2f8ee5', // optional
+        warning: '#ffc107', // optional
+        danger: '#e46464', // optional
+        customOne: '#3ebb1a', // optional
+        customTwo: '#bd47fa', // optional (up to custom five)
+      },
+    }),
+    ConfirmBoxConfigModule.forRoot(),
+
+    DialogConfigModule.forRoot(), // optional
+    ToastNotificationConfigModule.forRoot(), // optional
   ],
   exports: [
     AppRoutingModule,

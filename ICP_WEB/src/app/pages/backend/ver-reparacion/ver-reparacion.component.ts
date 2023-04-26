@@ -8,8 +8,9 @@ import { ReparacionSintoma } from 'src/app/core/interfaces/ReparacionSintoma.int
 import { Recogida } from 'src/app/core/interfaces/Recogida.interface';
 import { Envio } from 'src/app/core/interfaces/Envio.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { CambiarEstadoReparacionComponent } from '../../../components/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
-import { CambiarEstadoSintomaComponent } from '../../../components/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
+import { CambiarEstadoReparacionComponent } from '../../../shared/dialogs/cambiar-estado-reparacion/cambiar-estado-reparacion.component';
+import { CambiarEstadoSintomaComponent } from '../../../shared/dialogs/cambiar-estado-sintoma/cambiar-estado-sintoma.component';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-ver-reparacion',
@@ -29,7 +30,8 @@ export class VerReparacionComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private cambiarEstadoReparacionDialog: MatDialog
+    private cambiarEstadoReparacionDialog: MatDialog,
+    private toastService : ToastService
   ) {
     this.token = sessionStorage.getItem('token');
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
@@ -89,12 +91,12 @@ export class VerReparacionComponent implements OnInit {
     const dialogRef = this.cambiarEstadoReparacionDialog.open(CambiarEstadoReparacionComponent, {
       data: { 
         id_Reparacion: id_Reparacion,
-        //id_Estado  : id_Estado
       }
     });
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarDatosReparacion();
+      this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
     });
   }
 
@@ -105,6 +107,7 @@ export class VerReparacionComponent implements OnInit {
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarDatosReparacion();
+      this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
     });
   }
 

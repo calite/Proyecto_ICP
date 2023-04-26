@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
-import { CambiarStockComponent } from '../../../components/cambiar-stock/cambiar-stock.component';
+import { CambiarStockComponent } from '../../../shared/dialogs/cambiar-stock/cambiar-stock.component';
 
 @Component({
   selector: 'app-stocks',

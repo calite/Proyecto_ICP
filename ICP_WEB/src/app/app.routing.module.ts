@@ -7,7 +7,6 @@ import { StocksComponent } from './pages/backend/stocks/stocks.component';
 import { VerReparacionComponent } from './pages/backend/ver-reparacion/ver-reparacion.component';
 import { UsuariosComponent } from './pages/backend/usuarios/usuarios.component';
 import { ArticulosComponent } from './pages/backend/articulos/articulos.component';
-import { AltasComponent } from './pages/altas/altas.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { BackendComponent } from './pages/backend/backend.component';

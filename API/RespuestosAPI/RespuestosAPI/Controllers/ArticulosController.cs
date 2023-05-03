@@ -101,60 +101,95 @@ namespace RespuestosAPI.Controllers
 
         /*\
             * =====================================================
-            *                         VISTA
-            * =====================================================
-        \*/
-
-
-
-        /*\
-            * =====================================================
             *                          POST
             * =====================================================
         \*/
+
         [HttpPost("alta_articulo")]
         [AutorizacionPorPerfil(new string[] { "administrador" })]
-        public async Task AltaArticulo(ArticuloCreacionDTO a)
+        public async Task<ActionResult> AltaArticulo(ArticuloCreacionDTO a)
         {
             try
             {
-                SqlParameter[] parametros = new SqlParameter[5]
+                var marca = new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
                 {
-                    new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = a.Marca,
-                        Size = 50
-                    },
-                    new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = a.Modelo,
-                        Size = 50
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = a.Marca,
+                    Size = 50
                 };
 
-                string PA_ALTA_ARTICULO = "EXEC PA_ALTA_ARTICULO @MARCA,@MODELO,@INVOKER,@RETCODE,@MENSAJE";
+                var modelo = new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = a.Modelo,
+                    Size = 50
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[5]
+                {
+                    marca,
+                    modelo,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_ALTA_ARTICULO = "EXEC PA_ALTA_ARTICULO @MARCA,@MODELO,@INVOKER,@RETCODE OUTCODE,@MENSAJE OUTCODE";
 
                 await context.Database.ExecuteSqlRawAsync(PA_ALTA_ARTICULO, parametros);
 
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
@@ -172,35 +207,76 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe un ARTICULO con el ID: {request.IdArticulo}");
                 }
 
+                var idArticulo = new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdArticulo
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
                 SqlParameter[] parametros = new SqlParameter[4]
                 {
-                    new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdArticulo
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    idArticulo,
+                    invoker,
+                    retcode,
+                    mensaje
                  };
 
-                string PA_BAJA_ARTICULO = "EXEC PA_BAJA_ARTICULO @ID_ARTICULO,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_BAJA_ARTICULO = "EXEC PA_BAJA_ARTICULO @ID_ARTICULO,@INVOKER,@RETCODE OUTCODE,@MENSAJE OUTCODE";
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_BAJA_ARTICULO, parametros));
+                await context.Database.ExecuteSqlRawAsync(PA_BAJA_ARTICULO, parametros);
+                
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
@@ -218,41 +294,53 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe un ARTICULO con el ID: {a.Id_Articulo}");
                 }
 
+                var idArticulo = new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = a.Id_Articulo
+                };
+
+                var marca = new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = a.Marca,
+                    Size = 30
+                };
+
+                var modelo = new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = a.Modelo,
+                    Size = 30
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
                 SqlParameter[] parametros = new SqlParameter[6]
                 {
-                     new SqlParameter("@ID_ARTICULO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = a.Id_Articulo
-                    },
-                    new SqlParameter("@MARCA", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = a.Marca,
-                        Size = 30
-                    },
-                    new SqlParameter("@MODELO", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = a.Modelo,
-                        Size = 30
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    idArticulo,
+                    marca,
+                    modelo,
+                    invoker,
+                    retcode,
+                    mensaje
                  };
 
-                string PA_CAMBIAR_ARTICULO = "EXEC PA_CAMBIAR_ARTICULO @ID_ARTICULO,@MARCA,@MODELO,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_CAMBIAR_ARTICULO = "EXEC PA_CAMBIAR_ARTICULO @ID_ARTICULO,@MARCA,@MODELO,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
                 return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ARTICULO, parametros));
             }

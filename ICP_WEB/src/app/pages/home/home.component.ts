@@ -23,7 +23,7 @@ export class HomeComponent {
     } else {
       this.usuarioConectado = false;
     }
-    console.log(this.usuarioConectado)
+
   }
 
 }

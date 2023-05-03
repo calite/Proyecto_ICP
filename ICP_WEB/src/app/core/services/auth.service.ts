@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioPerfil } from '../interfaces/UsuarioPerfil.interface';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -42,6 +42,22 @@ export class AuthService {
     comprobarAutenticacion(): Observable<boolean> {
         if (!sessionStorage.getItem('token')) return of(false)
         return of(true)
+    }
+
+    postResetPassword(Id_Usuario : number, Password : string, token : string) {
+        var httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            })
+        };
+
+        const url = `${this.apiUrl}usuarios/reset_password`;
+        const body = {
+            Id_Usuario: Id_Usuario,
+            Password: Password,
+        };
+        return this.http.post(url, body, httpOptions);
     }
 
     logout() {

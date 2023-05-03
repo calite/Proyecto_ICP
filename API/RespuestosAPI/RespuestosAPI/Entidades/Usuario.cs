@@ -11,6 +11,7 @@ namespace RespuestosAPI.Entidades
         public int Id_Perfil { get; set; }
         public int Activo { get; set; }
         public string Salt { get; set; }
+        public int Reset_Password { get; set; }
 
     }
 }

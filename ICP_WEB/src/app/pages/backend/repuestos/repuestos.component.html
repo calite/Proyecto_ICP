@@ -39,7 +39,7 @@
                         <td>{{ repuesto.alto }}</td>
                         <td>{{ repuesto.largo }}</td>
                         <td>{{ repuesto.ancho }}</td>
-                        <td>{{ repuesto.imagen }}</td>
+                        <td><img class="imgRepuesto" [src]="decodeImg64(repuesto.imagen!)"></td>
                         <td>{{ repuesto.activo }}</td>
                         <td *ngIf="repuesto.activo">
                             <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"

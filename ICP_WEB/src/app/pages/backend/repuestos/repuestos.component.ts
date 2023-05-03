@@ -6,6 +6,7 @@ import { Repuesto } from 'src/app/core/interfaces/Repuesto.interface';
 import { EditarRepuestoComponent } from '../../../shared/dialogs/editar-repuesto/editar-repuesto.component';
 import { AltaRepuestoComponent } from '../../../shared/dialogs/alta-repuesto/alta-repuesto.component';
 import { ToastService } from '../../../core/services/toast.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-repuestos',
@@ -16,35 +17,36 @@ export class RepuestosComponent implements OnInit {
 
   repuestos !: Repuesto[];
   repuesto !: Repuesto;
-  private token : string;
+  private token: string;
   private datosUsuario;
 
 
   constructor(
-    private apiService : ApiService,
+    private apiService: ApiService,
     private editarRepuestoDialog: MatDialog,
     private altaRepuestoDialog: MatDialog,
-    private toastService : ToastService
+    private toastService: ToastService,
+    private sanitizer: DomSanitizer
   ) {
     this.token = sessionStorage.getItem('token');
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
-   }
+  }
 
   ngOnInit() {
-    
+
     this.cargarRepuestos()
 
   }
 
-  perfilActual(){
+  perfilActual() {
     return this.datosUsuario['id_Perfil'];
   }
 
   cargarRepuestos() {
     this.apiService.getRepuestos(this.token)
-    .subscribe( repuestos => {
-      this.repuestos = repuestos;
-    });
+      .subscribe(repuestos => {
+        this.repuestos = repuestos;
+      });
   }
 
   crearRepuesto() {
@@ -55,15 +57,15 @@ export class RepuestosComponent implements OnInit {
     });
   }
 
-  editarRepuesto(id_Repuesto : number) {
+  editarRepuesto(id_Repuesto: number) {
     this.repuestos.forEach((repuesto) => {
       if (repuesto.id_Repuesto === id_Repuesto) {
         this.repuesto = repuesto;
       }
     });
 
-    const dialogRef = this.editarRepuestoDialog.open(EditarRepuestoComponent, { 
-      data: { 
+    const dialogRef = this.editarRepuestoDialog.open(EditarRepuestoComponent, {
+      data: {
         repuesto: this.repuesto
       }
     });
@@ -74,17 +76,18 @@ export class RepuestosComponent implements OnInit {
     });
   }
 
-  cambiarEstadoRepuesto(IdRepuesto : number) {
+  cambiarEstadoRepuesto(IdRepuesto: number) {
     this.apiService.postCambiarEstadoRepuesto(IdRepuesto, this.token)
       .subscribe(response => {
-        if(response == -1) {
-          this.toastService.toastGenerator("Error!", "No se puede dar de baja un repuesto si aun queda stock", 4)
-        } else {
           this.cargarRepuestos()
           this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
-        }
       })
   }
-  
+
+
+  decodeImg64(img: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64, ${img}`);
+  }
+
 
 }

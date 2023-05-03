@@ -74,9 +74,15 @@ namespace RespuestosAPI.Controllers
         [HttpGet("perfiles")]
         public async Task<List<PerfilDTO>> GetPerfiles()
         {
-            var perfil = await context.PERFILES.ToListAsync();
-
-            return mapper.Map<List<PerfilDTO>>(perfil);
+            try
+            {
+                var perfil = await context.PERFILES.ToListAsync();
+                return mapper.Map<List<PerfilDTO>>(perfil);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /*\
@@ -239,6 +245,7 @@ namespace RespuestosAPI.Controllers
             }
 
         }
+
         [HttpPost("editar_usuario")]
         [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> CambiarUsuario([FromBody] CambiarDatosUsuarioRequest request)
@@ -359,6 +366,7 @@ namespace RespuestosAPI.Controllers
                 });
             }
         }
+
         [HttpPost("baja_usuario")]
         [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> BajaUsuario(CambiarEstadoUsuarioRequest request)
@@ -377,14 +385,17 @@ namespace RespuestosAPI.Controllers
                     Direction = System.Data.ParameterDirection.Input,
                     Value = request.Id_Usuario,
                 };
+
                 var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
                 {
                     Direction = System.Data.ParameterDirection.Output,
                 };
+
                 var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
                 {
                     Direction = System.Data.ParameterDirection.Output,
                 };
+
                 var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
                 {
                     Direction = System.Data.ParameterDirection.Output,
@@ -545,8 +556,111 @@ namespace RespuestosAPI.Controllers
             }
         }
 
+        [HttpPost("reset_password")]
+        [AutorizacionPorPerfil(new string[] { "administrador","operador","gestor" })]
+        public async Task<ActionResult> ReiniciarPassword([FromBody] ResetPasswordRequest request)
+        {
+            try
+            {
+                var existeUsuario = await context.USUARIOS.AnyAsync(x => x.Id_Usuario == request.Id_Usuario);
+
+                if (!existeUsuario)
+                {
+                    return BadRequest($"No existe un usuario con el ID: {request.Id_Usuario}");
+                }
+
+                //generado de hash de contraseña
+                var cifrado = hashService.Hash(request.Password);
+
+                var idUsuario = new SqlParameter("@ID_USUARIO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Id_Usuario,
+                };
+               
+                var password = new SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = cifrado.Hash,
+                    Size = 500
+                };
+                
+                var salt = new SqlParameter("@SALT", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = Convert.ToBase64String(cifrado.Sal),
+                    Size = 500
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[6]
+               {
+                    idUsuario,
+                    password,
+                    salt,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_RESET_PASSWORD = "EXEC PA_RESET_PASSWORD @ID_USUARIO, @PASSWORD, @SALT, @INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_RESET_PASSWORD, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
 
 
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
+            }
+        }
 
     }
 }

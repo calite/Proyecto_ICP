@@ -74,9 +74,15 @@ namespace RespuestosAPI.Controllers
         [AllowAnonymous]
         public async Task<List<SintomaDTO>> GetSintomas()
         {
-            var sintoma = await context.SINTOMAS.ToListAsync();
-
-            return mapper.Map<List<SintomaDTO>>(sintoma);
+            try
+            {
+                var sintoma = await context.SINTOMAS.ToListAsync();
+                return mapper.Map<List<SintomaDTO>>(sintoma);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         
         /*\
@@ -343,43 +349,84 @@ namespace RespuestosAPI.Controllers
                 {
                     return BadRequest($"No existe una Reparacion con ese ID de reparacion: {request.IdReparacion}");
                 }
-                
+
+                var IdReparacion = new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdReparacion
+                };
+                var IdEstadoReparacion = new SqlParameter("@ID_ESTADO_REPARACION", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdEstadoReparacion
+                };
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+
+
+
                 SqlParameter[] parametros = new SqlParameter[5]
                 {
-                    new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdReparacion
-                    },
-                    new SqlParameter("@ID_ESTADO_REPARACION", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdEstadoReparacion
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    IdReparacion,
+                    IdEstadoReparacion,
+                    invoker,
+                    retcode,
+                    mensaje
                  };
 
-                string PA_CAMBIAR_ESTADO_REPARACION = "EXEC PA_CAMBIAR_ESTADO_REPARACION @ID_REPARACION,@ID_ESTADO_REPARACION,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_CAMBIAR_ESTADO_REPARACION = "EXEC PA_CAMBIAR_ESTADO_REPARACION @ID_REPARACION,@ID_ESTADO_REPARACION,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_REPARACION, parametros));
+                await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_REPARACION, parametros);
 
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 
@@ -397,47 +444,93 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe una Reparacion con ese ID de reparacion: {request.IdReparacion}");
                 }
 
+                var IdReparacionSintomaEstado = new SqlParameter("@ID_REPARACION_SINTOMA_ESTADO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdReparacionSintomaEstado
+                };
+
+                var IdReparacion = new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdReparacion
+                };
+
+                var IdEstadoSintoma = new SqlParameter("@ID_ESTADO_SINTOMA", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdEstadoSintoma
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+
+
                 SqlParameter[] parametros = new SqlParameter[6]
                 {
-                    new SqlParameter("@ID_REPARACION_SINTOMA_ESTADO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdReparacionSintomaEstado
-                    },
-                    new SqlParameter("@ID_REPARACION", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdReparacion
-                    },
-                    new SqlParameter("@ID_ESTADO_SINTOMA", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdEstadoSintoma
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    IdReparacionSintomaEstado,
+                    IdReparacion,
+                    IdEstadoSintoma,
+                    invoker,
+                    retcode,
+                    mensaje
                  };
 
-                string PA_CAMBIAR_ESTADO_SINTOMA = "EXEC PA_CAMBIAR_ESTADO_SINTOMA @ID_REPARACION_SINTOMA_ESTADO,@ID_REPARACION,@ID_ESTADO_SINTOMA,@INVOKER,@RETCODE,@MENSAJE";
+                string PA_CAMBIAR_ESTADO_SINTOMA = "EXEC PA_CAMBIAR_ESTADO_SINTOMA @ID_REPARACION_SINTOMA_ESTADO,@ID_REPARACION,@ID_ESTADO_SINTOMA,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_SINTOMA, parametros));
+                await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_ESTADO_SINTOMA, parametros);
 
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
 

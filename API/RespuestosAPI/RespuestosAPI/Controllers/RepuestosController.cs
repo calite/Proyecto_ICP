@@ -30,8 +30,8 @@ namespace RespuestosAPI.Controllers
          *                         GET
          * =====================================================
         \*/
-        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("all")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         public async Task<ActionResult<RepuestoDTO>> GetTodosLosRepuestos()
         {
             try
@@ -50,8 +50,8 @@ namespace RespuestosAPI.Controllers
                 throw e;
             }
         }
-        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("{IdRepuesto:int}")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         public async Task<ActionResult<RepuestoDTO>> GetRepuestoPorId(int IdRepuesto)
         {
             try
@@ -77,8 +77,8 @@ namespace RespuestosAPI.Controllers
          *                         VISTA
          * =====================================================
         \*/
-        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpGet("stock")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         public async Task<ActionResult<IEnumerable<StockRepuesto>>> GetStockRepuestos()
         {
             try
@@ -104,8 +104,8 @@ namespace RespuestosAPI.Controllers
          *                          POST
          * =====================================================
         \*/
-        [AutorizacionPorPerfil(new string[] { "administrador" })]
         [HttpPost("alta_repuesto")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> AltaRepuesto(RepuestoCreacionDTO r)
         {//string descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen, int cantidad
             try
@@ -235,85 +235,139 @@ namespace RespuestosAPI.Controllers
             }
 
         }
-        [AutorizacionPorPerfil(new string[] { "administrador" })]
         [HttpPost("editar_repuesto")]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> EditarRepuesto(RepuestoEdicionDTO r)
         {//string id, descripcionRepuesto, string fabricante, int peso, int alto, int largo, int ancho, string imagen
             try
             {
-                SqlParameter[] parametros = new SqlParameter[11]
+                var idRepuesto = new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
                 {
-                     new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Id_Repuesto
-                    },
-                    new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Descripcion_Repuesto,
-                        Size = 50
-                    },
-                    new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Fabricante,
-                        Size = 50
-                    },
-                    new SqlParameter("@PESO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Peso
-                    },
-                    new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Alto
-                    },
-                    new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Largo
-                    },
-                    new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Ancho,
-                    },
-                    new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = r.Imagen,
-                        Size = 200
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 8000
-                    }
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Id_Repuesto
                 };
 
-                string PA_EDITAR_REPUESTO = "EXEC PA_EDITAR_REPUESTO @ID_REPUESTO,@DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@INVOKER,@RETCODE,@MENSAJE";
+                var descripcionRepuesto = new SqlParameter("@DESCRIPCION_REPUESTO", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Descripcion_Repuesto,
+                    Size = 50
+                };
 
-                return Ok(await context.Database.ExecuteSqlRawAsync(PA_EDITAR_REPUESTO, parametros));
+                var fabricante = new SqlParameter("@FABRICANTE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Fabricante,
+                    Size = 50
+                };
 
+                var peso = new SqlParameter("@PESO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Peso
+                };
+
+                var alto = new SqlParameter("@ALTO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Alto
+                };
+
+                var largo = new SqlParameter("@LARGO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Largo
+                };
+
+                var ancho = new SqlParameter("@ANCHO", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Ancho,
+                };
+
+                var imagen = new SqlParameter("@IMAGEN", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = r.Imagen,
+                    Size = int.MaxValue
+                };
+
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[11]
+                {
+                    idRepuesto,
+                    descripcionRepuesto,
+                    fabricante,
+                    peso,
+                    alto,
+                    largo,
+                    ancho,
+                    imagen,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_EDITAR_REPUESTO = "EXEC PA_EDITAR_REPUESTO @ID_REPUESTO,@DESCRIPCION_REPUESTO,@FABRICANTE,@PESO,@ALTO,@LARGO,@ANCHO,@IMAGEN,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
+
+                await context.Database.ExecuteSqlRawAsync(PA_EDITAR_REPUESTO, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
-        [AutorizacionPorPerfil(new string[] { "administrador"})]
         [HttpPost("baja_repuesto")]
+        [AutorizacionPorPerfil(new string[] { "administrador"})]
         public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {
             try
@@ -325,40 +379,83 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe un repuesto con el ID: {request.IdRepuesto}");
                 }
 
-                SqlParameter[] parametros = new SqlParameter[4]
+                var idRepuesto = new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
                 {
-                    new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdRepuesto
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                    }
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdRepuesto
                 };
 
-                string PA_BAJA_REPUESTO = "EXEC PA_BAJA_REPUESTO @ID_REPUESTO, @INVOKER, @RETCODE, @MENSAJE";
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_BAJA_REPUESTO, parametros));
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+
+
+                SqlParameter[] parametros = new SqlParameter[4]
+                {
+                    idRepuesto,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_BAJA_REPUESTO = "EXEC PA_BAJA_REPUESTO @ID_REPUESTO, @INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+                context.Database.ExecuteSqlRaw(PA_BAJA_REPUESTO, parametros);
+                
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
 
         }
-        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         [HttpPost("cambiar_stocks")]
+        [AutorizacionPorPerfil(new string[] { "administrador", "gestor" })]
         public async Task<ActionResult> CambiarStock([FromBody] CambiarStockRequest request)
         {
             try
@@ -370,45 +467,84 @@ namespace RespuestosAPI.Controllers
                     return BadRequest($"No existe un REPUESTO con el ID: {request.IdRepuesto}");
                 }
 
-                SqlParameter[] parametros = new SqlParameter[5]
+                var idRepuesto = new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
                 {
-                    new SqlParameter("@ID_REPUESTO", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.IdRepuesto
-                    },
-                    new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = request.Cantidad
-                    },
-                    new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                    },
-                    new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
-                    {
-                        Direction = System.Data.ParameterDirection.Output,
-                        Size = 2000
-                        
-                    }
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.IdRepuesto
                 };
 
-                string PA_CAMBIAR_STOCK = "EXEC PA_CAMBIAR_STOCK @ID_REPUESTO, @CANTIDAD, @INVOKER, @RETCODE, @MENSAJE";
+                var cantidad = new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = request.Cantidad
+                };
 
-                var resp = context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK, parametros);
-                 
-                
+                var invoker = new SqlParameter("@INVOKER", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
 
-                return Ok(context.Database.ExecuteSqlRaw(PA_CAMBIAR_STOCK, parametros));
+                var retcode = new SqlParameter("@RETCODE", System.Data.SqlDbType.Int)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                var mensaje = new SqlParameter("@MENSAJE", System.Data.SqlDbType.VarChar)
+                {
+                    Direction = System.Data.ParameterDirection.Output,
+                    Size = 8000
+                };
+
+                SqlParameter[] parametros = new SqlParameter[5]
+                {
+                    idRepuesto,
+                    cantidad,
+                    invoker,
+                    retcode,
+                    mensaje
+                };
+
+                string PA_CAMBIAR_STOCK = "EXEC PA_CAMBIAR_STOCK @ID_REPUESTO, @CANTIDAD, @INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
+
+
+                await context.Database.ExecuteSqlRawAsync(PA_CAMBIAR_STOCK, parametros);
+
+                if ((int)retcode.Value > 0)
+                {
+                    return BadRequest(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value == 0)
+                {
+                    return base.Ok(new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value
+                    });
+                }
+
+                if ((int)retcode.Value < 0)
+                {
+                    return StatusCode(500, new ResponseWrapper<bool, bool>()
+                    {
+                        Mensaje = mensaje.Value.ToString(),
+                        RetCode = (int)retcode.Value,
+                    });
+                }
+
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return StatusCode(500, new ResponseWrapper<bool, bool>()
+                {
+                    Mensaje = e.Message,
+                    RetCode = -1
+                });
             }
         }
     }

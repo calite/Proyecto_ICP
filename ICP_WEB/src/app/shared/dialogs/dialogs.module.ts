@@ -12,6 +12,7 @@ import { CambiarStockComponent } from './cambiar-stock/cambiar-stock.component';
 import { EditarArticuloComponent } from './editar-articulo/editar-articulo.component';
 import { EditarRepuestoComponent } from './editar-repuesto/editar-repuesto.component';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -25,7 +26,8 @@ import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.componen
     CambiarStockComponent,
     EditarArticuloComponent,
     EditarRepuestoComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    ResetPasswordComponent
   ],
   imports: [
     ReactiveFormsModule,

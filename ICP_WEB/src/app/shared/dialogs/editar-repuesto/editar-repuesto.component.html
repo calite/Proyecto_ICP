@@ -65,7 +65,7 @@
 
         <label for="imagenRepuesto" class="text-center">Imagen:</label>
 
-        <input type="text" id="imagenRepuesto" formControlName="imagenRepuesto">
+        <input type="file" accept="image/png, image/jpeg, image/png" id="imagenRepuesto" formControlName="imagenRepuesto" (change)="handleFileSelect($event)">
 
         <div *ngIf="formularioEditarRepuesto?.get('imagenRepuesto')?.invalid && formularioEditarRepuesto?.get('imagenRepuesto')?.touched"
             class="text-center">

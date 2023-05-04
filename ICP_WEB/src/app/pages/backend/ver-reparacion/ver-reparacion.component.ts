@@ -23,18 +23,22 @@ export class VerReparacionComponent implements OnInit {
   sintomas !: ReparacionSintoma[];
   recogida !: Recogida;
   envio !: Envio;
-  private token : string;
+  private token: string;
   private datosUsuario;
+
+
+  puedeEnviarse: boolean = false;
 
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private cambiarEstadoReparacionDialog: MatDialog,
-    private toastService : ToastService
+    private toastService: ToastService
   ) {
     this.token = sessionStorage.getItem('token');
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
+    //this.esPosibleEnviar()
   }
 
   ngOnInit(): void {
@@ -44,7 +48,7 @@ export class VerReparacionComponent implements OnInit {
 
   }
 
-  perfilActual(){
+  perfilActual() {
     return this.datosUsuario['id_Perfil'];
   }
 
@@ -54,7 +58,7 @@ export class VerReparacionComponent implements OnInit {
         switchMap(({ id_Reparacion }) => this.apiService.getReparacionDetalles(id_Reparacion, this.token)) //operadores rx
       )
       .subscribe(reparacion => {
-        this.reparacion = reparacion;      
+        this.reparacion = reparacion;
       });
 
     this.activatedRoute.params
@@ -74,7 +78,7 @@ export class VerReparacionComponent implements OnInit {
       )
       .subscribe(recogida => {
         this.recogida = recogida;
-        
+
       });
 
     this.activatedRoute.params
@@ -86,11 +90,31 @@ export class VerReparacionComponent implements OnInit {
       });
   }
 
+  esPosibleEnviar() {
+
+    //console.log(this.sintomas)
+
+    var contador = 0;
+
+    this.sintomas.forEach(element => {
+      if (element.estado == 'REPARADO') {
+        contador++;
+      }
+    });
+
+    if(contador == this.sintomas.length ) this.puedeEnviarse = true;
+    else this.puedeEnviarse = false
+
+  }
+
   cambiarEstadoReparacion(id_Reparacion: number) {
-    
+
+    this.esPosibleEnviar()
+
     const dialogRef = this.cambiarEstadoReparacionDialog.open(CambiarEstadoReparacionComponent, {
-      data: { 
+      data: {
         id_Reparacion: id_Reparacion,
+        puedeEnviarse: this.puedeEnviarse
       }
     });
 
@@ -100,7 +124,7 @@ export class VerReparacionComponent implements OnInit {
     });
   }
 
-  cambiarEstadoSintoma(id_Reparacion_Sintoma_Estado: number,id_Reparacion : number) {
+  cambiarEstadoSintoma(id_Reparacion_Sintoma_Estado: number, id_Reparacion: number) {
     const dialogRef = this.cambiarEstadoReparacionDialog.open(CambiarEstadoSintomaComponent, {
       data: { id_Reparacion_Sintoma_Estado: id_Reparacion_Sintoma_Estado, id_Reparacion: id_Reparacion }
     });

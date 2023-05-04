@@ -147,7 +147,7 @@ namespace RespuestosAPI.Controllers
                 {
                     Direction = System.Data.ParameterDirection.Input,
                     Value = r.Imagen,
-                    Size = 200
+                    Size = int.MaxValue
                 };
                 var cantidad = new SqlParameter("@CANTIDAD", System.Data.SqlDbType.Int)
                 {
@@ -367,7 +367,7 @@ namespace RespuestosAPI.Controllers
 
         }
         [HttpPost("baja_repuesto")]
-        [AutorizacionPorPerfil(new string[] { "administrador"})]
+        [AutorizacionPorPerfil(new string[] { "administrador" })]
         public async Task<ActionResult> BajaRepuesto(CambiarEstadoRepuestoRequest request)
         {
             try

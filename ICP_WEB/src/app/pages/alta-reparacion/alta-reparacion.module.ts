@@ -5,6 +5,10 @@ import { SintomasComponent } from './sintomas/sintomas.component';
 import { TransporteComponent } from './transporte/transporte.component';
 import { AltaReparacionRoutingModule } from './alta-reparacion-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -17,7 +21,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    AltaReparacionRoutingModule
+    AltaReparacionRoutingModule,
+    SharedModule,
+    MatIconModule,
+    MatDialogModule,
+    MatTooltipModule,
   ]
 })
 export class AltaReparacionModule { }

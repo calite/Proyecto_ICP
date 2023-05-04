@@ -31,6 +31,8 @@ namespace RespuestosAPI.Utilidades
             CreateMap<EstadoReparacionDTO, EstadoReparacion>().ReverseMap();
 
             CreateMap<EstadoSintomaDTO, EstadoSintoma>().ReverseMap();
+
+            CreateMap<PuntosRecogidaDTO, PuntosRecogida>().ReverseMap();
         }
 
     }

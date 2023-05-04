@@ -150,7 +150,7 @@ namespace RespuestosAPI.Controllers
                     mensaje
                 };
 
-                string PA_ALTA_ARTICULO = "EXEC PA_ALTA_ARTICULO @MARCA,@MODELO,@INVOKER,@RETCODE OUTCODE,@MENSAJE OUTCODE";
+                string PA_ALTA_ARTICULO = "EXEC PA_ALTA_ARTICULO @MARCA,@MODELO,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
                 await context.Database.ExecuteSqlRawAsync(PA_ALTA_ARTICULO, parametros);
 
@@ -237,7 +237,7 @@ namespace RespuestosAPI.Controllers
                     mensaje
                  };
 
-                string PA_BAJA_ARTICULO = "EXEC PA_BAJA_ARTICULO @ID_ARTICULO,@INVOKER,@RETCODE OUTCODE,@MENSAJE OUTCODE";
+                string PA_BAJA_ARTICULO = "EXEC PA_BAJA_ARTICULO @ID_ARTICULO,@INVOKER,@RETCODE OUTPUT,@MENSAJE OUTPUT";
 
                 await context.Database.ExecuteSqlRawAsync(PA_BAJA_ARTICULO, parametros);
                 

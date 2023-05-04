@@ -71,7 +71,7 @@ AS
 		IF @ANCHO < 0
 		IF @CANTIDAD < 0
 		BEGIN
-			SET @RETCODE = 20
+			SET @RETCODE = 40
 			SET @MENSAJE = 'No puede contener numeros negativos'
 			RETURN
 		END

@@ -7,10 +7,19 @@
     <form [formGroup]="formularioAltaReparacion" (ngSubmit)="submitFormularioAltaReparacion()">
 
 
-
         <div class="row mt-4 d-flex justify-content-center">
+
             <div class="col-3 mt-4">
-                <h5>Recogida</h5>
+
+                <div class="d-flex flex-row align-items-center justify-content-evenly">
+                    <h5>Recogida</h5>
+                    <button class="btn btn-primary" matTooltip="Mapa" (click)="abrirMapaRecogida()">
+                        <mat-icon>map</mat-icon>
+                    </button>
+                    <button class="btn btn-primary" matTooltip="Puntos de recogida">
+                        <mat-icon>local_shipping</mat-icon>
+                    </button>
+                </div>
 
                 <label for="calle">Calle:</label>
                 <input type="text" formControlName="recogida_calle" id="recogida_calle" name="recogida_calle"
@@ -84,7 +93,16 @@
                     <label for="duplicarValores">Duplicar datos</label>
                 </div>
 
-                <h5>Envio</h5>
+                <div class="d-flex flex-row align-items-center justify-content-evenly">
+                    <h5>Envio</h5>
+                    <button class="btn btn-primary" matTooltip="Mapa" (click)="abrirMapaEnvio()" [disabled]="!escoderBotones">
+                        <mat-icon>map</mat-icon>
+                    </button>
+                    <button class="btn btn-primary" matTooltip="Puntos de recogida" [disabled]="!escoderBotones">
+                        <mat-icon>local_shipping</mat-icon>
+                    </button>
+                </div>
+
 
                 <label for="calle">Calle:</label>
                 <input type="text" formControlName="envio_calle" id="envio_calle" name="envio_calle"

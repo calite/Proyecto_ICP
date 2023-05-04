@@ -6,18 +6,29 @@
 
         <label for="estado" class="text-center">Estado:</label>
 
-        <select id="estado" formControlName="estado">
+        <select *ngIf="puedeEnviarse" id="estado" formControlName="estado">
 
-            <option *ngFor="let opcion of opcionesEstado" [value]="opcion.id_Estado_Reparacion" class="text-center">{{opcion.descripcion_Estado}}</option>
+                <option *ngFor="let opcion of opcionesEstado" [value]="opcion.id_Estado_Reparacion"
+                class="text-center">{{opcion.descripcion_Estado}}</option>
 
         </select>
 
+        <select *ngIf="!puedeEnviarse" id="estado" formControlName="estado">
+
+            <option *ngFor="let opcion of opcionesEstado" [value]="opcion.id_Estado_Reparacion"
+            [disabled]="opcion.id_Estado_Reparacion == 404 || opcion.id_Estado_Reparacion == 505"
+            class="text-center">{{opcion.descripcion_Estado}}</option>
+
+    </select>
+
         <div *ngIf="formularioReparacion?.get('estado')?.invalid && formularioReparacion?.get('estado')?.touched"
             class="text-center">
-            <div class="alert alert-danger position-absolute" *ngIf="formularioReparacion?.get('estado')?.errors?.['required']">El estado es obligatorio</div>
+            <div class="alert alert-danger position-absolute"
+                *ngIf="formularioReparacion?.get('estado')?.errors?.['required']">El estado es obligatorio</div>
         </div>
 
-        <button type="submit" [disabled]="formularioReparacion.invalid" class="mx-auto mt-4 btn btn-primary">Actualizar Estado</button>
+        <button type="submit" [disabled]="formularioReparacion.invalid" class="mx-auto mt-4 btn btn-primary">Actualizar
+            Estado</button>
 
     </form>
 </div>

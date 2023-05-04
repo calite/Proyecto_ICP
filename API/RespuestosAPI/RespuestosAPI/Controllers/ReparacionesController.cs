@@ -84,7 +84,26 @@ namespace RespuestosAPI.Controllers
                 throw e;
             }
         }
-        
+
+        [HttpGet("puntos_recogida")]
+        [AllowAnonymous]
+        public async Task<List<EstadoReparacionDTO>> GetPuntosRecogida()
+        {
+            try
+            {
+                var puntoRecogida = await context.PUNTOS_RECOGIDA
+                    .ToListAsync();
+
+                return mapper.Map<List<EstadoReparacionDTO>>(puntoRecogida);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
         /*\
          * =====================================================
          *                         VISTAS

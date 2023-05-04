@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { GeoCode } from 'src/app/core/interfaces/geocode.interface';
 import { ApiService } from 'src/app/core/services/api.service';
+import { ReverseGeocodeService } from 'src/app/core/services/reverse-geocode.service';
+import { MapDialogComponent } from '../../../shared/dialogs/map-dialog/map-dialog.component';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-transporte',
@@ -11,11 +17,16 @@ import { ApiService } from 'src/app/core/services/api.service';
 export class TransporteComponent {
 
   formularioAltaReparacion: FormGroup;
+  direccionRecogida: GeoCode;
+  escoderBotones = false;
 
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
-    private router : Router
+    private router: Router,
+    private mapDialog: MatDialog,
+    private geoCodeService: ReverseGeocodeService,
+    private toastService: ToastService
   ) { // se genera el form en el constructor
     this.formularioAltaReparacion = this.formBuilder.group({
 
@@ -28,7 +39,7 @@ export class TransporteComponent {
       recogida_codigo_postal: [localStorage.getItem('Recogida_Codigo_Postal'), Validators.required],
       recogida_persona_contacto: [localStorage.getItem('Recogida_Persona_Contacto'), Validators.required],
       recogida_telefono: [localStorage.getItem('Recogida_Telefono'), Validators.required],
-      
+
       envio_calle: [localStorage.getItem('Envio_Calle'), Validators.required],
       envio_numero: [localStorage.getItem('Envio_Numero'), Validators.required],
       envio_poblacion: [localStorage.getItem('Envio_Poblacion'), Validators.required],
@@ -43,6 +54,9 @@ export class TransporteComponent {
   }
 
   duplicarValores() {
+
+    if(!this.escoderBotones)this.escoderBotones = true
+    else this.escoderBotones = false
 
     if (this.formularioAltaReparacion.controls.duplicar_valores.value) {
       this.formularioAltaReparacion.controls.envio_calle.setValue(this.formularioAltaReparacion.controls.recogida_calle.value)
@@ -120,35 +134,78 @@ export class TransporteComponent {
       json['Envio_Codigo_Postal'] = this.formularioAltaReparacion.controls.envio_codigo_postal.value;
       json['Envio_Persona_Contacto'] = this.formularioAltaReparacion.controls.envio_persona_contacto.value;
       json['Envio_Telefono'] = this.formularioAltaReparacion.controls.envio_telefono.value;
-      
+
       //sintomas
       let sintomasCache = JSON.parse(localStorage.getItem('Sintomas'))
       let sintomasSeleccionados = [];
       let repuestosCache = JSON.parse(localStorage.getItem('Repuestos'))
       let repuestosNecesarios = [];
-      
+
       for (let i = 0; i < sintomasCache.length; i++) {
-        
-        if(sintomasCache[i] != 0){
+
+        if (sintomasCache[i] != 0) {
           sintomasSeleccionados.push(sintomasCache[i])
           repuestosNecesarios.push(repuestosCache[i])
         }
 
       }
-      
+
       json['Sintomas'] = sintomasSeleccionados
       json['Repuestos'] = repuestosNecesarios
 
-      //console.log(json)
-      
-      
       this.apiService.postAltaReparacion(json).subscribe(x => {
         alert('Reparacion creada.')
         localStorage.clear();
         this.router.navigate(['.'])
       });
-      
+
     }
+
+  }
+
+  abrirMapaRecogida() {
+    const dialogRef = this.mapDialog.open(MapDialogComponent)
+    dialogRef.componentInstance.formClosed.subscribe(response => {
+
+      this.reverseGeocode(response[0], response[1]).subscribe( resp =>{
+        this.direccionRecogida = resp
+
+        console.log(this.direccionRecogida)
+
+        this.formularioAltaReparacion.controls.recogida_calle.setValue(resp.address.road)
+        this.formularioAltaReparacion.controls.recogida_numero.setValue(resp.address.house_number)
+        this.formularioAltaReparacion.controls.recogida_poblacion.setValue(resp.address['city'])
+        this.formularioAltaReparacion.controls.recogida_provincia.setValue(resp.address.state)
+        this.formularioAltaReparacion.controls.recogida_codigo_postal.setValue(resp.address.postcode)
+
+        this.toastService.toastGenerator('Aviso','Revise los campos de la recogida antes de continuar',2)
+      })
+    })
+  }
+
+  abrirMapaEnvio() {
+    const dialogRef = this.mapDialog.open(MapDialogComponent)
+    dialogRef.componentInstance.formClosed.subscribe(response => {
+
+      this.reverseGeocode(response[0], response[1]).subscribe( resp =>{
+        this.direccionRecogida = resp
+
+        console.log(this.direccionRecogida)
+
+        this.formularioAltaReparacion.controls.envio_calle.setValue(resp.address.road)
+        this.formularioAltaReparacion.controls.envio_numero.setValue(resp.address.house_number)
+        this.formularioAltaReparacion.controls.envio_poblacion.setValue(resp.address['city'])
+        this.formularioAltaReparacion.controls.envio_provincia.setValue(resp.address.state)
+        this.formularioAltaReparacion.controls.envio_codigo_postal.setValue(resp.address.postcode)
+
+        this.toastService.toastGenerator('Aviso','Revise los campos de la recogida antes de continuar',2)
+      })
+    })
+  }
+
+  reverseGeocode(lat, lng) : Observable<GeoCode> {
+
+    return this.geoCodeService.obtenerDireccion(lat, lng)
 
   }
 

@@ -3,15 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import {MatCardModule} from '@angular/material/card'
-import { AppRoutingModule } from './app.routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from '@angular/cdk/dialog';
+import { AppRoutingModule } from './app.routing.module';
 
 import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
+
+// import {MatCardModule} from '@angular/material/card'
+// import { DialogModule } from '@angular/cdk/dialog';
+// import {MatIconModule} from '@angular/material/icon';
+// import { MatDialogModule } from '@angular/material/dialog';
+// import { ImageModule } from 'primeng/image';
 
 import {
   NgxAwesomePopupModule,
@@ -28,12 +31,14 @@ import {
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule,
     HttpClientModule,//peticiones http
     SharedModule,
     PagesModule,
-    DialogModule,
-    MatCardModule,
+    // MatDialogModule,
+    // DialogModule,
+    // MatCardModule,
+    // MatIconModule,
+    // ImageModule,
     
 
     NgxAwesomePopupModule.forRoot({
@@ -47,7 +52,6 @@ import {
       },
     }),
     ConfirmBoxConfigModule.forRoot(),
-
     DialogConfigModule.forRoot(), // optional
     ToastNotificationConfigModule.forRoot(), // optional
   ],
@@ -55,6 +59,10 @@ import {
     AppRoutingModule,
     RouterModule,
     ReactiveFormsModule,
+    // DialogModule,
+    // MatCardModule,
+    // MatIconModule,
+    // ImageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

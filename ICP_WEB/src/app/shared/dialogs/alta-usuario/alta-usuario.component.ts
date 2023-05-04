@@ -3,6 +3,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Perfil } from 'src/app/core/interfaces/Perfil.interface';
+import { catchError } from 'rxjs';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-alta-usuario',
@@ -13,14 +15,15 @@ export class AltaUsuarioComponent implements OnInit {
 
   formularioUsuario!: FormGroup;
   @Output() formClosed = new EventEmitter();
-  opcionesPerfil : Perfil[];
-  private token : string;
+  opcionesPerfil: Perfil[];
+  private token: string;
 
 
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<AltaUsuarioComponent>
+    private dialogRef: MatDialogRef<AltaUsuarioComponent>,
+    private toastService: ToastService,
   ) {
     this.token = sessionStorage.getItem('token');
 
@@ -29,7 +32,7 @@ export class AltaUsuarioComponent implements OnInit {
       correoElectronico: ['', [Validators.required, Validators.email]],
       perfil: ['', Validators.required]
     });
-   }
+  }
 
 
   ngOnInit(): void {
@@ -37,7 +40,7 @@ export class AltaUsuarioComponent implements OnInit {
     this.cargarPerfiles();
   }
 
-  cargarPerfiles(){
+  cargarPerfiles() {
     this.apiService.getPerfiles(this.token)
       .subscribe(perfiles => {
         this.opcionesPerfil = perfiles;
@@ -54,6 +57,20 @@ export class AltaUsuarioComponent implements OnInit {
       var IdPerfil = this.formularioUsuario.get('perfil')?.value;
 
       this.apiService.postAltaUsuario(nombreUsuario, correoElectronico, IdPerfil, this.token)
+        .pipe(
+          catchError( response => {
+
+            if(response.error.retCode === 101){
+              this.toastService.toastGenerator("Error", "Ya existe un usuario con ese nombre", 4)
+            }
+
+            if(response.error.retCode === 102){
+              this.toastService.toastGenerator("Error", "Ya existe un usuario con ese email", 4)
+            }
+
+            throw response
+          })
+        )
         .subscribe((response) => {
           this.formClosed.emit(); //enviamos el aviso para que recarge
         });
@@ -63,5 +80,5 @@ export class AltaUsuarioComponent implements OnInit {
     }
   }
 
-  
+
 }

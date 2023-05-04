@@ -6,6 +6,7 @@ import { UsuarioPerfil } from 'src/app/core/interfaces/UsuarioPerfil.interface';
 import { AltaUsuarioComponent } from '../../../shared/dialogs/alta-usuario/alta-usuario.component';
 import { EditarUsuarioComponent } from '../../../shared/dialogs/editar-usuario/editar-usuario.component';
 import { bindCallback } from 'rxjs';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class UsuariosComponent implements OnInit {
   constructor(
     private apiService : ApiService,
     private altaUsuarioDialog: MatDialog,
-    private editarUsuarioDialog : MatDialog
+    private editarUsuarioDialog : MatDialog,
+    private toastService: ToastService,
   ) { 
     this.token = sessionStorage.getItem('token');
    }
@@ -61,6 +63,7 @@ export class UsuariosComponent implements OnInit {
     
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarUsuarios();
+      this.toastService.toastGenerator("Aviso", "usuario editado correctamente", 2)
     });
     
   }
@@ -69,6 +72,7 @@ export class UsuariosComponent implements OnInit {
     this.apiService.postCambiarEstadoUsuario(IdUsuario, this.token)
       .subscribe(response => {
         this.cargarUsuarios();
+        this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
       });
   }
 

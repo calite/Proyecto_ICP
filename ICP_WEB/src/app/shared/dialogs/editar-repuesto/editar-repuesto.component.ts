@@ -40,7 +40,6 @@ export class EditarRepuestoComponent implements OnInit {
       anchoRepuesto: [this.data.repuesto.ancho, Validators.required],
       imagenRepuesto: ['']
     });
-    //this.data.repuesto.imagen
   }
 
   // Método que se llama al enviar el formulario

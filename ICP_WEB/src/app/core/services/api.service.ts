@@ -351,7 +351,7 @@ export class ApiService {
         const body = {
             IdRepuesto: IdRepuesto
         };
-        return this.http.post(url, body, httpOptions);
+        return this.http.post(url, body, httpOptions)
     }
 
     postEditarRepuesto(Id_Repuesto: number, Descripcion_Repuesto: string, Fabricante: string, Peso: number, Alto: number, Largo: number, Ancho: number, Imagen: string, token: string) {

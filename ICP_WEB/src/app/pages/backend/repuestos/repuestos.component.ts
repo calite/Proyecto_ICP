@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
@@ -7,6 +7,9 @@ import { EditarRepuestoComponent } from '../../../shared/dialogs/editar-repuesto
 import { AltaRepuestoComponent } from '../../../shared/dialogs/alta-repuesto/alta-repuesto.component';
 import { ToastService } from '../../../core/services/toast.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs';
+import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
 
 @Component({
   selector: 'app-repuestos',
@@ -17,6 +20,9 @@ export class RepuestosComponent implements OnInit {
 
   repuestos !: Repuesto[];
   repuesto !: Repuesto;
+
+  @Output() repuestosStock !: RepuestoStock[];
+
   private token: string;
   private datosUsuario;
 
@@ -49,10 +55,18 @@ export class RepuestosComponent implements OnInit {
       });
   }
 
+  cargarStocks() {
+    this.apiService.getRepuestosStock(this.token)
+    .subscribe( repuestosStock => {
+      this.repuestosStock = repuestosStock;
+    });
+  }
+
   crearRepuesto() {
     const dialogRef = this.altaRepuestoDialog.open(AltaRepuestoComponent);
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarRepuestos();
+      this.cargarStocks();
       this.toastService.toastGenerator("Aviso", "Repuesto creado correctamente", 2)
     });
   }
@@ -72,16 +86,25 @@ export class RepuestosComponent implements OnInit {
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarRepuestos();
+      this.cargarStocks();
       this.toastService.toastGenerator("Aviso", "Repuesto editado correctamente", 2)
     });
   }
 
   cambiarEstadoRepuesto(IdRepuesto: number) {
     this.apiService.postCambiarEstadoRepuesto(IdRepuesto, this.token)
+      .pipe(
+        catchError( err => {
+          if(err.error.retCode === 30){
+            this.toastService.toastGenerator("Error", "El repuesto aun tiene stock", 4)
+          }
+          throw err
+        })
+      )
       .subscribe(response => {
           this.cargarRepuestos()
-          this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)
-      })
+          this.toastService.toastGenerator("Aviso", "Estado cambiado correctamente", 2)    
+        })
   }
 
 

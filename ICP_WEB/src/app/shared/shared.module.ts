@@ -16,6 +16,16 @@ import { EditarArticuloComponent } from './dialogs/editar-articulo/editar-articu
 import { EditarRepuestoComponent } from './dialogs/editar-repuesto/editar-repuesto.component';
 import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.component';
 
+import { MapDialogComponent } from './dialogs/map-dialog/map-dialog.component';
+
+import { DialogModule } from '@angular/cdk/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { ImageModule } from 'primeng/image';
+
+
+
+
 
 
 
@@ -24,15 +34,13 @@ import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.
     SidebarComponent,
     TopbarComponent,
     OcultarPasswordPipe,
-    EstadoActivoPipe
+    EstadoActivoPipe,
   ],
   exports: [
     SidebarComponent,
     TopbarComponent,
     OcultarPasswordPipe,
     EstadoActivoPipe,
-
-    
     AltaUsuarioComponent,
     CambiarEstadoReparacionComponent,
     CambiarEstadoSintomaComponent,
@@ -42,12 +50,16 @@ import { EditarUsuarioComponent } from './dialogs/editar-usuario/editar-usuario.
     EditarArticuloComponent,
     AltaArticuloComponent,
     EditarUsuarioComponent,
-
+    MapDialogComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    DialogsModule
+    DialogsModule,
+    DialogModule,
+    MatCardModule,
+    MatIconModule,
+    ImageModule,
   ]
 })
 export class SharedModule { }

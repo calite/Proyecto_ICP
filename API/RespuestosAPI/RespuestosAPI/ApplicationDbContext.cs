@@ -52,6 +52,9 @@ namespace RespuestosAPI
             modelBuilder.Entity<EstadoSintoma>()
                 .HasKey(s => new { s.Id_Estado_Sintoma });
 
+            modelBuilder.Entity<PuntosRecogida>()
+               .HasKey(s => new { s.Id_Punto_Recogida });
+
             modelBuilder.Entity<StockRepuesto>().ToView("V_STOCKS_REPUESTOS")
                 .HasNoKey();
 
@@ -88,6 +91,7 @@ namespace RespuestosAPI
         public DbSet<UsuarioPerfil> V_USUARIOS_PERFILES { get; set; }
         public DbSet<Envio> V_ENVIOS { get; set; }
         public DbSet<Recogida> V_RECOGIDAS { get; set; }
+        public DbSet<PuntosRecogida> PUNTOS_RECOGIDA { get; set; }
 
     }
 }

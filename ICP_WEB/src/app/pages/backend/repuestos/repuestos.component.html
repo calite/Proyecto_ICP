@@ -8,10 +8,10 @@
 
     <ng-template #divRepuestos>
 
-        <div class="d-flex justify-content-center align-items-center mt-5">
+        <!-- <div class="d-flex justify-content-center align-items-center mt-5">
             <button (click)="crearRepuesto()" class="btn btn-primary" *ngIf="perfilActual() == 10">Crear
                 Repuesto</button>
-        </div>
+        </div> -->
 
         <div>
             <table class="table table-hover mt-5 table-striped table-bordered">
@@ -39,7 +39,9 @@
                         <td>{{ repuesto.alto }}</td>
                         <td>{{ repuesto.largo }}</td>
                         <td>{{ repuesto.ancho }}</td>
-                        <td><img class="imgRepuesto" [src]="decodeImg64(repuesto.imagen!)"></td>
+                        <td>
+                            <p-image [src]="decodeImg64(repuesto.imagen!)" [preview]="true" alt="Image" width="50" height="50"></p-image>
+                        </td>
                         <td>{{ repuesto.activo }}</td>
                         <td *ngIf="repuesto.activo">
                             <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"
@@ -58,7 +60,7 @@
             </table>
         </div>
 
-        <app-stocks></app-stocks>
+        <app-stocks [repuestosStock]="repuestosStock"></app-stocks>
 
     </ng-template>
 </div>

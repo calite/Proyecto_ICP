@@ -4,8 +4,6 @@
 
     <form [formGroup]="formularioStock" (ngSubmit)="submitFormularioStock()" class="d-flex flex-column">
 
-        <pre>Sumara o restara la cantidad existente en la bbdd:</pre>
-
         <pre>Cantidad Actual : {{ data.cantidad }}</pre>
 
         <input type="number" id="stock" formControlName="stock">

@@ -13,7 +13,7 @@ import { EditarArticuloComponent } from './editar-articulo/editar-articulo.compo
 import { EditarRepuestoComponent } from './editar-repuesto/editar-repuesto.component';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+import { MapDialogComponent } from './map-dialog/map-dialog.component';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     EditarArticuloComponent,
     EditarRepuestoComponent,
     EditarUsuarioComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    MapDialogComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -44,7 +45,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     CambiarStockComponent,
     EditarArticuloComponent,
     EditarRepuestoComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    MapDialogComponent,
   ]
 })
 export class DialogsModule { }

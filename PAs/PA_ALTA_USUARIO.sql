@@ -77,14 +77,14 @@ AS
 		IF EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE usuario = @usuario)
 		BEGIN
 			set @MENSAJE = 'Ya existe un USUARIO con ese nombre'
-			SET @RETCODE = 50
+			SET @RETCODE = 101
 			RETURN
 		END
 
 		IF EXISTS(SELECT ID_USUARIO FROM USUARIOS WHERE email = @email)
 		BEGIN
 			set @MENSAJE = 'Ya existe un USUARIO con ese email'
-			SET @RETCODE = 60
+			SET @RETCODE = 102
 			RETURN
 		END
 

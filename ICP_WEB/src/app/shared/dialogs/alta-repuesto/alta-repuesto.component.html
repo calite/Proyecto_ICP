@@ -27,7 +27,7 @@
 
         <label for="pesoRepuesto" class="text-center">Peso:</label>
 
-        <input type="number" id="pesoRepuesto" formControlName="pesoRepuesto">
+        <input type="number" id="pesoRepuesto" formControlName="pesoRepuesto" min="0">
 
         <div *ngIf="formularioAltaRepuesto?.get('pesoRepuesto')?.invalid && formularioAltaRepuesto?.get('pesoRepuesto')?.touched"
             class="text-center">
@@ -38,7 +38,7 @@
 
         <label for="altoRepuesto" class="text-center">Alto:</label>
 
-        <input type="number" id="altoRepuesto" formControlName="altoRepuesto">
+        <input type="number" id="altoRepuesto" formControlName="altoRepuesto" min="0">
 
         <div *ngIf="formularioAltaRepuesto?.get('altoRepuesto')?.invalid && formularioAltaRepuesto?.get('altoRepuesto')?.touched"
             class="text-center">
@@ -49,7 +49,7 @@
 
         <label for="largoRepuesto" class="text-center">Largo:</label>
 
-        <input type="number" id="largoRepuesto" formControlName="largoRepuesto">
+        <input type="number" id="largoRepuesto" formControlName="largoRepuesto" min="0">
 
         <div *ngIf="formularioAltaRepuesto?.get('largoRepuesto')?.invalid && formularioAltaRepuesto?.get('largoRepuesto')?.touched"
             class="text-center">
@@ -60,7 +60,7 @@
 
         <label for="anchoRepuesto" class="text-center">Ancho:</label>
 
-        <input type="number" id="anchoRepuesto" formControlName="anchoRepuesto">
+        <input type="number" id="anchoRepuesto" formControlName="anchoRepuesto" min="0">
 
         <div *ngIf="formularioAltaRepuesto?.get('anchoRepuesto')?.invalid && formularioAltaRepuesto?.get('anchoRepuesto')?.touched"
             class="text-center">
@@ -71,7 +71,7 @@
 
         <label for="imagenRepuesto" class="text-center">Imagen:</label>
 
-        <input type="text" id="imagenRepuesto" formControlName="imagenRepuesto">
+        <input type="file" accept="image/png, image/jpeg, image/png" id="imagenRepuesto" formControlName="imagenRepuesto" (change)="handleFileSelect($event)">
 
         <div *ngIf="formularioAltaRepuesto?.get('imagenRepuesto')?.invalid && formularioAltaRepuesto?.get('imagenRepuesto')?.touched"
             class="text-center">
@@ -82,7 +82,7 @@
 
         <label for="cantidadRepuesto" class="text-center">Cantidad:</label>
 
-        <input type="text" id="cantidadRepuesto" formControlName="cantidadRepuesto">
+        <input type="number" id="cantidadRepuesto" formControlName="cantidadRepuesto" min="0">
 
         <div *ngIf="formularioAltaRepuesto?.get('cantidadRepuesto')?.invalid && formularioAltaRepuesto?.get('cantidadRepuesto')?.touched"
             class="text-center">

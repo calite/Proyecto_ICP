@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
 import { CambiarStockComponent } from '../../../shared/dialogs/cambiar-stock/cambiar-stock.component';
+import { outputAst } from '@angular/compiler';
 
 @Component({
   selector: 'app-stocks',
@@ -12,6 +13,7 @@ import { CambiarStockComponent } from '../../../shared/dialogs/cambiar-stock/cam
 })
 export class StocksComponent implements OnInit {
 
+  @Input()
   repuestosStock !: RepuestoStock[];
   private token : string;
   private datosUsuario;
@@ -30,6 +32,7 @@ export class StocksComponent implements OnInit {
 
   }
 
+  
   perfilActual(){
     return this.datosUsuario['id_Perfil'];
   }

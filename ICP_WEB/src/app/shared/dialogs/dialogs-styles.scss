@@ -4,6 +4,7 @@
   padding: 50px;
   background-color: rgb(233, 233, 233) !important;
   border: 2px solid #0f1a20;
+  position: relative;
 }
 
 .btn-primary {
@@ -19,4 +20,42 @@
 
 .form-control {
   border: 1px solid #0f1a20;
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 95%;
+}
+
+#map {
+  height: 100%;
+}
+
+.container {
+  height: 500px;
+  width: 500px;
+}
+
+:host ::ng-deep {
+  .p-orderlist-controls {
+    display: none;
+  }
+}
+
+.button-map {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  margin-right: 30px;
+  margin-bottom: 10px;
+
 }

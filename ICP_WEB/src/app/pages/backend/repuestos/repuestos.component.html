@@ -8,10 +8,10 @@
 
     <ng-template #divRepuestos>
 
-        <!-- <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="d-flex justify-content-center align-items-center mt-5">
             <button (click)="crearRepuesto()" class="btn btn-primary" *ngIf="perfilActual() == 10">Crear
                 Repuesto</button>
-        </div> -->
+        </div>
 
         <div>
             <table class="table table-hover mt-5 table-striped table-bordered">
@@ -26,8 +26,8 @@
                         <th>Ancho</th>
                         <th>Imagen</th>
                         <th>Activo</th>
-                        <th></th>
-                        <th></th>
+                        <th *ngIf="perfilActual() == 10"></th>
+                        <th *ngIf="perfilActual() == 10"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,17 +43,14 @@
                             <p-image [src]="decodeImg64(repuesto.imagen!)" [preview]="true" alt="Image" width="50" height="50"></p-image>
                         </td>
                         <td>{{ repuesto.activo }}</td>
-                        <td *ngIf="repuesto.activo">
-                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"
-                                *ngIf="perfilActual() == 10">desactivar</button>
+                        <td *ngIf="repuesto.activo && perfilActual() == 10">
+                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">desactivar</button>
                         </td>
-                        <td *ngIf="!repuesto.activo">
-                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning"
-                                *ngIf="perfilActual() == 10">activar</button>
+                        <td *ngIf="!repuesto.activo && perfilActual() == 10">
+                            <button (click)="cambiarEstadoRepuesto(repuesto.id_Repuesto)" class="btn btn-warning">activar</button>
                         </td>
-                        <td>
-                            <button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary"
-                                *ngIf="perfilActual() == 10">editar</button>
+                        <td *ngIf="perfilActual() == 10">
+                            <button (click)="editarRepuesto(repuesto.id_Repuesto)" class="btn btn-primary">editar</button>
                         </td>
                     </tr>
                 </tbody>

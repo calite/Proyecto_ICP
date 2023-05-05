@@ -1,8 +1,10 @@
 <div class="container mt-5">
 
     <h2>Alta Reparación</h2>
-
+    
     <hr>
+
+    <h5>Datos de transporte:</h5>
 
     <form [formGroup]="formularioAltaReparacion" (ngSubmit)="submitFormularioAltaReparacion()">
 
@@ -16,7 +18,7 @@
                     <button class="btn btn-primary" matTooltip="Mapa" (click)="abrirMapaRecogida()">
                         <mat-icon>map</mat-icon>
                     </button>
-                    <button class="btn btn-primary" matTooltip="Puntos de recogida">
+                    <button class="btn btn-primary" matTooltip="Puntos de recogida" (click)="abrirPuntosRecogida()">
                         <mat-icon>local_shipping</mat-icon>
                     </button>
                 </div>
@@ -98,7 +100,7 @@
                     <button class="btn btn-primary" matTooltip="Mapa" (click)="abrirMapaEnvio()" [disabled]="!escoderBotones">
                         <mat-icon>map</mat-icon>
                     </button>
-                    <button class="btn btn-primary" matTooltip="Puntos de recogida" [disabled]="!escoderBotones">
+                    <button class="btn btn-primary" matTooltip="Puntos de recogida" (click)="abrirPuntosEnvio()" [disabled]="!escoderBotones">
                         <mat-icon>local_shipping</mat-icon>
                     </button>
                 </div>
@@ -168,7 +170,10 @@
                 </div>
             </div>
 
-            <div class="col-12 d-flex justify-content-end mt-4">
+            <div class="col-12 d-flex justify-content-evenly mt-4">
+
+                <button class="btn btn-primary" (click)="atras()">Atras</button>
+
                 <button type="submit" [disabled]="formularioAltaReparacion.invalid"
                     class="btn btn-primary">Enviar</button>
             </div>

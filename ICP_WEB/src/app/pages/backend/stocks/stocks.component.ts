@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { RepuestoStock } from 'src/app/core/interfaces/RepuestoStock.interface';
 import { CambiarStockComponent } from '../../../shared/dialogs/cambiar-stock/cambiar-stock.component';
 import { outputAst } from '@angular/compiler';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-stocks',
@@ -20,7 +21,8 @@ export class StocksComponent implements OnInit {
 
   constructor(
     private apiService : ApiService,
-    private cambiarStockDialog: MatDialog
+    private cambiarStockDialog: MatDialog,
+    private toastService : ToastService
   ) { 
     this.token = sessionStorage.getItem('token');
     this.datosUsuario = JSON.parse(sessionStorage.getItem('datos'));
@@ -51,6 +53,7 @@ export class StocksComponent implements OnInit {
 
     dialogRef.componentInstance.formClosed.subscribe(() => { //recargamos
       this.cargarStocks();
+      this.toastService.toastGenerator("Aviso", "Stock cambiado correctamente", 2)
     });
 
   }

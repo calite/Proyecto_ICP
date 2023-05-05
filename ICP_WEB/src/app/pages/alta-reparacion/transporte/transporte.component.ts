@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { ReverseGeocodeService } from 'src/app/core/services/reverse-geocode.service';
 import { MapDialogComponent } from '../../../shared/dialogs/map-dialog/map-dialog.component';
 import { ToastService } from '../../../core/services/toast.service';
+import { PuntosRecogidaComponent } from '../../../shared/dialogs/puntos-recogida/puntos-recogida.component';
 
 @Component({
   selector: 'app-transporte',
@@ -25,6 +26,7 @@ export class TransporteComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private mapDialog: MatDialog,
+    private puntosDialog: MatDialog,
     private geoCodeService: ReverseGeocodeService,
     private toastService: ToastService
   ) { // se genera el form en el constructor
@@ -55,7 +57,7 @@ export class TransporteComponent {
 
   duplicarValores() {
 
-    if(!this.escoderBotones)this.escoderBotones = true
+    if (!this.escoderBotones) this.escoderBotones = true
     else this.escoderBotones = false
 
     if (this.formularioAltaReparacion.controls.duplicar_valores.value) {
@@ -167,7 +169,7 @@ export class TransporteComponent {
     const dialogRef = this.mapDialog.open(MapDialogComponent)
     dialogRef.componentInstance.formClosed.subscribe(response => {
 
-      this.reverseGeocode(response[0], response[1]).subscribe( resp =>{
+      this.reverseGeocode(response[0], response[1]).subscribe(resp => {
         this.direccionRecogida = resp
 
         console.log(this.direccionRecogida)
@@ -178,7 +180,7 @@ export class TransporteComponent {
         this.formularioAltaReparacion.controls.recogida_provincia.setValue(resp.address.state)
         this.formularioAltaReparacion.controls.recogida_codigo_postal.setValue(resp.address.postcode)
 
-        this.toastService.toastGenerator('Aviso','Revise los campos de la recogida antes de continuar',2)
+        this.toastService.toastGenerator('Aviso', 'Revise los campos de la recogida antes de continuar', 2)
       })
     })
   }
@@ -187,10 +189,8 @@ export class TransporteComponent {
     const dialogRef = this.mapDialog.open(MapDialogComponent)
     dialogRef.componentInstance.formClosed.subscribe(response => {
 
-      this.reverseGeocode(response[0], response[1]).subscribe( resp =>{
+      this.reverseGeocode(response[0], response[1]).subscribe(resp => {
         this.direccionRecogida = resp
-
-        console.log(this.direccionRecogida)
 
         this.formularioAltaReparacion.controls.envio_calle.setValue(resp.address.road)
         this.formularioAltaReparacion.controls.envio_numero.setValue(resp.address.house_number)
@@ -198,15 +198,43 @@ export class TransporteComponent {
         this.formularioAltaReparacion.controls.envio_provincia.setValue(resp.address.state)
         this.formularioAltaReparacion.controls.envio_codigo_postal.setValue(resp.address.postcode)
 
-        this.toastService.toastGenerator('Aviso','Revise los campos de la recogida antes de continuar',2)
+        this.toastService.toastGenerator('Aviso', 'Revise los campos de la recogida antes de continuar', 2)
       })
     })
   }
 
-  reverseGeocode(lat, lng) : Observable<GeoCode> {
+  abrirPuntosRecogida() {
+    const dialogRef = this.puntosDialog.open(PuntosRecogidaComponent)
+    dialogRef.componentInstance.formClosed.subscribe(response => {
+
+      this.formularioAltaReparacion.controls.recogida_calle.setValue(response.direccion)
+      this.formularioAltaReparacion.controls.recogida_numero.setValue(0)
+      this.formularioAltaReparacion.controls.recogida_poblacion.setValue(response.nombre_Ciudad)
+      this.formularioAltaReparacion.controls.recogida_provincia.setValue(response.provincia)
+      this.formularioAltaReparacion.controls.recogida_codigo_postal.setValue(response.codigo_Postal)
+    })
+  }
+
+  abrirPuntosEnvio() {
+    const dialogRef = this.puntosDialog.open(PuntosRecogidaComponent)
+    dialogRef.componentInstance.formClosed.subscribe(response => {
+
+      this.formularioAltaReparacion.controls.envio_calle.setValue(response.direccion)
+      this.formularioAltaReparacion.controls.envio_numero.setValue(0)
+      this.formularioAltaReparacion.controls.envio_poblacion.setValue(response.nombre_Ciudad)
+      this.formularioAltaReparacion.controls.envio_provincia.setValue(response.provincia)
+      this.formularioAltaReparacion.controls.envio_codigo_postal.setValue(response.codigo_Postal)
+    })
+  }
+
+  reverseGeocode(lat, lng): Observable<GeoCode> {
 
     return this.geoCodeService.obtenerDireccion(lat, lng)
 
+  }
+
+  atras() {
+    this.router.navigate(['./alta-reparacion/sintomas'])
   }
 
 }

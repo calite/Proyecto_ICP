@@ -87,14 +87,14 @@ namespace RespuestosAPI.Controllers
 
         [HttpGet("puntos_recogida")]
         [AllowAnonymous]
-        public async Task<List<EstadoReparacionDTO>> GetPuntosRecogida()
+        public async Task<List<PuntosRecogidaDTO>> GetPuntosRecogida()
         {
             try
             {
                 var puntoRecogida = await context.PUNTOS_RECOGIDA
                     .ToListAsync();
 
-                return mapper.Map<List<EstadoReparacionDTO>>(puntoRecogida);
+                return mapper.Map<List<PuntosRecogidaDTO>>(puntoRecogida);
 
             }
             catch (Exception ex)
@@ -195,7 +195,7 @@ namespace RespuestosAPI.Controllers
             try
             {
                 var reparaciones = await context.V_REPARACION_SINTOMAS.Where(x => x.Id_Reparacion == IdReparacion).ToListAsync();
-
+                
                 if (reparaciones.Count == 0)
                 {
                     return BadRequest($"No existe una reparacion con ese ID: {IdReparacion}");

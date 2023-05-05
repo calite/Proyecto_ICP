@@ -103,4 +103,8 @@ export class SintomasComponent implements OnInit {
     }
   }
 
+  atras() {
+    this.router.navigate(['./alta-reparacion'])
+  }
+
 }

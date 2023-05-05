@@ -16,7 +16,7 @@
                         <th>Marca</th>
                         <th>Modelo</th>
                         <th>Estado</th>
-                        <th></th>
+                        <th *ngIf="perfilActual() == 10 || perfilActual() == 30"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,8 +25,7 @@
                         <td>{{ reparacion.marca }}</td>
                         <td>{{ reparacion.modelo }}</td>
                         <td>{{ reparacion.estado }}</td>
-                        <td><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary"
-                                *ngIf="perfilActual() == 10 || perfilActual() == 30">Cambiar Estado</button></td>
+                        <td *ngIf="perfilActual() == 10 || perfilActual() == 30"><button (click)="cambiarEstadoReparacion(reparacion.id_Reparacion)" class="btn btn-primary">Cambiar Estado</button></td>
                     </tr>
                 </tbody>
             </table>

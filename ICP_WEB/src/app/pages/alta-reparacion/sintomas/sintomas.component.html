@@ -1,6 +1,6 @@
 <div class="container mt-5">
 
-    <h2>Alta Reparacion</h2>
+    <h2>Alta Reparación</h2>
 
     <hr>
 
@@ -32,7 +32,9 @@
 
             </div>
 
-            <div class="col-12 d-flex justify-content-end mt-5">
+            <div class="col-12 d-flex justify-content-evenly mt-5">
+                <button class="btn btn-primary" (click)="atras()">Atras</button>
+
                 <button type="submit" [disabled]="formularioAltaReparacion.invalid"
                     class="btn btn-primary">Siguiente</button>
             </div>

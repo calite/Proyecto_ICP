@@ -14,6 +14,9 @@ import { EditarRepuestoComponent } from './editar-repuesto/editar-repuesto.compo
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MapDialogComponent } from './map-dialog/map-dialog.component';
+import { PuntosRecogidaComponent } from './puntos-recogida/puntos-recogida.component';
+import { OrderListModule } from 'primeng/orderlist';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -29,12 +32,14 @@ import { MapDialogComponent } from './map-dialog/map-dialog.component';
     EditarUsuarioComponent,
     ResetPasswordComponent,
     MapDialogComponent,
+    PuntosRecogidaComponent
   ],
   imports: [
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
     MatCardModule,
+    OrderListModule,
   ],
   exports: [
     AltaArticuloComponent,
@@ -47,6 +52,7 @@ import { MapDialogComponent } from './map-dialog/map-dialog.component';
     EditarRepuestoComponent,
     EditarUsuarioComponent,
     MapDialogComponent,
+    PuntosRecogidaComponent
   ]
 })
 export class DialogsModule { }

@@ -1,15 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import * as L from 'leaflet';
-import { last } from 'rxjs';
-import { GeoCode } from '../../../core/interfaces/geocode.interface';
-import { ReverseGeocodeService } from '../../../core/services/reverse-geocode.service';
+
 
 @Component({
   selector: 'app-map-dialog',
   templateUrl: './map-dialog.component.html',
-  styleUrls: ['./map-dialog.component.scss']
+  styleUrls: ['../dialogs-styles.scss']
 })
 export class MapDialogComponent implements AfterViewInit {
 

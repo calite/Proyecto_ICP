@@ -14,6 +14,7 @@ import { Sintoma } from '../interfaces/Sintoma.interface';
 import { Perfil } from '../interfaces/Perfil.interface';
 import { EstadoSintoma } from '../interfaces/EstadoSintoma.interface';
 import { EstadoReparacion } from '../interfaces/EstadoReparacion.interface';
+import { PuntosRecogida } from '../interfaces/PuntosRecogida.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -256,6 +257,20 @@ export class ApiService {
     postAltaReparacion(jsonObject) {
         const url = `${this.apiUrl}reparaciones/alta_reparacion`;
         return this.http.post(url, jsonObject);
+    }
+
+    getPuntosRecogida() {
+
+        // var httpOptions = {
+        //     headers: new HttpHeaders({
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + token
+        //     })
+        // };
+
+        const url = `${this.apiUrl}reparaciones/puntos_recogida`;
+        return this.http.get<PuntosRecogida[]>(url);
+
     }
 
     //ARTICULOS

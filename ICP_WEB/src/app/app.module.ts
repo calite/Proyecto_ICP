@@ -11,9 +11,9 @@ import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 
 // import {MatCardModule} from '@angular/material/card'
- import { DialogModule } from '@angular/cdk/dialog';
+import { DialogModule } from '@angular/cdk/dialog';
 // import {MatIconModule} from '@angular/material/icon';
- import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 // import { ImageModule } from 'primeng/image';
 
 import {
@@ -35,11 +35,11 @@ import {
     SharedModule,
     PagesModule,
     MatDialogModule,
-     DialogModule,
+    DialogModule,
     // MatCardModule,
     // MatIconModule,
     // ImageModule,
-    
+
 
     NgxAwesomePopupModule.forRoot({
       colorList: {

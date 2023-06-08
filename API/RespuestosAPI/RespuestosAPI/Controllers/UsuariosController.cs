@@ -199,8 +199,6 @@ namespace RespuestosAPI.Controllers
                     mensaje
                 };
 
-
-
                 string PA_ALTA_USUARIO = "EXEC PA_ALTA_USUARIO @USUARIO, @PASSWORD, @ID_PERFIL, @EMAIL, @SALT,@INVOKER, @RETCODE OUTPUT, @MENSAJE OUTPUT";
 
                 await context.Database.ExecuteSqlRawAsync(PA_ALTA_USUARIO, parametros);
